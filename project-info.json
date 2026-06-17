@@ -1,0 +1,7 @@
+{
+  "name": "quydoi-hsa-2026",
+  "type": "static-github-pages",
+  "entry": "index.html",
+  "build": false,
+  "libraries": ["Tailwind CSS CDN", "Chart.js CDN", "MathJax 3 CDN"]
+}
