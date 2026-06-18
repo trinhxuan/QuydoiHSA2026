@@ -833,23 +833,28 @@
 
         // PHƯƠNG PHÁP QUY ĐỔI THEO MỐC NEO BỘ GD&ĐT
         function convertMOET(x) {
-            if (x >= moetOfficialAnchors[0].hsa) return { score: 30.00, anchorIdx: 0, topLabel: moetOfficialAnchors[0].top, bottomLabel: moetOfficialAnchors[0].top };
-            if (x <= moetOfficialAnchors[moetOfficialAnchors.length-1].hsa) return { score: 7.95, anchorIdx: moetOfficialAnchors.length-1, topLabel: "Top 100.0%", bottomLabel: "Top 100.0%" };
+            if (x >= 130) {
+                return { score: 30.00, x1: 130, x2: 130, y1: 30.00, y2: 30.00, bottomLabel: "Top 0.01%", topLabel: "Top 0.01%", edge: true };
+            }
+            if (x <= 31) {
+                return { score: 7.95, x1: 31, x2: 31, y1: 7.95, y2: 7.95, bottomLabel: "Top 100.0%", topLabel: "Top 100.0%", edge: true };
+            }
 
             for (let i = 0; i < moetOfficialAnchors.length - 1; i++) {
                 const topNode = moetOfficialAnchors[i]; const bottomNode = moetOfficialAnchors[i+1];
                 if (x >= bottomNode.hsa && x <= topNode.hsa) {
                     const x1 = bottomNode.hsa; const x2 = topNode.hsa;
                     const y1 = bottomNode.a00; const y2 = topNode.a00;
-                    return { score: y1 + ((x - x1) / (x2 - x1)) * (y2 - y1), anchorIdx: i, x1, x2, y1, y2, topLabel: topNode.top, bottomLabel: bottomNode.top };
+                    return { score: y1 + ((x - x1) / (x2 - x1)) * (y2 - y1), anchorIdx: i, x1, x2, y1, y2, topLabel: topNode.top, bottomLabel: bottomNode.top, edge: false };
                 }
             }
+            return { score: 7.95, x1: 31, x2: 31, y1: 7.95, y2: 7.95, bottomLabel: "Top 100.0%", topLabel: "Top 100.0%", edge: true };
         }
 
         // TÍNH TOÁN NGƯỢC CHUẨN MỐC NEO BỘ GD&ĐT
         function convertReverseMOET(y) {
-            if (y >= moetOfficialAnchors[0].a00) return { score: 133.00, anchorIdx: 0, topLabel: moetOfficialAnchors[0].top, bottomLabel: moetOfficialAnchors[0].top };
-            if (y <= moetOfficialAnchors[moetOfficialAnchors.length-1].a00) return { score: 19.00, anchorIdx: moetOfficialAnchors.length-1, topLabel: moetOfficialAnchors[moetOfficialAnchors.length-1].top, bottomLabel: moetOfficialAnchors[moetOfficialAnchors.length-1].top };
+            if (y >= 30.00) return { score: 133.00, x1: 130, x2: 130, y1: 30.00, y2: 30.00, bottomLabel: "Top 0.01%", topLabel: "Top 0.01%", edge: true };
+            if (y <= 7.95) return { score: 19.00, x1: 31, x2: 31, y1: 7.95, y2: 7.95, bottomLabel: "Top 100.0%", topLabel: "Top 100.0%", edge: true };
 
             for (let i = 0; i < moetOfficialAnchors.length - 1; i++) {
                 const topNode = moetOfficialAnchors[i];
@@ -861,11 +866,11 @@
                     const x1 = bottomNode.hsa;
                     const x2 = topNode.hsa;
 
-                    const x = x1 + ((y - y1) / (y2 - y1)) * (x2 - x1);
-                    return { score: x, anchorIdx: i, x1, x2, y1, y2, topLabel: topNode.top, bottomLabel: bottomNode.top };
+                    const score = x1 + ((y - y1) / (y2 - y1)) * (x2 - x1);
+                    return { score, x1, x2, y1, y2, bottomLabel: bottomNode.top, topLabel: topNode.top, edge: false };
                 }
             }
-            return { score: 19.00, anchorIdx: moetOfficialAnchors.length-1, topLabel: "Top 100.0%", bottomLabel: "Top 100.0%" };
+            return { score: 19.00, x1: 31, x2: 31, y1: 7.95, y2: 7.95, bottomLabel: "Top 100.0%", topLabel: "Top 100.0%", edge: true };
         }
 
         // Tải bảng song song đa phương pháp (CẬP NHẬT: So sánh điểm quy đổi tịnh tiến theo năm)
@@ -1034,15 +1039,15 @@
                 } else if (activeMethod === 'moet') {
                     const moetResult = convertMOET(hsaVal);
                     thptVal = moetResult.score;
-                    if (moetResult.x1 !== undefined) {
+                    if (moetResult.x1 !== undefined && !moetResult.edge) {
                         explanationHtml = 
                             '<p class="font-bold text-cyan-400 mb-1">Phương pháp: Mốc neo phân vị quy đổi chuẩn (Bộ GD&ĐT)</p>' +
-                            '<p>Điểm HSA $x = ' + hsaVal + '$ nội suy tuyến tính giữa mốc <span class="text-white font-bold">' + moetResult.bottomLabel + '</span> và <span class="text-white font-bold">' + moetResult.topLabel + '</span>:</p>' +
+                            '<p>Điểm HSA $x = ' + hsaVal + '$ nội suy tuyến tính giữa mốc <span class="text-white font-bold">' + moetResult.bottomLabel + ' (' + moetResult.x1 + 'đ)</span> và <span class="text-white font-bold">' + moetResult.topLabel + ' (' + moetResult.x2 + 'đ)</span>:</p>' +
                             '<p class="pl-4 font-mono text-white">$$y = ' + moetResult.y1.toFixed(2) + ' + \\frac{x - ' + moetResult.x1 + '}{' + moetResult.x2 + ' - ' + moetResult.x1 + '} \\cdot (' + moetResult.y2.toFixed(2) + ' - ' + moetResult.y1.toFixed(2) + ') = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
                     } else {
                         explanationHtml = 
                             '<p class="font-bold text-cyan-400 mb-1">Phương pháp: Mốc neo phân vị quy đổi chuẩn (Bộ GD&ĐT)</p>' +
-                            '<p>Điểm HSA $x = ' + hsaVal + '$ nằm ngoài dải nội suy tiêu chuẩn hoặc chạm mốc cực đại/cực tiểu. Điểm quy đổi được cố định theo mốc biên:</p>' +
+                            '<p>Điểm HSA $x = ' + hsaVal + '$ chạm mốc biên hoặc nằm ngoài dải nội suy tiêu chuẩn vĩ mô. Điểm quy đổi được cố định theo mốc biên:</p>' +
                             '<p class="pl-4 font-mono text-white">$$y = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
                     }
                 } else {
@@ -1051,7 +1056,7 @@
                     if (!ptitResult.error) {
                         explanationHtml = 
                             '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT (Bưu chính Viễn thông)</p>' +
-                            '<p>Điểm HSA $x = ' + hsaVal + '$ thuộc khoảng [' + ptitResult.a + ', ' + ptitResult.b + '], tương ứng khoảng điểm tốt nghiệp [' + ptitResult.c.toFixed(2) + ', ' + ptitResult.d.toFixed(2) + ']:</p>' +
+                            '<p>Điểm HSA $x = ' + hsaVal + '$ thuộc dải khoảng phân loại thứ ' + ptitResult.rangeIndex + ' từ [' + ptitResult.a + ', ' + ptitResult.b + '], tương ứng dải điểm THPT từ [' + ptitResult.c.toFixed(2) + ', ' + ptitResult.d.toFixed(2) + ']:</p>' +
                             '<p class="pl-4 font-mono text-white">$$y = ' + ptitResult.c.toFixed(2) + ' + \\frac{x - ' + ptitResult.a + '}{' + ptitResult.b + ' - ' + ptitResult.a + '} \\cdot (' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + ') = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
                     } else {
                         explanationHtml = 
@@ -1086,7 +1091,7 @@
                     const moetResult = convertMOET(hsaVal);
                     baseThpt = moetResult.score;
                     methodTitle = "Mốc neo phân vị Bộ GD&ĐT";
-                    if (moetResult.x1 !== undefined) {
+                    if (moetResult.x1 !== undefined && !moetResult.edge) {
                         subStepTex = '$$y_{\\text{THPT 2025}} = ' + moetResult.y1.toFixed(2) + ' + \\frac{x - ' + moetResult.x1 + '}{' + moetResult.x2 + ' - ' + moetResult.x1 + '} \\cdot (' + moetResult.y2.toFixed(2) + ' - ' + moetResult.y1.toFixed(2) + ') = ' + baseThpt.toFixed(2) + '\\text{ điểm}$$';
                     } else {
                         subStepTex = '$$y_{\\text{THPT 2025}} = ' + baseThpt.toFixed(2) + '\\text{ điểm}$$';
@@ -1161,15 +1166,15 @@
                     const moetResult = convertReverseMOET(thptVal);
                     hsaVal = moetResult.score;
                     pct = findPercentileFromHSA2026(hsaVal);
-                    if (moetResult.x1 !== undefined) {
+                    if (moetResult.x1 !== undefined && !moetResult.edge) {
                         explanationHtml = 
                             '<p class="font-bold text-cyan-400 mb-1">Phương pháp: Mốc neo phân vị quy đổi chuẩn ngược (Bộ GD&ĐT)</p>' +
-                            '<p>Điểm THPT $y = ' + thptVal.toFixed(2) + '$ nằm trong khoảng mốc neo từ <span class="text-white font-bold">' + moetResult.bottomLabel + '</span> đến <span class="text-white font-bold">' + moetResult.topLabel + '</span>:</p>' +
+                            '<p>Điểm THPT $y = ' + thptVal.toFixed(2) + '$ nằm trong khoảng mốc neo từ <span class="text-white font-bold">' + moetResult.bottomLabel + ' (' + moetResult.y1.toFixed(2) + 'đ)</span> đến <span class="text-white font-bold">' + moetResult.topLabel + ' (' + moetResult.y2.toFixed(2) + 'đ)</span>:</p>' +
                             '<p class="pl-4 font-mono text-white">$$x = ' + moetResult.x1 + ' + \\frac{y - ' + moetResult.y1.toFixed(2) + '}{' + moetResult.y2.toFixed(2) + ' - ' + moetResult.y1.toFixed(2) + '} \\cdot (' + moetResult.x2 + ' - ' + moetResult.x1 + ') = ' + Math.round(hsaVal) + '\\text{ điểm}$$</p>';
                     } else {
                         explanationHtml = 
                             '<p class="font-bold text-cyan-400 mb-1">Phương pháp: Mốc neo phân vị quy đổi chuẩn ngược (Bộ GD&ĐT)</p>' +
-                            '<p>Điểm THPT $y = ' + thptVal.toFixed(2) + '$ nằm ngoài dải nội suy tiêu chuẩn hoặc chạm mốc cực trị. Điểm HSA quy đổi được cố định theo mốc biên:</p>' +
+                            '<p>Điểm THPT $y = ' + thptVal.toFixed(2) + '$ chạm mốc biên hoặc nằm ngoài phạm vi dải mốc neo. Điểm HSA quy đổi được cố định theo mốc biên:</p>' +
                             '<p class="pl-4 font-mono text-white">$$x = ' + Math.round(hsaVal) + '\\text{ điểm}$$</p>';
                     }
                 } else {
@@ -1179,8 +1184,8 @@
                     if (!ptitResult.error) {
                         explanationHtml = 
                             '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT ngược (THPT $\\rightarrow$ HSA)</p>' +
-                            '<p>Điểm THPT $y = ' + thptVal.toFixed(2) + '$ thuộc khoảng [' + ptitResult.c.toFixed(2) + ', ' + ptitResult.d.toFixed(2) + '], tương ứng khoảng điểm HSA [' + ptitResult.a + ', ' + ptitResult.b + ']:</p>' +
-                            '<p class="pl-4 font-mono text-white">$$x = ' + ptitResult.a + ' + \\frac{y - ' + ptitResult.c.toFixed(2) + '}{' + ptitResult.d.toFixed(2) - ptitResult.c.toFixed(2) + '} \\cdot (' + ptitResult.b - ptitResult.a + ') = ' + Math.round(hsaVal) + '\\text{ điểm}$$</p>';
+                            '<p>Điểm THPT $y = ' + thptVal.toFixed(2) + '$ thuộc khoảng tốt nghiệp từ ' + ptitResult.c.toFixed(2) + 'đ đến ' + ptitResult.d.toFixed(2) + 'đ, tương ứng khoảng điểm HSA từ ' + ptitResult.a + 'đ đến ' + ptitResult.b + 'đ:</p>' +
+                            '<p class="pl-4 font-mono text-white">$$x = ' + ptitResult.a + ' + \\frac{y - ' + ptitResult.c.toFixed(2) + '}{' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + '} \\cdot (' + ptitResult.b + ' - ' + ptitResult.a + ') = ' + Math.round(hsaVal) + '\\text{ điểm}$$</p>';
                     } else {
                         explanationHtml = 
                             '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT ngược (THPT $\\rightarrow$ HSA)</p>' +
