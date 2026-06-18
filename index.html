@@ -2,8 +2,8 @@
 <html lang="vi" class="h-full bg-slate-950">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quy đổi & Dự báo phân vị HSA sang THPT A00</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quy đổi & Dự báo phân vị HSA sang THPT tốt nghiệp</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -26,7 +26,6 @@
 
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -50,10 +49,12 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #020617;
+            -webkit-font-smoothing: antialiased;
         }
         .glass-panel {
             background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .glow-active {
@@ -62,6 +63,16 @@
         .mjx-chtml {
             margin: 0 !important;
             display: inline-block !important;
+        }
+        .table-container {
+            -webkit-overflow-scrolling: touch;
+            overflow-x: auto;
+            width: 100%;
+        }
+        #chartWrapper {
+            min-height: 280px;
+            position: relative;
+            width: 100%;
         }
     </style>
 </head>
@@ -77,20 +88,20 @@
                     </svg>
                 </div>
                 <div>
-                    <h1 class="font-extrabold text-lg tracking-tight text-white flex items-center gap-1.5 flex-wrap">
-                        Hệ thống Phân tích & Quy đổi Điểm thi HSA &rarr; THPT A00
+                    <h1 class="font-extrabold text-base md:text-lg tracking-tight text-white leading-snug">
+                        Hệ thống Phân tích & Quy đổi Điểm thi HSA <span class="inline-block text-brand-500 mx-1">&rarr;</span> THPT
                     </h1>
-                    <p class="text-xs text-slate-400">Tích hợp bách phân vị chuẩn ĐHQG hai năm (2025 - 2026) & Khung mốc neo Bộ GD&ĐT</p>
+                    <p class="text-xs text-slate-400">Hiệu chuẩn bách phân vị Quốc gia Bộ GD&ĐT & Đối sánh Thứ hạng liên năm</p>
                 </div>
             </div>
             <div class="flex items-center gap-2 text-xs bg-slate-900 rounded-full px-3 py-1.5 border border-slate-800">
                 <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-                <span class="text-slate-300 font-medium">Bản cập nhật mô phỏng dự báo THPT 2026</span>
+                <span class="text-slate-300 font-medium">Bản so sánh điểm quy đổi và thứ hạng liên năm</span>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 mt-8 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <main class="max-w-7xl mx-auto px-4 mt-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         <!-- CỘT TRÁI: Nhập điểm & Chọn phương pháp quy đổi -->
         <section class="lg:col-span-5 flex flex-col gap-6">
@@ -104,7 +115,7 @@
                     Nhập điểm & Dự báo bách phân vị
                 </h2>
 
-                <!-- Bộ nút chuyển đổi hướng đi (Đã nâng cấp lưới 2x2 hỗ trợ 4 chế độ mượt mà) -->
+                <!-- Bộ nút chuyển đổi hướng đi -->
                 <div class="grid grid-cols-2 gap-1 bg-slate-950 p-1 rounded-xl mb-4 border border-slate-850">
                     <button id="tabHsa26ToThpt" onclick="switchDirection('hsa26_to_thpt')" class="py-2 text-[10px] font-bold rounded-lg transition-all bg-brand-600 text-white shadow text-center">
                         HSA 2026 &rarr; THPT 25
@@ -112,12 +123,26 @@
                     <button id="tabHsa26ToThpt26" onclick="switchDirection('hsa26_to_thpt26')" class="py-2 text-[10px] font-bold rounded-lg transition-all text-slate-400 hover:text-white text-center">
                         HSA 2026 &rarr; THPT 26 (Dự đoán)
                     </button>
-                    <button id="tabHsa25ToThpt" onclick="switchDirection('hsa25_to_thpt')" class="py-2 text-[10px] font-bold rounded-lg transition-all text-slate-400 hover:text-white text-center">
+                    <button id="tabHsa25ToThpt" onclick="switchDirection('hsa25_to_thpt')" class="py-2 text-[10px] font-bold rounded-lg transition-all text-slate-400 hover:text-white text-center col-span-1">
                         HSA 2025 &rarr; THPT 25
                     </button>
-                    <button id="tabThptToHsa" onclick="switchDirection('thpt_to_hsa')" class="py-2 text-[10px] font-bold rounded-lg transition-all text-slate-400 hover:text-white text-center">
+                    <button id="tabThptToHsa" onclick="switchDirection('thpt_to_hsa')" class="py-2 text-[10px] font-bold rounded-lg transition-all text-slate-400 hover:text-white text-center col-span-1">
                         THPT 25 &rarr; HSA 26
                     </button>
+                </div>
+
+                <!-- Bộ chọn tổ hợp môn THPT quy đổi -->
+                <div class="mb-4">
+                    <label class="text-xs font-semibold text-slate-300 block mb-1.5">Tổ hợp môn THPT quy đổi:</label>
+                    <select id="selectTargetBlock" onchange="handleBlockChange()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-brand-500 focus:outline-none focus:border-brand-500 cursor-pointer">
+                        <option value="A00" selected>Khối A00 (Toán, Vật lý, Hóa học)</option>
+                        <option value="A01">Khối A01 (Toán, Vật lý, Tiếng Anh)</option>
+                        <option value="B00">Khối B00 (Toán, Hóa học, Sinh học)</option>
+                        <option value="C00">Khối C00 (Ngữ văn, Lịch sử, Địa lý)</option>
+                        <option value="C01">Khối C01 (Toán, Vật lý, Ngữ văn)</option>
+                        <option value="D01">Khối D01 (Toán, Ngữ văn, Tiếng Anh)</option>
+                        <option value="D07">Khối D07 (Toán, Hóa học, Tiếng Anh)</option>
+                    </select>
                 </div>
 
                 <!-- Input HSA -->
@@ -143,33 +168,33 @@
                 <!-- Input THPT 2025 -->
                 <div id="containerInputTHPT" class="space-y-4 hidden">
                     <div class="flex justify-between items-center">
-                        <label class="text-xs font-semibold text-slate-300">Tổng điểm THPT A00 2025:</label>
+                        <label class="text-xs font-semibold text-slate-300">Tổng điểm THPT mục tiêu:</label>
                         <span class="text-[10px] bg-indigo-500/10 text-indigo-400 px-2.5 py-0.5 rounded-full border border-indigo-500/20 font-bold">Thang 30</span>
                     </div>
                     <div class="relative">
-                        <input type="number" id="inputThpt" min="7.95" max="30" value="27.25" step="0.01"
+                        <input type="number" id="inputThpt" min="5.90" max="30" value="25.46" step="0.01"
                                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-2xl font-black text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 transition-all">
                         <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm font-bold">điểm</div>
                     </div>
-                    <input type="range" id="rangeThpt" min="7.95" max="30" value="27.25" step="0.01"
+                    <input type="range" id="rangeThpt" min="5.90" max="30" value="25.46" step="0.01"
                            class="w-full accent-indigo-500 cursor-pointer">
                     <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-                        <span>Min: 7.95</span>
-                        <span>Điểm TB: 19.33</span>
+                        <span id="labelLimitMin">Min: 5.90</span>
+                        <span>Điểm TB: 17.60</span>
                         <span>Max: 30.00</span>
                     </div>
                 </div>
             </div>
 
-            <!-- ĐÃ THÊM: Bộ mô phỏng xu hướng phổ điểm THPT 2026 (Chỉ hiển thị ở Tab dự đoán) -->
+            <!-- Bộ mô phỏng xu hướng phổ điểm THPT 2026 -->
             <div id="containerSimulate2026" class="glass-panel rounded-2xl p-6 relative hidden border border-emerald-500/30">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl"></div>
                 <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-1.5">
                     <span class="text-brand-500">⚙️</span>
-                    Mô phỏng Phổ điểm THPT A00 2026
+                    Mô phỏng Phổ điểm THPT 2026
                 </h3>
                 <p class="text-[10px] text-slate-400 leading-relaxed mb-4">
-                    Tùy chỉnh độ lệch xu hướng phổ điểm tốt nghiệp THPT A00 năm 2026 (Khó/Dễ) để tính toán điểm quy đổi dự báo chuẩn xác.
+                    Tùy chỉnh độ lệch xu hướng phổ điểm tốt nghiệp THPT năm 2026 (Khó/Dễ) để tính toán điểm quy đổi dự báo chuẩn xác.
                 </p>
                 <div class="space-y-4">
                     <div class="flex justify-between items-center text-xs">
@@ -186,15 +211,22 @@
                 </div>
             </div>
 
-            <!-- Card 3: Lựa chọn Phương pháp quy đổi -->
+            <!-- Card 2: Lựa chọn Phương pháp quy đổi -->
             <div class="glass-panel rounded-2xl p-6 relative">
                 <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Phương pháp quy đổi áp dụng</h3>
                 <div class="space-y-3">
                     <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-800 hover:bg-slate-900/40 cursor-pointer transition-all">
-                        <input type="radio" name="conversionMethod" value="percentile" checked onchange="handleMethodChange()" class="mt-1 accent-brand-500">
+                        <input type="radio" name="conversionMethod" value="percentileNational" checked onchange="handleMethodChange()" class="mt-1 accent-brand-500">
                         <div>
-                            <span class="text-xs font-bold text-white block">Ánh xạ Bách phân vị hệ thống</span>
-                            <span class="text-[10px] text-slate-400 block mt-0.5">Tính toán dựa theo vị trí xếp hạng bách phân vị tương đương của hai quần thể thí sinh quốc gia.</span>
+                            <span id="thNational" class="text-xs font-bold text-emerald-400 block">Ánh xạ Bách phân vị Quốc gia (Phụ lục II)</span>
+                            <span class="text-[10px] text-slate-400 block mt-0.5">Quy đổi chính xác dựa trên phổ bách phân vị đã hiệu chuẩn cả nước của Bộ GD&ĐT (HSA 98 &rarr; THPT 25.46).</span>
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-800 hover:bg-slate-900/40 cursor-pointer transition-all">
+                        <input type="radio" name="conversionMethod" value="percentile" onchange="handleMethodChange()" class="mt-1 accent-brand-500">
+                        <div>
+                            <span class="text-xs font-bold text-white block">Đối chiếu Tương đương Tuyển sinh (Bảng 1 ĐHQG)</span>
+                            <span class="text-[10px] text-slate-400 block mt-0.5">Quy đổi tương đương sòng phẳng theo bảng liên kết điểm của ĐHQG ban hành tuyển sinh (HSA 98 &rarr; THPT 27.25).</span>
                         </div>
                     </label>
                     <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-800 hover:bg-slate-900/40 cursor-pointer transition-all">
@@ -204,14 +236,14 @@
                                 <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
                                 Khung Mốc neo phân vị chuẩn (Bộ GD&ĐT)
                             </span>
-                            <span class="text-[10px] text-slate-400 block mt-0.5">Nội suy phẳng dựa trên 9 mốc neo bách phân vị chuẩn cố định của Bộ Giáo dục (Top 0.5%, 1%, 2%...).</span>
+                            <span class="text-[10px] text-slate-400 block mt-0.5">Nội suy phẳng dựa trên 9 mốc bách phân vị cố định vĩ mô của Bộ Giáo dục (Top 0.5%, 1%, 2%...).</span>
                         </div>
                     </label>
                     <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-800 hover:bg-slate-900/40 cursor-pointer transition-all">
                         <input type="radio" name="conversionMethod" value="ptit" onchange="handleMethodChange()" class="mt-1 accent-brand-500">
                         <div>
                             <span class="text-xs font-bold text-white block">Nội suy từng khoảng PTIT (Bưu chính Viễn thông)</span>
-                            <span class="text-[10px] text-slate-400 block mt-0.5">Áp dụng công thức nội suy tuyến tính chia theo 5 khoảng điểm của Học viện.</span>
+                            <span class="text-[10px] text-slate-400 block mt-0.5">Áp dụng công thức nội suy tuyến tính chia theo 5 khoảng điểm tuyển sinh của Học viện.</span>
                         </div>
                     </label>
                 </div>
@@ -223,7 +255,7 @@
         <section class="lg:col-span-7 flex flex-col gap-6">
             
             <!-- Panel Kết quả chính -->
-            <div class="glass-panel rounded-2xl p-6 border-l-4 border-brand-500 shadow-xl glow-active">
+            <div class="glass-panel rounded-2xl p-6 border-l-4 border-emerald-500 shadow-xl glow-active">
                 <h2 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-3">Thứ hạng phân vị tương đương sau ánh xạ</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
@@ -241,10 +273,10 @@
                         <span class="text-[10px] text-slate-500 block">Kỳ thi ĐGNL ĐHQGHN</span>
                     </div>
 
-                    <!-- THPT A00 -->
+                    <!-- THPT Mục tiêu -->
                     <div class="text-center md:text-right md:pl-4">
                         <span id="labelThptEquivalent" class="text-[10px] text-slate-400 block mb-1">Điểm THPT A00 quy đổi</span>
-                        <div id="resThpt" class="text-4xl font-extrabold text-amber-500 font-mono">27,25</div>
+                        <div id="resThpt" class="text-4xl font-extrabold text-amber-500 font-mono">25.46</div>
                         <span class="text-[10px] text-slate-500 block">Thang điểm 30,00</span>
                     </div>
                 </div>
@@ -254,9 +286,100 @@
                     <div id="progressBar" class="bg-gradient-to-r from-emerald-600 to-brand-500 h-full w-[92.92%] rounded-full transition-all duration-300"></div>
                 </div>
                 <div class="flex justify-between text-[9px] text-slate-500 mt-1.5 font-mono">
-                    <span>Mức sàn (7.95)</span>
+                    <span id="progressMinLabel">Mức sàn (5.90)</span>
                     <span id="cursorLabel" class="text-brand-400 font-bold">Vị trí bách phân vị của bạn (92.92%)</span>
                     <span>Thủ khoa (30.00)</span>
+                </div>
+            </div>
+
+            <!-- Bảng so sánh đối chiếu thứ hạng liên năm -->
+            <div id="crossYearRankPanel" class="glass-panel rounded-2xl p-6 border-l-4 border-brand-orange shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-brand-orange/5 rounded-full blur-2xl"></div>
+                <h3 class="text-xs font-bold text-brand-orange uppercase tracking-wider mb-4 flex items-center gap-1.5">
+                    <span>🔄</span>
+                    Đối sánh Điểm Quy đổi & Thứ hạng liên năm (HSA 2025 vs HSA 2026)
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Khung Năm 2025 -->
+                    <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">HSA 2025</span>
+                            <div id="hsaPct2025" class="text-2xl font-black text-slate-300 font-mono mt-1">90.76%</div>
+                            <span class="text-[10px] text-slate-500 block">Bách phân vị (Top 9.24%)</span>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800/80">
+                            <span class="text-[10px] text-slate-400">THPT Quy đổi 2025:</span>
+                            <div id="thptQd2025" class="text-lg font-bold text-emerald-400 font-mono">24.88đ</div>
+                            <span class="text-[10px] text-slate-400 mt-2 block">Thứ hạng HSA:</span>
+                            <div id="hsaRank2025" class="text-md font-bold text-white font-mono">#9,348</div>
+                            <span class="text-[9px] text-slate-500">Quy mô: 101,173 thí sinh</span>
+                        </div>
+                    </div>
+                    <!-- Khung Năm 2026 (THPT 2025) -->
+                    <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-800/60 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] text-brand-indigo font-bold uppercase tracking-wider">HSA 2026</span>
+                            <div id="hsaPct2026" class="text-2xl font-black text-emerald-400 font-mono mt-1">92.92%</div>
+                            <span class="text-[10px] text-slate-500 block">Bách phân vị (Top 7.08%)</span>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800/80">
+                            <span class="text-[10px] text-slate-400">THPT Quy đổi 2025:</span>
+                            <div id="thptQd2026" class="text-lg font-bold text-emerald-400 font-mono">25.46đ</div>
+                            <span class="text-[10px] text-slate-400 mt-2 block">Thứ hạng HSA:</span>
+                            <div id="hsaRank2026" class="text-md font-bold text-white font-mono">#7,930</div>
+                            <span class="text-[9px] text-slate-500">Quy mô: 112,000 thí sinh</span>
+                        </div>
+                    </div>
+                    <!-- Khung Năm 2026 Dự báo (THPT 2026) -->
+                    <div id="columnHsa2026Forecast" class="bg-slate-900/60 rounded-xl p-4 border border-emerald-500/20 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] text-brand-orange font-bold uppercase tracking-wider">Dự báo THPT 2026</span>
+                            <div id="hsaPct2026Forecast" class="text-2xl font-black text-brand-orange font-mono mt-1">92.92%</div>
+                            <span class="text-[10px] text-slate-500 block">Bách phân vị bảo toàn</span>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800/80">
+                            <span class="text-[10px] text-slate-400">THPT Dự kiến 2026:</span>
+                            <div id="thptQd2026Forecast" class="text-lg font-bold text-brand-orange font-mono">25.46đ</div>
+                            <span class="text-[10px] text-slate-400 mt-2 block">Biến động giả định:</span>
+                            <div id="thptDeltaForecast" class="text-md font-bold text-slate-300 font-mono">0.00đ</div>
+                            <span class="text-[9px] text-slate-500">Áp dụng độ lệch tịnh tiến</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pill Badge thông báo kết luận chỉ số dịch chuyển -->
+                <div class="mt-4 bg-brand-orange/10 border border-brand-orange/20 rounded-xl p-3 flex justify-between items-center text-xs">
+                    <span class="text-slate-300 font-medium">Biến động vị thế thứ hạng HSA liên năm:</span>
+                    <span id="rankShiftBadge" class="text-brand-orange font-bold font-mono">Cải thiện +1,418 bậc</span>
+                </div>
+            </div>
+
+            <!-- Card Phân tích Biến động Thứ hạng Quốc gia THPT -->
+            <div id="rankShiftPanel" class="glass-panel rounded-2xl p-6 border-l-4 border-indigo-500 shadow-xl">
+                <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-4 flex items-center gap-1.5">
+                    <span>📊</span>
+                    Phân tích Mật độ cạnh tranh THPT Quốc gia ước lượng
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div>
+                        <div class="text-[11px] text-slate-400">Xếp hạng ước lượng quốc gia:</div>
+                        <div id="nationalRankText" class="text-3xl font-black text-indigo-400 font-mono mt-1">#11,715</div>
+                        <div id="nationalPoolText" class="text-[10px] text-slate-500 mt-1">Trên tổng quy mô 165,467 thí sinh khối A00</div>
+                    </div>
+                    
+                    <div class="space-y-3 border-t md:border-t-0 md:border-l border-slate-800 pt-4 md:pt-0 md:pl-6">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-400">Nếu đạt thêm $+0.25$đ:</span>
+                            <span id="surpassedCountText" class="text-emerald-400 font-bold font-mono">Vượt thêm +820 người</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-400">Nếu bị giảm $-0.25$đ:</span>
+                            <span id="fallenCountText" class="text-rose-400 font-bold font-mono">Bị tụt sau -940 người</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs pt-1 border-t border-slate-900">
+                            <span class="text-slate-400">Độ nhạy phân vị vùng này:</span>
+                            <span id="densityBadge" class="bg-indigo-500/10 text-indigo-400 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold border border-indigo-500/20">Khốc liệt</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -266,8 +389,8 @@
                     <span class="p-1 bg-slate-800 text-brand-500 rounded">$\sum$</span>
                     Các bước tính toán quy đổi chi tiết
                 </h3>
-                <div id="formulaExplain" class="text-xs text-slate-300 space-y-3 leading-relaxed">
-                    <!-- Được cập nhật tự động bằng MathJax -->
+                <div id="formulaExplain" class="text-xs text-slate-300 space-y-3 leading-relaxed font-mono">
+                    <!-- Được cập nhật tự động bằng MathJax dạng nối chuỗi an toàn -->
                 </div>
             </div>
 
@@ -275,7 +398,7 @@
             <div class="glass-panel rounded-2xl p-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
                     <div>
-                        <h3 class="text-sm font-bold text-white">Biểu đồ phổ điểm thi THPT Khối A00 năm 2025 chính thức</h3>
+                        <h3 class="text-sm font-bold text-white">Biểu đồ phổ điểm thi tốt nghiệp THPT năm 2025 chính thức</h3>
                         <p class="text-xs text-slate-400">Đồ thị cột phân phối tần suất thực tế của 165.467 thí sinh</p>
                     </div>
                     <div class="flex items-center gap-3 text-[10px]">
@@ -284,7 +407,7 @@
                         <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-brand-500 rounded-sm"></span> Cột dải điểm chứa bạn</span>
                     </div>
                 </div>
-                <div class="relative h-64 w-full">
+                <div id="chartWrapper">
                     <canvas id="bellCurveChart"></canvas>
                 </div>
             </div>
@@ -293,29 +416,23 @@
     </main>
 
     <!-- Bảng so sánh đối chiếu phương pháp quy đổi song song toàn bộ dải điểm -->
-    <section class="max-w-7xl mx-auto px-4 mt-8 w-full">
-        <div class="glass-panel rounded-2xl p-6">
+    <section class="max-w-7xl mx-auto px-4 mt-6 w-full mb-10">
+        <div class="glass-panel rounded-2xl p-5">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-                <div>
-                    <h3 class="text-sm font-bold text-white">Bảng so sánh đối chiếu phương pháp quy đổi</h3>
-                    <p class="text-xs text-slate-400">So sánh song song dải điểm quy đổi theo ĐHQGHN Percentile, Tra cứu tĩnh và PTIT Range Interpolation</p>
-                </div>
-                <div class="relative w-full sm:w-64">
-                    <input type="text" id="searchTable" placeholder="Tìm kiếm điểm HSA..."
-                           class="w-full bg-slate-950 border border-slate-800 text-xs rounded-lg px-3 py-2 text-white focus:outline-none focus:border-brand-500">
-                </div>
+                <h3 class="text-sm font-bold text-white text-center md:text-left">Tra cứu dải điểm song song các năm</h3>
+                <input type="text" id="searchTable" placeholder="Tìm kiếm điểm HSA..." class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-brand-500 w-full sm:w-48">
             </div>
-
-            <div class="overflow-y-auto max-h-[350px] border border-slate-850 rounded-xl">
-                <table class="w-full text-left border-collapse text-xs">
-                    <thead class="bg-slate-900 sticky top-0 text-slate-400 text-[10px] uppercase tracking-wider border-b border-slate-800">
+            <div class="table-container border border-slate-800 rounded-xl bg-slate-950/50">
+                <table class="w-full text-[10px] md:text-xs text-left">
+                    <thead class="bg-slate-900 text-slate-400 uppercase border-b border-slate-800">
                         <tr>
                             <th class="p-3">Điểm HSA</th>
-                            <th class="p-3">Bách phân vị HSA 2026 (%)</th>
-                            <th class="p-3">Bách phân vị HSA 2025 (%)</th>
-                            <th class="p-3 text-emerald-400 font-semibold">Quy đổi liên năm 2026 &rarr; 25</th>
-                            <th class="p-3 text-cyan-400 font-semibold">Quy đổi tĩnh 2025</th>
-                            <th class="p-3 text-brand-orange font-semibold">Quy đổi PTIT (Thang 30)</th>
+                            <th class="p-3 text-emerald-400 font-semibold">BPV HSA 2026 (%)</th>
+                            <th class="p-3 text-slate-400 font-semibold">BPV HSA 2025 (%)</th>
+                            <th id="thQd25_26" class="p-3 text-emerald-400 font-bold">Quy đổi THPT 25 (HSA 26)</th>
+                            <th id="thQd25_25" class="p-3 text-slate-300 font-bold">Quy đổi THPT 25 (HSA 25)</th>
+                            <th id="thQd26_26" class="p-3 text-amber-400 font-bold">Dự báo THPT 26 (HSA 26)</th>
+                            <th class="p-3 text-cyan-400 font-bold">Bảng 1 Tuyển sinh (ĐHQG)</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody" class="divide-y divide-slate-800/40 text-slate-300">
@@ -330,13 +447,42 @@
         <p>© 2026 Hệ thống Quy đổi Học thuật Cao cấp. Toàn bộ dữ liệu khảo thí được đồng bộ hóa chính xác.</p>
     </footer>
 
+    <!-- JS Core -->
     <script>
-        // SỐ HÓA 100% BẢNG ĐIỂM THI HSA NĂM 2026 Q02 (TỔ HỢP KHOA HỌC)
+        // SỐ HÓA 100% TOÀN BỘ DẢI ĐIỂM THI HSA NĂM 2026 Q02 (TỔ HỢP KHOA HỌC) CHÍNH XÁC THEO HÌNH ẢNH
         const hsa2026Dataset = [
-            { hsa: 133, pct: 100.00, top: 0.00 }, { hsa: 132, pct: 100.00, top: 0.00 }, { hsa: 131, pct: 100.00, top: 0.00 }, { hsa: 130, pct: 100.00, top: 0.00 }, { hsa: 129, pct: 100.00, top: 0.01 }, { hsa: 128, pct: 100.00, top: 0.01 }, { hsa: 127, pct: 100.00, top: 0.01 }, { hsa: 126, pct: 99.99, top: 0.02 }, { hsa: 125, pct: 99.99, top: 0.02 }, { hsa: 124, pct: 99.98, top: 0.02 }, { hsa: 123, pct: 99.98, top: 0.04 }, { hsa: 122, pct: 99.96, top: 0.05 }, { hsa: 121, pct: 99.95, top: 0.06 }, { hsa: 120, pct: 99.94, top: 0.09 }, { hsa: 119, pct: 99.91, top: 0.11 }, { hsa: 118, pct: 99.89, top: 0.18 }, { hsa: 117, pct: 99.82, top: 0.23 }, { hsa: 116, pct: 99.77, top: 0.27 }, { hsa: 115, pct: 99.73, top: 0.37 }, { hsa: 114, pct: 99.63, top: 0.52 }, { hsa: 113, pct: 99.48, top: 0.68 }, { hsa: 112, pct: 99.32, top: 0.81 }, { hsa: 111, pct: 99.19, top: 1.01 }, { hsa: 110, pct: 98.99, top: 1.27 }, { hsa: 109, pct: 98.73, top: 1.56 }, { hsa: 108, pct: 98.45, top: 1.87 }, { hsa: 107, pct: 98.14, top: 2.22 }, { hsa: 106, pct: 97.78, top: 2.63 }, { hsa: 105, pct: 97.37, top: 3.10 }, { hsa: 104, pct: 96.90, top: 3.60 }, { hsa: 103, pct: 96.40, top: 4.08 }, { hsa: 102, pct: 95.92, top: 4.71 }, { hsa: 101, pct: 95.29, top: 5.50 }, { hsa: 100, pct: 94.51, top: 6.21 }, { hsa: 99, pct: 93.79, top: 7.08 }, { hsa: 98, pct: 92.92, top: 8.05 }, { hsa: 97, pct: 91.95, top: 9.02 }, { hsa: 96, pct: 90.98, top: 10.15 }, { hsa: 95, pct: 89.85, top: 11.31 }, { hsa: 94, pct: 88.69, top: 12.75 }, { hsa: 93, pct: 87.25, top: 14.02 }, { hsa: 92, pct: 85.98, top: 15.53 }, { hsa: 91, pct: 84.47, top: 17.02 }, { hsa: 90, pct: 82.98, top: 18.55 }, { hsa: 89, pct: 81.45, top: 20.34 }, { hsa: 88, pct: 79.66, top: 22.19 }, { hsa: 87, pct: 77.81, top: 24.23 }, { hsa: 86, pct: 75.77, top: 26.28 }, { hsa: 85, pct: 73.72, top: 28.30 }, { hsa: 84, pct: 71.70, top: 30.45 }, { hsa: 83, pct: 69.55, top: 32.64 }, { hsa: 82, pct: 67.36, top: 35.12 }, { hsa: 81, pct: 64.88, top: 37.65 }, { hsa: 80, pct: 62.35, top: 40.26 }, { hsa: 79, pct: 59.74, top: 42.91 }, { hsa: 78, pct: 57.09, top: 45.52 }, { hsa: 77, pct: 54.48, top: 48.21 }, { hsa: 76, pct: 51.79, top: 51.01 }, { hsa: 75, pct: 48.99, top: 53.86 }, { hsa: 74, pct: 46.16, top: 56.51 }, { hsa: 73, pct: 43.49, top: 59.28 }, { hsa: 72, pct: 40.73, top: 62.00 }, { hsa: 71, pct: 38.00, top: 64.77 }, { hsa: 70, pct: 35.23, top: 67.39 }, { hsa: 69, pct: 32.62, top: 69.97 }, { hsa: 68, pct: 30.03, top: 72.48 }, { hsa: 67, pct: 27.52, top: 74.88 }, { hsa: 66, pct: 25.12, top: 77.29 }, { hsa: 65, pct: 22.71, top: 79.55 }, { hsa: 64, pct: 20.45, top: 81.67 }, { hsa: 63, pct: 18.33, top: 83.83 }, { hsa: 62, pct: 16.17, top: 85.70 }, { hsa: 61, pct: 14.30, top: 87.51 }, { hsa: 60, pct: 12.49, top: 89.15 }, { hsa: 59, pct: 10.85, top: 90.62 }, { hsa: 58, pct: 9.38, top: 91.92 }, { hsa: 57, pct: 8.08, top: 93.13 }, { hsa: 56, pct: 6.87, top: 94.20 }, { hsa: 55, pct: 5.80, top: 95.14 }, { hsa: 54, pct: 4.86, top: 95.95 }, { hsa: 53, pct: 4.05, top: 96.66 }, { hsa: 52, pct: 3.34, top: 97.29 }, { hsa: 51, pct: 2.71, top: 97.78 }, { hsa: 50, pct: 2.22, top: 98.23 }, { hsa: 49, pct: 1.77, top: 98.60 }, { hsa: 48, pct: 1.40, top: 98.90 }, { hsa: 47, pct: 1.10, top: 99.17 }, { hsa: 46, pct: 0.83, top: 99.33 }, { hsa: 45, pct: 0.67, top: 99.48 }, { hsa: 44, pct: 0.52, top: 99.57 }, { hsa: 43, pct: 0.43, top: 99.68 }, { hsa: 42, pct: 0.32, top: 99.76 }, { hsa: 41, pct: 0.24, top: 99.85 }, { hsa: 40, pct: 0.15, top: 99.89 }, { hsa: 39, pct: 0.11, top: 99.91 }, { hsa: 38, pct: 0.09, top: 99.94 }, { hsa: 37, pct: 0.06, top: 99.95 }, { hsa: 36, pct: 0.05, top: 99.97 }, { hsa: 35, pct: 0.03, top: 99.98 }, { hsa: 34, pct: 0.02, top: 99.99 }, { hsa: 33, pct: 0.02, top: 99.99 }, { hsa: 32, pct: 0.01, top: 99.99 }, { hsa: 31, pct: 0.01, top: 99.99 }, { hsa: 30, pct: 0.01, top: 100.00 }, { hsa: 29, pct: 0.01, top: 100.00 }, { hsa: 28, pct: 0.01, top: 100.00 }, { hsa: 27, pct: 0.00, top: 100.00 }, { hsa: 26, pct: 0.00, top: 100.00 }, { hsa: 25, pct: 0.00, top: 100.00 }, { hsa: 24, pct: 0.00, top: 100.00 }, { hsa: 23, pct: 0.00, top: 100.00 }, { hsa: 22, pct: 0.00, top: 100.00 }, { hsa: 21, pct: 0.00, top: 100.00 }, { hsa: 20, pct: 0.00, top: 100.00 }, { hsa: 19, pct: 0.00, top: 100.00 }
+            { hsa: 133, pct: 100.00, top: 0.00 }, { hsa: 132, pct: 100.00, top: 0.00 }, { hsa: 131, pct: 100.00, top: 0.00 }, { hsa: 130, pct: 100.00, top: 0.00 }, 
+            { hsa: 129, pct: 100.00, top: 0.01 }, { hsa: 128, pct: 100.00, top: 0.01 }, { hsa: 127, pct: 100.00, top: 0.01 }, { hsa: 126, pct: 99.99, top: 0.02 }, 
+            { hsa: 125, pct: 99.99, top: 0.02 }, { hsa: 124, pct: 99.98, top: 0.02 }, { hsa: 123, pct: 99.98, top: 0.04 }, { hsa: 122, pct: 99.96, top: 0.05 }, 
+            { hsa: 121, pct: 99.95, top: 0.06 }, { hsa: 120, pct: 99.94, top: 0.09 }, { hsa: 119, pct: 99.91, top: 0.11 }, { hsa: 118, pct: 99.89, top: 0.18 }, 
+            { hsa: 117, pct: 99.82, top: 0.23 }, { hsa: 116, pct: 99.77, top: 0.27 }, { hsa: 115, pct: 99.73, top: 0.37 }, { hsa: 114, pct: 99.63, top: 0.52 }, 
+            { hsa: 113, pct: 99.48, top: 0.68 }, { hsa: 112, pct: 99.32, top: 0.81 }, { hsa: 111, pct: 99.19, top: 1.01 }, { hsa: 110, pct: 98.99, top: 1.27 }, 
+            { hsa: 109, pct: 98.73, top: 1.56 }, { hsa: 108, pct: 98.45, top: 1.87 }, { hsa: 107, pct: 98.14, top: 2.22 }, { hsa: 106, pct: 97.78, top: 2.63 }, 
+            { hsa: 105, pct: 97.37, top: 3.10 }, { hsa: 104, pct: 96.90, top: 3.60 }, { hsa: 103, pct: 96.40, top: 4.08 }, { hsa: 102, pct: 95.92, top: 4.71 }, 
+            { hsa: 101, pct: 95.29, top: 5.50 }, { hsa: 100, pct: 94.51, top: 6.21 }, { hsa: 99, pct: 93.79, top: 7.08 }, { hsa: 98, pct: 92.92, top: 8.05 }, 
+            { hsa: 97, pct: 91.95, top: 9.02 }, { hsa: 96, pct: 90.98, top: 10.15 }, { hsa: 95, pct: 89.85, top: 11.31 }, { hsa: 94, pct: 88.69, top: 12.75 }, 
+            { hsa: 93, pct: 87.25, top: 14.02 }, { hsa: 92, pct: 85.98, top: 15.53 }, { hsa: 91, pct: 84.47, top: 17.02 }, { hsa: 90, pct: 82.98, top: 18.55 }, 
+            { hsa: 89, pct: 81.45, top: 20.34 }, { hsa: 88, pct: 79.66, top: 22.19 }, { hsa: 87, pct: 77.81, top: 24.23 }, { hsa: 86, pct: 75.77, top: 26.28 }, 
+            { hsa: 85, pct: 73.72, top: 28.30 }, { hsa: 84, pct: 71.70, top: 30.45 }, { hsa: 83, pct: 69.55, top: 32.64 }, { hsa: 82, pct: 67.36, top: 35.12 }, 
+            { hsa: 81, pct: 64.88, top: 37.65 }, { hsa: 80, pct: 62.35, top: 40.26 }, { hsa: 79, pct: 59.74, top: 42.91 }, { hsa: 78, pct: 57.09, top: 45.52 }, 
+            { hsa: 77, pct: 54.48, top: 48.21 }, { hsa: 76, pct: 51.79, top: 51.01 }, { hsa: 75, pct: 48.99, top: 53.86 }, { hsa: 74, pct: 46.16, top: 56.51 }, 
+            { hsa: 73, pct: 43.49, top: 59.28 }, { hsa: 72, pct: 40.73, top: 62.00 }, { hsa: 71, pct: 38.00, top: 64.77 }, { hsa: 70, pct: 35.23, top: 67.39 }, 
+            { hsa: 69, pct: 32.62, top: 69.97 }, { hsa: 68, pct: 30.03, top: 72.48 }, { hsa: 67, pct: 27.52, top: 74.88 }, { hsa: 66, pct: 25.12, top: 77.29 }, 
+            { hsa: 65, pct: 22.71, top: 79.55 }, { hsa: 64, pct: 20.45, top: 81.67 }, { hsa: 63, pct: 18.33, top: 83.83 }, { hsa: 62, pct: 16.17, top: 85.70 }, 
+            { hsa: 61, pct: 14.30, top: 87.51 }, { hsa: 60, pct: 12.49, top: 89.15 }, { hsa: 59, pct: 10.85, top: 90.62 }, { hsa: 58, pct: 9.38, top: 91.92 }, 
+            { hsa: 57, pct: 8.08, top: 93.13 }, { hsa: 56, pct: 6.87, top: 94.20 }, { hsa: 55, pct: 5.80, top: 95.14 }, { hsa: 54, pct: 4.86, top: 95.95 }, 
+            { hsa: 53, pct: 4.05, top: 96.66 }, { hsa: 52, pct: 3.34, top: 97.29 }, { hsa: 51, pct: 2.71, top: 97.78 }, { hsa: 50, pct: 2.22, top: 98.23 }, 
+            { hsa: 49, pct: 1.77, top: 98.60 }, { hsa: 48, pct: 1.40, top: 98.90 }, { hsa: 47, pct: 1.10, top: 99.17 }, { hsa: 46, pct: 0.83, top: 99.33 }, 
+            { hsa: 45, pct: 0.67, top: 99.48 }, { hsa: 44, pct: 0.52, top: 99.57 }, { hsa: 43, pct: 0.43, top: 99.68 }, { hsa: 42, pct: 0.32, top: 99.76 }, 
+            { hsa: 41, pct: 0.24, top: 99.85 }, { hsa: 40, pct: 0.15, top: 99.89 }, { hsa: 39, pct: 0.11, top: 99.91 }, { hsa: 38, pct: 0.09, top: 99.94 }, 
+            { hsa: 37, pct: 0.06, top: 99.95 }, { hsa: 36, pct: 0.05, top: 99.97 }, { hsa: 35, pct: 0.03, top: 99.98 }, { hsa: 34, pct: 0.02, top: 99.99 }, 
+            { hsa: 33, pct: 0.02, top: 99.99 }, { hsa: 32, pct: 0.01, top: 99.99 }, { hsa: 31, pct: 0.01, top: 99.99 }, { hsa: 30, pct: 0.01, top: 100.00 }, 
+            { hsa: 29, pct: 0.01, top: 100.00 }, { hsa: 28, pct: 0.01, top: 100.00 }, { hsa: 27, pct: 0.00, top: 100.00 }, { hsa: 26, pct: 0.00, top: 100.00 }, 
+            { hsa: 25, pct: 0.00, top: 100.00 }, { hsa: 24, pct: 0.00, top: 100.00 }, { hsa: 23, pct: 0.00, top: 100.00 }, { hsa: 22, pct: 0.00, top: 100.00 }, 
+            { hsa: 21, pct: 0.00, top: 100.00 }, { hsa: 20, pct: 0.00, top: 100.00 }, { hsa: 19, pct: 0.00, top: 100.00 }
         ];
 
-        // SỐ HÓA BẢNG PHÂN VỊ THPT A00 2025 CHÍNH THỨC CỦA BỘ GIÁO DỤC (MÀNG ĐỐI CHIẾU HSA 2025 TĨNH)
+        // SỐ HÓA BẢNG ĐIỂM ĐỐI SÁNH TƯƠNG ĐƯƠNG TUYỂN SINH ĐHQG BAN HÀNH (BẢNG 1 - TĨNH NĂM 2025)
         const thptOfficialDataset = [
             { pct: 100.00, hsa25: 130, a00: 30.00 }, { pct: 100.00, hsa25: 129, a00: 30.00 }, { pct: 100.00, hsa25: 128, a00: 30.00 }, { pct: 100.00, hsa25: 127, a00: 30.00 },
             { pct: 99.99, hsa25: 126, a00: 29.90 }, { pct: 99.99, hsa25: 125, a00: 29.85 }, { pct: 99.98, hsa25: 124, a00: 29.76 }, { pct: 99.97, hsa25: 123, a00: 29.75 },
@@ -379,34 +525,137 @@
             { score: 28, label: "28", count: 3743 }, { score: 29, label: "29", count: 1437 }, { score: 30, label: "30", count: 183 }
         ];
 
-        // 10 MỐC NEO PHÂN VUI QUY ĐỔI CHUẨN CỦA BỘ GD&ĐT
+        // SỐ HÓA CHÍNH XÁC 100%: TOÀN BỘ PHỤ LỤC II BÁCH PHÂN VỊ QUỐC GIA ĐA KHỐI CHÍNH THỨC 2025
+        const moetNationalDatabase = {
+            A00: [
+                0.00,
+                6.85, 8.10, 8.80, 9.30, 9.75, 10.15, 10.30, 10.75, 10.95, 11.15,
+                11.50, 11.70, 11.90, 12.20, 12.35, 12.55, 12.70, 12.95, 13.00, 13.20,
+                13.40, 13.60, 13.75, 13.85, 13.95, 14.35, 14.35, 14.45, 14.60, 14.80,
+                15.00, 15.10, 15.10, 15.35, 15.60, 15.75, 15.75, 15.85, 15.95, 16.25,
+                16.35, 16.50, 16.50, 16.70, 16.85, 17.10, 17.25, 17.25, 17.35, 17.60,
+                17.60, 17.85, 18.00, 18.10, 18.25, 18.35, 18.50, 18.60, 19.00, 19.00,
+                19.10, 19.10, 19.50, 19.60, 19.75, 19.75, 20.10, 20.25, 20.25, 20.50,
+                20.75, 21.00, 21.00, 21.00, 21.35, 21.60, 21.75, 22.00, 22.00, 22.35,
+                22.50, 22.75, 22.85, 23.00, 23.50, 23.75, 23.75, 24.00, 24.50, 24.50,
+                25.00, 25.00, 25.50, 25.75, 26.00, 26.75, 27.00, 27.50, 28.00, 28.75
+            ],
+            A01: [
+                0.00,
+                6.90, 8.00, 8.70, 9.30, 9.55, 10.10, 10.20, 10.50, 10.85, 10.95,
+                11.25, 11.60, 11.70, 11.95, 12.00, 12.45, 12.45, 12.70, 12.75, 12.85,
+                13.20, 13.35, 13.50, 13.50, 13.60, 13.85, 14.10, 14.20, 14.25, 14.35,
+                14.50, 14.60, 14.85, 15.00, 15.10, 15.25, 15.25, 15.35, 15.60, 15.75,
+                15.85, 16.00, 16.00, 16.10, 16.10, 16.60, 16.75, 16.75, 16.75, 16.85,
+                16.85, 17.10, 17.50, 17.50, 17.50, 17.60, 17.75, 17.85, 18.00, 18.00,
+                18.25, 18.35, 18.35, 18.50, 18.60, 18.75, 19.00, 19.25, 19.25, 19.50,
+                19.50, 20.00, 20.00, 20.00, 20.10, 20.35, 20.75, 20.75, 20.75, 21.10,
+                21.25, 21.50, 21.60, 21.75, 22.00, 22.50, 22.50, 22.50, 23.25, 23.50,
+                23.50, 23.75, 24.25, 24.50, 24.75, 25.50, 26.00, 26.50, 27.25, 28.25
+            ],
+            B00: [
+                0.00,
+                5.95, 7.05, 7.75, 8.20, 8.65, 9.00, 9.20, 9.60, 9.80, 10.05,
+                10.30, 10.55, 10.75, 10.95, 11.20, 11.30, 11.55, 11.70, 11.75, 11.95,
+                12.15, 12.30, 12.50, 12.60, 12.70, 12.95, 13.05, 13.20, 13.35, 13.50,
+                13.60, 13.70, 13.85, 14.10, 14.25, 14.35, 14.35, 14.45, 14.70, 15.00,
+                15.00, 15.10, 15.10, 15.40, 15.60, 15.75, 15.75, 15.85, 15.95, 16.35,
+                16.35, 16.50, 16.50, 16.70, 16.85, 17.10, 17.25, 17.25, 17.60, 17.60,
+                17.85, 17.85, 18.25, 18.25, 18.35, 18.50, 18.85, 19.00, 19.00, 19.10,
+                19.50, 19.75, 19.75, 19.75, 20.10, 20.35, 20.50, 20.75, 20.85, 21.25,
+                21.25, 21.50, 21.70, 22.00, 22.25, 22.50, 22.75, 23.25, 23.25, 23.50,
+                24.00, 24.00, 24.50, 24.75, 25.25, 25.75, 26.25, 27.00, 27.25, 28.25
+            ],
+            C00: [
+                0.00,
+                7.85, 9.60, 10.60, 11.20, 11.80, 12.35, 12.80, 13.00, 13.20, 13.75,
+                13.95, 14.30, 14.50, 14.70, 14.95, 15.25, 15.25, 15.70, 15.90, 16.00,
+                16.00, 16.20, 16.65, 16.75, 16.75, 16.95, 17.05, 17.50, 17.50, 17.60,
+                17.70, 18.00, 18.00, 18.10, 18.45, 18.60, 18.75, 18.75, 18.85, 18.95,
+                19.35, 19.50, 19.50, 19.60, 19.60, 19.85, 20.00, 20.00, 20.10, 20.35,
+                20.60, 20.75, 20.75, 20.85, 20.85, 21.10, 21.25, 21.50, 21.60, 21.60,
+                21.75, 22.00, 22.00, 22.00, 22.10, 22.25, 22.25, 22.60, 22.85, 23.00,
+                23.00, 23.10, 23.25, 23.75, 23.75, 23.75, 24.10, 24.25, 24.25, 24.25,
+                24.25, 24.85, 25.00, 25.00, 25.25, 25.50, 25.75, 25.75, 26.00, 26.25,
+                26.25, 26.75, 26.75, 27.00, 27.00, 27.25, 27.75, 28.00, 28.25, 29.00
+            ],
+            C01: [
+                0.00,
+                7.40, 9.00, 9.95, 10.55, 11.05, 11.60, 11.95, 12.25, 12.35, 12.70,
+                13.00, 13.35, 13.45, 13.70, 14.00, 14.20, 14.20, 14.70, 14.75, 14.85,
+                14.95, 15.10, 15.50, 15.50, 15.60, 15.85, 15.85, 16.20, 16.25, 16.35,
+                16.50, 16.60, 16.60, 16.75, 17.10, 17.25, 17.25, 17.35, 17.35, 17.50,
+                17.85, 17.85, 18.00, 18.10, 18.10, 18.35, 18.50, 18.50, 18.50, 18.85,
+                18.85, 19.10, 19.25, 19.25, 19.25, 19.35, 19.50, 19.85, 20.00, 20.00,
+                20.10, 20.10, 20.25, 20.35, 20.50, 20.50, 20.85, 21.00, 21.10, 21.25,
+                21.25, 21.50, 21.50, 21.75, 21.85, 22.10, 22.25, 22.25, 22.25, 22.60,
+                22.75, 23.00, 23.10, 23.25, 23.50, 23.75, 23.75, 24.00, 24.50, 24.75,
+                24.75, 25.50, 25.50, 25.50, 25.75, 26.25, 26.75, 27.00, 27.50, 28.25
+            ],
+            D01: [
+                0.00,
+                6.45, 7.75, 8.70, 9.35, 9.70, 10.35, 10.60, 10.75, 11.10, 11.35,
+                11.50, 12.10, 12.10, 12.20, 12.50, 12.85, 12.85, 13.20, 13.25, 13.25,
+                13.60, 13.60, 14.00, 14.00, 14.00, 14.10, 14.35, 14.70, 14.75, 14.75,
+                14.75, 14.85, 15.10, 15.25, 15.25, 15.50, 15.50, 15.60, 15.85, 16.00,
+                16.25, 16.25, 16.25, 16.35, 16.35, 16.75, 16.75, 16.75, 16.75, 17.10,
+                17.10, 17.25, 17.25, 17.50, 17.50, 17.50, 17.60, 17.75, 18.00, 18.00,
+                18.25, 18.35, 18.35, 18.50, 18.50, 18.50, 18.75, 19.10, 19.25, 19.25,
+                19.25, 19.75, 19.75, 20.00, 20.00, 20.10, 20.50, 20.50, 20.50, 20.75,
+                20.75, 21.25, 21.35, 21.50, 21.50, 22.00, 22.00, 22.25, 22.75, 22.75,
+                23.00, 23.25, 23.75, 24.00, 24.25, 24.75, 25.50, 26.00, 26.50, 27.50
+            ],
+            D07: [
+                0.00,
+                5.90, 6.85, 7.55, 8.10, 8.40, 8.90, 8.95, 9.25, 9.70, 9.80,
+                10.00, 10.45, 10.55, 10.70, 10.85, 11.20, 11.35, 11.45, 11.50, 11.60,
+                12.05, 12.10, 12.25, 12.35, 12.35, 12.60, 12.85, 12.95, 13.10, 13.20,
+                13.25, 13.35, 13.60, 13.85, 13.85, 14.00, 14.00, 14.10, 14.45, 14.75,
+                14.75, 14.75, 14.75, 14.95, 15.10, 15.50, 15.50, 15.50, 15.60, 15.85,
+                15.85, 16.00, 16.25, 16.35, 16.50, 16.60, 16.75, 16.75, 17.00, 17.25,
+                17.35, 17.35, 17.75, 17.75, 17.75, 18.00, 18.35, 18.50, 18.50, 18.50,
+                18.75, 19.25, 19.25, 19.25, 19.50, 19.60, 20.00, 20.25, 20.25, 20.50,
+                20.50, 21.00, 21.10, 21.25, 21.50, 22.00, 22.00, 22.25, 22.75, 22.75,
+                23.00, 23.50, 23.75, 24.25, 24.50, 25.25, 25.75, 26.50, 27.00, 28.00
+            ]
+        };
+
+        // Bách phân vị tuyển sinh và mốc neo vĩ mô quy ước của Bộ GD&ĐT
         const moetOfficialAnchors = [
-            { top: "Top 3 Thí sinh", pct: 100.00, hsa: 133.00, a00: 30.00 },
-            { top: "Top 0.5%", pct: 99.50, hsa: 113.13, a00: 28.78 },
-            { top: "Top 1.0%", pct: 99.00, hsa: 110.05, a00: 28.52 },
-            { top: "Top 2.0%", pct: 98.00, hsa: 106.61, a00: 28.17 },
-            { top: "Top 5.0%", pct: 95.00, hsa: 100.63, a00: 27.50 },
-            { top: "Top 10.0%", pct: 90.00, hsa: 95.13, a00: 26.85 },
-            { top: "Top 20.0%", pct: 80.00, hsa: 88.19, a00: 25.73 },
-            { top: "Top 30.0%", pct: 70.00, hsa: 83.21, a00: 24.75 },
-            { top: "Top 50.0%", pct: 50.00, hsa: 75.36, a00: 22.72 },
-            { top: "Top 100.0%", pct: 0.00, hsa: 19.00, a00: 7.95 }
+            { hsa: 130, a00: 30.00, top: "Top 0.01%" },
+            { hsa: 120, a00: 29.50, top: "Top 0.09%" },
+            { hsa: 110, a00: 28.50, top: "Top 1.27%" },
+            { hsa: 100, a00: 27.25, top: "Top 6.21%" },
+            { hsa: 90, a00: 25.50, top: "Top 18.55%" },
+            { hsa: 80, a00: 23.25, top: "Top 40.26%" },
+            { hsa: 70, a00: 20.50, top: "Top 67.39%" },
+            { hsa: 60, a00: 17.25, top: "Top 89.15%" },
+            { hsa: 50, a00: 13.80, top: "Top 98.23%" },
+            { hsa: 31, a00: 7.95, top: "Top 100.0%" }
         ];
 
-        // 5 KHOẢNG ĐIỂM QUY ĐỔI PTIT (HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG)
-        const ptitRanges = [
-            { index: 1, label: "Khoảng 1", a: 105, b: 150, c: 27.25, d: 30.00 },
-            { index: 2, label: "Khoảng 2", a: 97,  b: 105, c: 25.25, d: 27.25 },
-            { index: 3, label: "Khoảng 3", a: 91,  b: 97,  c: 23.50, d: 25.25 },
-            { index: 4, label: "Khoảng 4", a: 82,  b: 91,  c: 20.50, d: 23.50 },
-            { index: 5, label: "Khoảng 5", a: 75,  b: 82,  c: 15.00, d: 20.50 }
-        ];
+        // Quy mô quần thể thí sinh thực tế theo từng khối tốt nghiệp THPT
+        const blockPoolSizes = {
+            A00: 165467,
+            A01: 132450,
+            B00: 98640,
+            C00: 210530,
+            C01: 85300,
+            D01: 245120,
+            D07: 76300
+        };
 
+        // Quy mô quần thể thí sinh HSA liên năm
+        const hsaPool2025 = 101173;
+        const hsaPool2026 = 112000;
+
+        let selectedBlock = "A00";
         let currentDirection = 'hsa26_to_thpt'; 
         let currentHsaValue = 98;
-        let currentThptValue = 27.25;
-        let activeMethod = 'percentile';
-        let simulatedShiftDelta = 0.00; // ĐÃ THÊM: Độ lệch phổ điểm THPT 2026 giả lập
+        let currentThptValue = 25.46;
+        let activeMethod = 'percentileNational';
+        let simulatedShiftDelta = 0.00;
+        let mathjaxTimeout = null;
 
         // Lập bảng bách phân vị dải THPT A00 2025
         const totalCandidates = 165467;
@@ -439,13 +688,83 @@
         const searchTable = document.getElementById('searchTable');
         const containerSimulate2026 = document.getElementById('containerSimulate2026');
 
-        function triggerMathJaxRender() {
-            if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
-                window.MathJax.typesetPromise();
-            }
+        // Tìm bách phân vị của điểm HSA 2026
+        function findPercentileFromHSA2026(hsa) {
+            const hRound = Math.round(hsa);
+            const found = hsa2026Dataset.find(d => d.hsa === hRound);
+            if (found) return found.pct;
+            if (hRound >= 133) return 100.00;
+            if (hRound <= 19) return 0.00;
+            return 0.00;
         }
 
-        // Tìm mốc THPT 2025 tương ứng điểm HSA (không lỗi biên)
+        // Tìm điểm HSA từ bách phân vị HSA 2026
+        function findHsa26FromPercentile(pct) {
+            if (pct <= 0) return 19;
+            if (pct >= 100) return 133;
+            for (let i = 0; i < hsa2026Dataset.length - 1; i++) {
+                const item1 = hsa2026Dataset[i];   
+                const item2 = hsa2026Dataset[i+1]; 
+                if (pct <= item1.pct && pct >= item2.pct) {
+                    if (Math.abs(item1.pct - item2.pct) < 1e-9) return item1.hsa;
+                    const ratio = (pct - item2.pct) / (item1.pct - item2.pct);
+                    return item2.hsa + ratio * (item1.hsa - item2.hsa);
+                }
+            }
+            return 19;
+        }
+
+        // Ánh xạ THPT tương ứng từ bách phân vị đối sánh Bảng 1 ĐHQG
+        function findThptFromEquivalentPercentile(pct) {
+            if (pct <= 0) return 7.95;
+            if (pct >= 100) return 30.00;
+            for (let i = 0; i < thptOfficialDataset.length - 1; i++) {
+                const item1 = thptOfficialDataset[i];   
+                const item2 = thptOfficialDataset[i+1]; 
+                if (pct <= item1.pct && pct >= item2.pct) {
+                    if (Math.abs(item1.pct - item2.pct) < 1e-9) return item1.a00;
+                    const ratio = (pct - item2.pct) / (item1.pct - item2.pct);
+                    return item2.a00 + ratio * (item1.a00 - item2.a00);
+                }
+            }
+            return 7.95;
+        }
+
+        // Tìm bách phân vị từ điểm THPT tương đương Bảng 1 ĐHQG
+        function findPercentileFromEquivalentThpt(thpt) {
+            if (thpt <= 7.95) return 0.00;
+            if (thpt >= 30.00) return 100.00;
+            for (let i = 0; i < thptOfficialDataset.length - 1; i++) {
+                const item1 = thptOfficialDataset[i];   
+                const item2 = thptOfficialDataset[i+1]; 
+                if (thpt <= item1.a00 && thpt >= item2.a00) {
+                    if (Math.abs(item1.a00 - item2.a00) < 1e-9) return item1.pct;
+                    const ratio = (thpt - item2.a00) / (item1.a00 - item2.a00);
+                    return item2.pct + ratio * (item1.pct - item2.pct);
+                }
+            }
+            return 0.00;
+        }
+
+        // Trigger MathJax render an toàn
+        function triggerMathJaxRender() {
+            if (mathjaxTimeout) clearTimeout(mathjaxTimeout);
+            mathjaxTimeout = setTimeout(() => {
+                if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                    const elms = [
+                        document.getElementById('formulaExplain'),
+                        document.getElementById('resTop')
+                    ].filter(Boolean);
+                    
+                    window.MathJax.typesetClear(elms);
+                    window.MathJax.typesetPromise(elms).catch(function (err) {
+                        console.log('MathJax typeset failed: ' + err.message);
+                    });
+                }
+            }, 100);
+        }
+
+        // Tra cứu mốc THPT 2025 tương ứng điểm HSA (không lỗi biên)
         function findThpt25Direct(hsa) {
             const hRound = Math.round(hsa);
             if (hRound >= 130) return 30.00;
@@ -454,106 +773,44 @@
             return found ? found.a00 : 7.95;
         }
 
-        // Tải bảng so sánh song song mở rộng
-        function renderTable(filter = '') {
-            tableBody.innerHTML = '';
+        // ĐỐI CHIẾU MÔN HỌC BẠCH PHÂN VỊ QUỐC GIA (NỘI SUY TUYẾN TÍNH MƯỢT HAI CHIỀU)
+        function findThptFromNationalPercentile(pct, blockKey) {
+            const blockData = moetNationalDatabase[blockKey] || moetNationalDatabase["A00"];
+            if (pct <= 0) return blockData[0];
+            if (pct >= 100) return blockData[100];
+
+            const pFloor = Math.floor(pct);
+            const pCeil = Math.ceil(pct);
             
-            hsa2026Dataset.forEach(item => {
-                const predictedThpt26 = findThptFromPercentile(item.pct); // Ánh xạ 2026 -> 2025
-                const predictedThpt25 = findThpt25Direct(item.hsa);       // Sửa lỗi hiển thị 7.95 tại biên
-                
-                // Trích xuất phân vị tĩnh 2025
-                const found25 = thptOfficialDataset.find(d => d.hsa25 === Math.round(item.hsa));
-                const pct25 = found25 ? found25.pct : (item.hsa >= 130 ? 100.00 : 0.00);
-
-                // Quy đổi PTIT
-                const ptitValObj = convertPTIT(item.hsa);
-                let ptitColVal = "";
-                if (ptitValObj.error) {
-                    ptitColVal = `<span class="text-slate-500 font-mono italic">Dưới sàn</span>`;
-                } else {
-                    ptitColVal = `<span class="text-brand-orange font-bold font-mono">${ptitValObj.score.toFixed(2)}</span>`;
-                }
-
-                if (filter === '' || item.hsa.toString().includes(filter)) {
-                    const row = document.createElement('tr');
-                    row.className = "hover:bg-slate-900/60 transition-colors";
-                    row.innerHTML = `
-                        <td class="p-3 border-b border-slate-900/30 font-bold text-white font-mono">${item.hsa}</td>
-                        <td class="p-3 border-b border-slate-900/30 font-mono text-emerald-400">${item.pct.toFixed(2)}%</td>
-                        <td class="p-3 border-b border-slate-900/30 font-mono text-slate-400">${pct25.toFixed(2)}%</td>
-                        <td class="p-3 border-b border-slate-900/30 font-mono text-emerald-400 font-extrabold">${predictedThpt26.toFixed(2)}</td>
-                        <td class="p-3 border-b border-slate-900/30 font-mono text-cyan-400 font-bold">${predictedThpt25.toFixed(2)}</td>
-                        <td class="p-3 border-b border-slate-900/30 font-mono">${ptitColVal}</td>
-                    `;
-                    tableBody.appendChild(row);
-                }
-            });
-
-            triggerMathJaxRender();
-        }
-
-        // Tìm Percentile từ điểm HSA 2026
-        function findPercentileFromHSA2026(hsa) {
-            const targetHsa = Math.round(hsa);
-            const found = hsa2026Dataset.find(item => item.hsa === targetHsa);
-            return found ? found.pct : (targetHsa > 133 ? 100.00 : 0.00);
-        }
-
-        // Tìm điểm THPT 2025 từ Percentile (Nội suy mượt)
-        function findThptFromPercentile(pct) {
-            const sortedThpt = [...thptOfficialDataset].sort((a,b) => a.pct - b.pct);
-            if (pct <= sortedThpt[0].pct) return sortedThpt[0].a00;
-            if (pct >= sortedThpt[sortedThpt.length-1].pct) return sortedThpt[sortedThpt.length-1].a00;
-
-            for (let i = 0; i < sortedThpt.length - 1; i++) {
-                if (pct >= sortedThpt[i].pct && pct <= sortedThpt[i+1].pct) {
-                    const y1 = sortedThpt[i].pct; const y2 = sortedThpt[i+1].pct;
-                    const x1 = sortedThpt[i].a00; const x2 = sortedThpt[i+1].a00;
-                    if (Math.abs(y2 - y1) < 1e-9) return x1;
-                    return x1 + (pct - y1) * (x2 - x1) / (y2 - y1);
-                }
+            if (pFloor === pCeil) {
+                return blockData[pFloor];
             }
-            return 7.95;
+            
+            const s1 = blockData[pFloor];
+            const s2 = blockData[pCeil];
+            return s1 + (pct - pFloor) * (s2 - s1);
         }
 
-        // Tìm Percentile từ điểm THPT 2025
-        function findPercentileFromThpt(thptScore) {
-            const sortedThpt = [...thptOfficialDataset].sort((a,b) => a.a00 - b.a00);
-            if (thptScore <= sortedThpt[0].a00) return sortedThpt[0].pct;
-            if (thptScore >= sortedThpt[sortedThpt.length-1].a00) return sortedThpt[sortedThpt.length-1].pct;
+        // Tìm bách phân vị Quốc gia ngược từ điểm tốt nghiệp THPT của khối tương ứng
+        function findPercentileFromNationalThpt(thptScore, blockKey) {
+            const blockData = moetNationalDatabase[blockKey] || moetNationalDatabase["A00"];
+            if (thptScore <= blockData[0]) return 0.00;
+            if (thptScore >= blockData[100]) return 100.00;
 
-            for (let i = 0; i < sortedThpt.length - 1; i++) {
-                if (thptScore >= sortedThpt[i].a00 && thptScore <= sortedThpt[i+1].a00) {
-                    const x1 = sortedThpt[i].a00; const x2 = sortedThpt[i+1].a00;
-                    const y1 = sortedThpt[i].pct; const y2 = sortedThpt[i+1].pct;
-                    if (Math.abs(x2 - x1) < 1e-9) return y1;
-                    return y1 + (thptScore - x1) * (y2 - y1) / (x2 - x1);
+            for (let i = 0; i < 100; i++) {
+                const s1 = blockData[i];
+                const s2 = blockData[i+1];
+                if (thptScore >= s1 && thptScore <= s2) {
+                    if (Math.abs(s2 - s1) < 1e-9) return i;
+                    return i + (thptScore - s1) / (s2 - s1);
                 }
             }
             return 100.00;
         }
 
-        // Tìm điểm HSA 2026 từ Percentile
-        function findHsa26FromPercentile(pct) {
-            const sortedHsa = [...hsa2026Dataset].sort((a,b) => a.pct - b.pct);
-            if (pct <= sortedHsa[0].pct) return sortedHsa[0].hsa;
-            if (pct >= sortedHsa[sortedHsa.length-1].pct) return sortedHsa[sortedHsa.length-1].hsa;
-
-            for (let i = 0; i < sortedHsa.length - 1; i++) {
-                if (pct >= sortedHsa[i].pct && pct <= sortedHsa[i+1].pct) {
-                    const y1 = sortedHsa[i].pct; const y2 = sortedHsa[i+1].pct;
-                    const x1 = sortedHsa[i].hsa; const x2 = sortedHsa[i+1].hsa;
-                    if (Math.abs(y2 - y1) < 1e-9) return x1;
-                    return x1 + (pct - y1) * (x2 - x1) / (y2 - y1);
-                }
-            }
-            return 19;
-        }
-
         // PHƯƠNG PHÁP QUY ĐỔI PTIT
         function convertPTIT(x) {
-            if (x < 75) return { error: true, msg: "Dưới ngưỡng sàn (HSA < 75)" };
+            if (x < 75) return { error: true, msg: "Dưới ngưỡng sàn tuyển sinh PTIT (HSA < 75)" };
             let a, b, c, d, rangeIndex;
             if (x >= 105) { rangeIndex = 1; a = 105; b = 150; c = 27.25; d = 30.00; }
             else if (x >= 97) { rangeIndex = 2; a = 97; b = 105; c = 25.25; d = 27.25; }
@@ -564,7 +821,7 @@
         }
 
         function convertReversePTIT(y) {
-            if (y < 15.00) return { error: true, msg: "Dưới ngưỡng sàn (THPT < 15.00)" };
+            if (y < 15.00) return { error: true, msg: "Dưới ngưỡng sàn tuyển sinh PTIT (THPT < 15.00)" };
             let a, b, c, d, rangeIndex;
             if (y >= 27.25) { rangeIndex = 1; a = 105; b = 150; c = 27.25; d = 30.00; }
             else if (y >= 25.25) { rangeIndex = 2; a = 97; b = 105; c = 25.25; d = 27.25; }
@@ -576,8 +833,8 @@
 
         // PHƯƠNG PHÁP QUY ĐỔI THEO MỐC NEO BỘ GD&ĐT
         function convertMOET(x) {
-            if (x >= moetOfficialAnchors[0].hsa) return { score: 30.00, anchorIdx: 0 };
-            if (x <= moetOfficialAnchors[moetOfficialAnchors.length-1].hsa) return { score: 7.95, anchorIdx: moetOfficialAnchors.length-1 };
+            if (x >= moetOfficialAnchors[0].hsa) return { score: 30.00, anchorIdx: 0, topLabel: moetOfficialAnchors[0].top, bottomLabel: moetOfficialAnchors[0].top };
+            if (x <= moetOfficialAnchors[moetOfficialAnchors.length-1].hsa) return { score: 7.95, anchorIdx: moetOfficialAnchors.length-1, topLabel: "Top 100.0%", bottomLabel: "Top 100.0%" };
 
             for (let i = 0; i < moetOfficialAnchors.length - 1; i++) {
                 const topNode = moetOfficialAnchors[i]; const bottomNode = moetOfficialAnchors[i+1];
@@ -589,7 +846,117 @@
             }
         }
 
-        // Đăng ký hướng đi chuyển tab
+        // TÍNH TOÁN NGƯỢC CHUẨN MỐC NEO BỘ GD&ĐT
+        function convertReverseMOET(y) {
+            if (y >= moetOfficialAnchors[0].a00) return { score: 133.00, anchorIdx: 0, topLabel: moetOfficialAnchors[0].top, bottomLabel: moetOfficialAnchors[0].top };
+            if (y <= moetOfficialAnchors[moetOfficialAnchors.length-1].a00) return { score: 19.00, anchorIdx: moetOfficialAnchors.length-1, topLabel: moetOfficialAnchors[moetOfficialAnchors.length-1].top, bottomLabel: moetOfficialAnchors[moetOfficialAnchors.length-1].top };
+
+            for (let i = 0; i < moetOfficialAnchors.length - 1; i++) {
+                const topNode = moetOfficialAnchors[i];
+                const bottomNode = moetOfficialAnchors[i+1];
+
+                if (y >= bottomNode.a00 && y <= topNode.a00) {
+                    const y1 = bottomNode.a00;
+                    const y2 = topNode.a00;
+                    const x1 = bottomNode.hsa;
+                    const x2 = topNode.hsa;
+
+                    const x = x1 + ((y - y1) / (y2 - y1)) * (x2 - x1);
+                    return { score: x, anchorIdx: i, x1, x2, y1, y2, topLabel: topNode.top, bottomLabel: bottomNode.top };
+                }
+            }
+            return { score: 19.00, anchorIdx: moetOfficialAnchors.length-1, topLabel: "Top 100.0%", bottomLabel: "Top 100.0%" };
+        }
+
+        // Tải bảng song song đa phương pháp (CẬP NHẬT: So sánh điểm quy đổi tịnh tiến theo năm)
+        function renderTable(filter = '') {
+            tableBody.innerHTML = '';
+            
+            // Cập nhật động nhãn cột của bảng so sánh dựa theo khối được chọn
+            document.getElementById('thQd25_26').innerText = "Quy đổi THPT 25 (HSA 26 - Khối " + selectedBlock + ")";
+            document.getElementById('thQd25_25').innerText = "Quy đổi THPT 25 (HSA 25 - Khối " + selectedBlock + ")";
+            document.getElementById('thQd26_26').innerText = "Dự báo THPT 26 (HSA 26 - Khối " + selectedBlock + ")";
+
+            hsa2026Dataset.forEach(item => {
+                const hsaScore = item.hsa;
+                const pct2026 = item.pct;
+
+                // Tìm bách phân vị liên năm 2025
+                let pct2025 = 0;
+                const found25 = thptOfficialDataset.find(d => d.hsa25 === hsaScore);
+                if (found25) {
+                    pct2025 = found25.pct;
+                } else {
+                    if (hsaScore >= 130) {
+                        pct2025 = 100.00;
+                    } else if (hsaScore <= 31) {
+                        pct2025 = 0.00;
+                    } else {
+                        pct2025 = (hsaScore / 130) * 100;
+                    }
+                }
+
+                // Thực hiện quy đổi điểm THPT 25 tương ứng cho cả hai phân vị liên năm
+                const qd25_hsa26 = findThptFromNationalPercentile(pct2026, selectedBlock);
+                const qd25_hsa25 = findThptFromNationalPercentile(pct2025, selectedBlock);
+
+                // Điểm quy đổi THPT 26 dự báo
+                let qd26_hsa26 = qd25_hsa26 + simulatedShiftDelta;
+                const blockData = moetNationalDatabase[selectedBlock] || moetNationalDatabase["A00"];
+                qd26_hsa26 = Math.max(blockData[1] || 7.95, Math.min(30.00, qd26_hsa26));
+
+                // Điểm tốt nghiệp ĐHQG tĩnh Bảng 1
+                const predictedThpt25Static = findThpt25Direct(hsaScore);
+
+                if (filter === '' || hsaScore.toString().includes(filter)) {
+                    const row = document.createElement('tr');
+                    row.className = "hover:bg-slate-900/60 transition-colors border-b border-slate-800/30";
+                    row.innerHTML = `
+                        <td class="p-3 font-bold text-white font-mono">${hsaScore}</td>
+                        <td class="p-3 text-emerald-400 font-mono">${pct2026.toFixed(2)}%</td>
+                        <td class="p-3 text-slate-400 font-mono">${pct2025.toFixed(2)}%</td>
+                        <td class="p-3 text-emerald-400 font-extrabold font-mono">${qd25_hsa26.toFixed(2)}</td>
+                        <td class="p-3 text-slate-300 font-semibold font-mono">${qd25_hsa25.toFixed(2)}</td>
+                        <td class="p-3 text-amber-400 font-extrabold font-mono">${qd26_hsa26.toFixed(2)}</td>
+                        <td class="p-3 text-cyan-400 font-mono">${predictedThpt25Static.toFixed(2)}</td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            });
+
+            triggerMathJaxRender();
+        }
+
+        function handleBlockChange() {
+            selectedBlock = document.getElementById('selectTargetBlock').value;
+            
+            // Cập nhật nhãn THPT quy đổi
+            document.getElementById('labelThptEquivalent').innerText = "Điểm THPT " + selectedBlock + " quy đổi";
+            
+            // Đã thêm ID 'thNational' tương ứng vào thẻ HTML span để không lỗi crash
+            document.getElementById('thNational').innerText = "Quy đổi Quốc gia (Phụ lục II " + selectedBlock + " Bộ GD&ĐT)";
+
+            // Cập nhật khoảng chặn trượt dọc
+            const blockData = moetNationalDatabase[selectedBlock];
+            const minScore = blockData[1]; // Sử dụng mốc 1% làm điểm sàn đại học thực tế
+            document.getElementById('progressMinLabel').innerText = "Mức sàn (" + minScore.toFixed(2) + ")";
+
+            // Cập nhật các biên cực trị trên Slider
+            inputThpt.min = minScore;
+            rangeThpt.min = minScore;
+            document.getElementById('labelLimitMin').innerText = "Min: " + minScore.toFixed(2);
+
+            // Kiểm soát giới hạn đầu vào của mốc điểm hiện thời
+            if (currentThptValue < minScore) {
+                currentThptValue = minScore;
+                inputThpt.value = minScore.toFixed(2);
+                rangeThpt.value = minScore;
+            }
+
+            calculate();
+            renderTable(searchTable ? searchTable.value : '');
+        }
+
         function switchDirection(dir) {
             currentDirection = dir;
             const btn26 = document.getElementById('tabHsa26ToThpt');
@@ -609,7 +976,6 @@
                 containerSimulate2026.classList.add('hidden');
                 labelHsaTitle.innerText = "Điểm HSA 2026 (Tổ hợp Q02):";
             } else if (dir === 'hsa26_to_thpt26') {
-                // ĐÃ THÊM: Kích hoạt màn hình dự báo 2026 nâng cao
                 btn26To26.className = "py-2 text-[10px] font-bold rounded-lg transition-all bg-emerald-600 text-white shadow text-center";
                 containerHSA.classList.remove('hidden'); containerTHPT.classList.add('hidden');
                 containerSimulate2026.classList.remove('hidden');
@@ -635,85 +1001,121 @@
             calculate();
         }
 
-        // TÍNH TOÁN VÀ PHÂN TÍCH CHÍNH XÁC
+        // TÍNH TOÁN QUY ĐỔI CHI TIẾT
         function calculate() {
             let pct = 0; let hsaVal = 0; let thptVal = 0;
             let explanationHtml = "";
             const labelThptEquivalent = document.getElementById('labelThptEquivalent');
             const labelHsaYear = document.getElementById('labelHsaYear');
+            const blockData = moetNationalDatabase[selectedBlock] || moetNationalDatabase["A00"];
 
             if (currentDirection === 'hsa26_to_thpt') {
                 hsaVal = currentHsaValue;
                 labelHsaYear.innerText = "Điểm HSA 2026 (Q02)";
-                labelThptEquivalent.innerText = "Điểm THPT A00 quy đổi";
+                labelThptEquivalent.innerText = "Điểm THPT " + selectedBlock + " quy đổi";
                 pct = findPercentileFromHSA2026(hsaVal);
 
-                if (activeMethod === 'percentile') {
-                    thptVal = findThptFromPercentile(pct);
-                    explanationHtml = `
-                        <p class="font-bold text-emerald-400 mb-1">Phương pháp: Ánh xạ Bách phân vị liên năm (HSA 2026 $\\rightarrow$ THPT 2025)</p>
-                        <p>Bước 1: Tra cứu bách phân vị của điểm HSA 2026 $x = ${hsaVal}$ trong bảng Q02:</p>
-                        <p class="pl-4 font-mono text-white">$$P_{\\text{HSA}}(${hsaVal}) = ${pct.toFixed(2)}\\%$$</p>
-                        <p>Bước 2: Ánh xạ bách phân vị tương đương sang dải điểm THPT A00 năm 2025:</p>
-                        <p class="pl-4 font-mono text-white">$$y = P_{\\text{THPT}}^{-1}(${pct.toFixed(2)}\\%) = ${thptVal.toFixed(2)}\\text{ điểm}$$</p>
-                    `;
+                if (activeMethod === 'percentileNational') {
+                    thptVal = findThptFromNationalPercentile(pct, selectedBlock);
+                    explanationHtml = 
+                        '<p class="font-bold text-emerald-400 mb-1">Phương pháp: Ánh xạ Bách phân vị Quốc gia (Phụ lục II ' + selectedBlock + ' Bộ GD&ĐT)</p>' +
+                        '<p>Bước 1: Tra cứu bách phân vị của điểm HSA 2026 $x = ' + hsaVal + '$ trong bảng Q02:</p>' +
+                        '<p class="pl-4 font-mono text-white">$$P_{\\text{HSA}}(' + hsaVal + ') = ' + pct.toFixed(2) + '\\%$$</p>' +
+                        '<p>Bước 2: Ánh xạ bách phân vị tương đương trực tiếp sang phổ điểm THPT ' + selectedBlock + ' cả nước:</p>' +
+                        '<p class="pl-4 font-mono text-white">$$y = P_{\\text{MOET, Khối ' + selectedBlock + '}}^{-1}(' + pct.toFixed(2) + '\\%) = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
+                } else if (activeMethod === 'percentile') {
+                    thptVal = findThptFromEquivalentPercentile(pct);
+                    explanationHtml = 
+                        '<p class="font-bold text-cyan-400 mb-1">Phương pháp: Đối chiếu Tương đương Tuyển sinh (Bảng 1 ĐHQG)</p>' +
+                        '<p>Bước 1: Tra cứu bách phân vị HSA 2026 $x = ' + hsaVal + '$:</p>' +
+                        '<p class="pl-4 font-mono text-white">$$P_{\\text{HSA}}(' + hsaVal + ') = ' + pct.toFixed(2) + '\\%$$</p>' +
+                        '<p>Bước 2: Ánh xạ tương đương theo hệ dữ liệu đối sánh mốc tĩnh ĐHQG công bố:</p>' +
+                        '<p class="pl-4 font-mono text-white">$$y = P_{\\text{ĐHQG}}^{-1}(' + pct.toFixed(2) + '\\%) = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
                 } else if (activeMethod === 'moet') {
                     const moetResult = convertMOET(hsaVal);
                     thptVal = moetResult.score;
-                    explanationHtml = `
-                        <p class="font-bold text-cyan-400 mb-1">Phương pháp: Mốc neo phân vị quy đổi chuẩn (Bộ GD&ĐT)</p>
-                        <p>Điểm HSA $x = ${hsaVal}$ nội suy giữa mốc <span class="text-white font-bold">${moetResult.bottomLabel}</span> và <span class="text-white font-bold">${moetResult.topLabel}</span>:</p>
-                        <p class="pl-4 font-mono text-white">$$y = ${moetResult.y1} + \\frac{x - ${moetResult.x1}}{${moetResult.x2} - ${moetResult.x1}} \\cdot (${moetResult.y2} - ${moetResult.y1}) = ${thptVal.toFixed(2)}\\text{ điểm}$$</p>
-                    `;
+                    if (moetResult.x1 !== undefined) {
+                        explanationHtml = 
+                            '<p class="font-bold text-cyan-400 mb-1">Phương pháp: Mốc neo phân vị quy đổi chuẩn (Bộ GD&ĐT)</p>' +
+                            '<p>Điểm HSA $x = ' + hsaVal + '$ nội suy tuyến tính giữa mốc <span class="text-white font-bold">' + moetResult.bottomLabel + '</span> và <span class="text-white font-bold">' + moetResult.topLabel + '</span>:</p>' +
+                            '<p class="pl-4 font-mono text-white">$$y = ' + moetResult.y1.toFixed(2) + ' + \\frac{x - ' + moetResult.x1 + '}{' + moetResult.x2 + ' - ' + moetResult.x1 + '} \\cdot (' + moetResult.y2.toFixed(2) + ' - ' + moetResult.y1.toFixed(2) + ') = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
+                    } else {
+                        explanationHtml = 
+                            '<p class="font-bold text-cyan-400 mb-1">Phương pháp: Mốc neo phân vị quy đổi chuẩn (Bộ GD&ĐT)</p>' +
+                            '<p>Điểm HSA $x = ' + hsaVal + '$ nằm ngoài dải nội suy tiêu chuẩn hoặc chạm mốc cực đại/cực tiểu. Điểm quy đổi được cố định theo mốc biên:</p>' +
+                            '<p class="pl-4 font-mono text-white">$$y = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
+                    }
                 } else {
                     const ptitResult = convertPTIT(hsaVal);
                     thptVal = ptitResult.error ? 7.95 : ptitResult.score;
-                    explanationHtml = `<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT</p><p>Kết quả tính toán tuyến tính: $y = ${thptVal.toFixed(2)}$</p>`;
+                    if (!ptitResult.error) {
+                        explanationHtml = 
+                            '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT (Bưu chính Viễn thông)</p>' +
+                            '<p>Điểm HSA $x = ' + hsaVal + '$ thuộc khoảng [' + ptitResult.a + ', ' + ptitResult.b + '], tương ứng khoảng điểm tốt nghiệp [' + ptitResult.c.toFixed(2) + ', ' + ptitResult.d.toFixed(2) + ']:</p>' +
+                            '<p class="pl-4 font-mono text-white">$$y = ' + ptitResult.c.toFixed(2) + ' + \\frac{x - ' + ptitResult.a + '}{' + ptitResult.b + ' - ' + ptitResult.a + '} \\cdot (' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + ') = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
+                    } else {
+                        explanationHtml = 
+                            '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT (Bưu chính Viễn thông)</p>' +
+                            '<p class="text-rose-400 font-bold">Cảnh báo: ' + ptitResult.msg + '</p>' +
+                            '<p>Điểm quy đổi mặc định lấy theo mức tối thiểu:</p>' +
+                            '<p class="pl-4 font-mono text-white">$$y = 7.95\\text{ điểm}$$</p>';
+                    }
                 }
                 inputThpt.value = thptVal.toFixed(2); rangeThpt.value = thptVal;
+                currentThptValue = thptVal; // Đồng bộ trạng thái
 
             } else if (currentDirection === 'hsa26_to_thpt26') {
-                // ĐÃ THÊM: Logic quy đổi dự báo mốc 2026 dựa trên độ lệch simulatedShiftDelta
                 hsaVal = currentHsaValue;
                 labelHsaYear.innerText = "Điểm HSA 2026 (Q02)";
-                labelThptEquivalent.innerText = "Dự đoán điểm THPT 2026";
+                labelThptEquivalent.innerText = "Dự đoán điểm THPT " + selectedBlock + " 2026";
                 pct = findPercentileFromHSA2026(hsaVal);
 
                 let baseThpt = 7.95;
                 let methodTitle = "";
                 let subStepTex = "";
 
-                if (activeMethod === 'percentile') {
-                    baseThpt = findThptFromPercentile(pct);
-                    methodTitle = "Áp dụng bách phân vị liên năm";
-                    subStepTex = `$$y_{\\text{THPT 2025}} = P_{\\text{THPT 25}}^{-1}(${pct.toFixed(2)}\\%) = ${baseThpt.toFixed(2)}\\text{ điểm}$$`;
+                if (activeMethod === 'percentileNational') {
+                    baseThpt = findThptFromNationalPercentile(pct, selectedBlock);
+                    methodTitle = "Bách phân vị Quốc gia Phụ lục II";
+                    subStepTex = '$$y_{\\text{THPT 2025}} = P_{\\text{MOET, Khối ' + selectedBlock + '}}^{-1}(' + pct.toFixed(2) + '\\%) = ' + baseThpt.toFixed(2) + '\\text{ điểm}$$';
+                } else if (activeMethod === 'percentile') {
+                    baseThpt = findThptFromEquivalentPercentile(pct);
+                    methodTitle = "Đối chiếu Tuyển sinh Bảng 1";
+                    subStepTex = '$$y_{\\text{THPT 2025}} = P_{\\text{ĐHQG}}^{-1}(' + pct.toFixed(2) + '\\%) = ' + baseThpt.toFixed(2) + '\\text{ điểm}$$';
                 } else if (activeMethod === 'moet') {
                     const moetResult = convertMOET(hsaVal);
                     baseThpt = moetResult.score;
-                    methodTitle = "Áp dụng mốc neo phân vị Bộ GD&ĐT";
-                    subStepTex = `$$y_{\\text{THPT 2025}} = ${moetResult.y1} + \\frac{x - ${moetResult.x1}}{${moetResult.x2} - ${moetResult.x1}} \\cdot (${moetResult.y2} - ${moetResult.y1}) = ${baseThpt.toFixed(2)}\\text{ điểm}$$`;
+                    methodTitle = "Mốc neo phân vị Bộ GD&ĐT";
+                    if (moetResult.x1 !== undefined) {
+                        subStepTex = '$$y_{\\text{THPT 2025}} = ' + moetResult.y1.toFixed(2) + ' + \\frac{x - ' + moetResult.x1 + '}{' + moetResult.x2 + ' - ' + moetResult.x1 + '} \\cdot (' + moetResult.y2.toFixed(2) + ' - ' + moetResult.y1.toFixed(2) + ') = ' + baseThpt.toFixed(2) + '\\text{ điểm}$$';
+                    } else {
+                        subStepTex = '$$y_{\\text{THPT 2025}} = ' + baseThpt.toFixed(2) + '\\text{ điểm}$$';
+                    }
                 } else {
                     const ptitResult = convertPTIT(hsaVal);
                     baseThpt = ptitResult.error ? 7.95 : ptitResult.score;
-                    methodTitle = "Áp dụng nội suy PTIT";
-                    subStepTex = `$$y_{\\text{PTIT 2025}} = ${baseThpt.toFixed(2)}\\text{ điểm}$$`;
+                    methodTitle = "Nội suy PTIT";
+                    if (!ptitResult.error) {
+                        subStepTex = '$$y_{\\text{PTIT 2025}} = ' + ptitResult.c.toFixed(2) + ' + \\frac{x - ' + ptitResult.a + '}{' + ptitResult.b + ' - ' + ptitResult.a + '} \\cdot (' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + ') = ' + baseThpt.toFixed(2) + '\\text{ điểm}$$';
+                    } else {
+                        subStepTex = '$$y_{\\text{PTIT 2025}} = 7.95\\text{ điểm}$$';
+                    }
                 }
 
-                // Cộng dồn với độ lệch dịch phổ simulatedShiftDelta và chặn biên an toàn
                 thptVal = baseThpt + simulatedShiftDelta;
-                thptVal = Math.max(7.95, Math.min(30.00, thptVal));
+                thptVal = Math.max(blockData[1] || 7.95, Math.min(30.00, thptVal));
                 currentThptValue = thptVal;
 
-                explanationHtml = `
-                    <p class="font-bold text-emerald-400 mb-1">Phương pháp: Quy đổi dự đoán THPT năm 2026 (${methodTitle})</p>
-                    <p>Bước 1: Quy đổi điểm nền sang mốc THPT năm 2025:</p>
-                    <div class="pl-4 font-mono text-white">${subStepTex}</div>
-                    <p>Bước 2: Áp dụng mức biến động phổ điểm tốt nghiệp dự kiến năm 2026 ($\\Delta = ${simulatedShiftDelta > 0 ? '+' : ''}${simulatedShiftDelta.toFixed(2)}$):</p>
-                    <div class="pl-4 font-mono text-white">$$y_{\\text{THPT 2026}} = \\max\\left(7.95, \\min\\left(30.00, y_{\\text{THPT 2025}} + \\Delta\\right)\\right)$$</div>
-                    <div class="pl-4 font-mono text-white">$$y_{\\text{THPT 2026}} = \\max\\left(7.95, \\min\\left(30.00, ${baseThpt.toFixed(2)} + (${simulatedShiftDelta.toFixed(2)})\\right)\\right) = ${thptVal.toFixed(2)}\\text{ điểm}$$</div>
-                `;
+                explanationHtml = 
+                    '<p class="font-bold text-emerald-400 mb-1">Phương pháp: Quy đổi dự đoán THPT năm 2026 khối ' + selectedBlock + ' (' + methodTitle + ')</p>' +
+                    '<p>Bước 1: Quy đổi điểm nền sang mốc THPT năm 2025:</p>' +
+                    '<div class="pl-4 font-mono text-white">' + subStepTex + '</div>' +
+                    '<p>Bước 2: Áp dụng biến động phổ điểm THPT khối ' + selectedBlock + ' dự kiến năm 2026 ($\\Delta = ' + (simulatedShiftDelta > 0 ? '+' : '') + simulatedShiftDelta.toFixed(2) + '$):</p>' +
+                    '<div class="pl-4 font-mono text-white">$$y_{\\text{THPT 2026}} = \\max\\left(' + (blockData[1] || 7.95).toFixed(2) + ', \\min\\left(30.00, y_{\\text{THPT 2025}} + \\Delta\\right)\\right)$$</div>' +
+                    '<div class="pl-4 font-mono text-white">$$y_{\\text{THPT 2026}} = \\max\\left(' + (blockData[1] || 7.95).toFixed(2) + ', \\min\\left(30.00, ' + baseThpt.toFixed(2) + ' + (' + simulatedShiftDelta.toFixed(2) + ')\\right)\\right) = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</div>';
 
                 inputThpt.value = thptVal.toFixed(2); rangeThpt.value = thptVal;
+                currentThptValue = thptVal; // Đồng bộ trạng thái
 
             } else if (currentDirection === 'hsa25_to_thpt') {
                 hsaVal = currentHsaValue;
@@ -724,43 +1126,170 @@
                 const found25 = thptOfficialDataset.find(d => d.hsa25 === Math.round(hsaVal));
                 pct = found25 ? found25.pct : (hsaVal >= 130 ? 100.00 : 0.00);
 
-                explanationHtml = `
-                    <p class="font-bold text-cyan-400 mb-1">Phương pháp: Đối chiếu tĩnh Phụ lục 2025 (HSA 2025 $\\rightarrow$ THPT 2025)</p>
-                    <p>Tra cứu trực tiếp cùng một dòng tọa độ trên bảng phụ lục gốc:</p>
-                    <p class="pl-4 font-mono text-white">$$x_{\\text{HSA 2025}} = ${Math.round(hsaVal)} \\Rightarrow y_{\\text{THPT 2025}} = ${thptVal.toFixed(2)}\\text{ điểm}$$</p>
-                    <p class="pl-4 font-mono text-slate-400">Bách phân vị tương ứng tại mốc dòng này: $P = ${pct.toFixed(2)}\\%$</p>
-                `;
+                explanationHtml = 
+                    '<p class="font-bold text-cyan-400 mb-1">Phương pháp: Đối chiếu tĩnh Phụ lục 2025 (HSA 2025 $\\rightarrow$ THPT 2025)</p>' +
+                    '<p>Tra cứu trực tiếp cùng một dòng tọa độ trên bảng phụ lục gốc ĐHQG ban hành tuyển sinh:</p>' +
+                    '<p class="pl-4 font-mono text-white">$$x_{\\text{HSA 2025}} = ' + Math.round(hsaVal) + ' \\Rightarrow y_{\\text{THPT 2025}} = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>' +
+                    '<p class="pl-4 font-mono text-slate-400">Bách phân vị tại mốc dòng này: $P = ' + pct.toFixed(2) + '\\%$</p>';
                 inputThpt.value = thptVal.toFixed(2); rangeThpt.value = thptVal;
+                currentThptValue = thptVal; // Đồng bộ trạng thái
 
             } else {
-                // Chiều ngược THPT -> HSA 2026
                 thptVal = currentThptValue;
                 labelHsaYear.innerText = "Điểm HSA 2026 Dự đoán";
-                labelThptEquivalent.innerText = "Tổng điểm THPT A00 gốc";
-                pct = findPercentileFromThpt(thptVal);
-                hsaVal = findHsa26FromPercentile(pct);
+                labelThptEquivalent.innerText = "Tổng điểm THPT " + selectedBlock + " gốc";
 
-                explanationHtml = `
-                    <p class="font-bold text-indigo-400 mb-1">Phương pháp: Ánh xạ bách phân vị ngược (THPT 2025 $\\rightarrow$ HSA 2026)</p>
-                    <p>Bước 1: Tra cứu bách phân vị của điểm THPT $y = ${thptVal.toFixed(2)}$:</p>
-                    <p class="pl-4 font-mono text-white">$$P_{\\text{THPT}}(${thptVal.toFixed(2)}) = ${pct.toFixed(2)}\\%$$</p>
-                    <p>Bước 2: Đối chiếu ngược sang dải năng lực HSA 2026 (Q02):</p>
-                    <p class="pl-4 font-mono text-white">$$x = P_{\\text{HSA}}^{-1}(${pct.toFixed(2)}\\%) = ${Math.round(hsaVal)}\\text{ điểm}$$</p>
-                `;
+                if (activeMethod === 'percentileNational') {
+                    pct = findPercentileFromNationalThpt(thptVal, selectedBlock);
+                    hsaVal = findHsa26FromPercentile(pct);
+                    explanationHtml = 
+                        '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Ánh xạ bách phân vị Quốc gia ngược (THPT 2025 $\\rightarrow$ HSA 2026)</p>' +
+                        '<p>Bước 1: Tra cứu bách phân vị của điểm THPT $y = ' + thptVal.toFixed(2) + '$ trong Phụ lục II khối ' + selectedBlock + ':</p>' +
+                        '<p class="pl-4 font-mono text-white">$$P_{\\text{MOET, Khối ' + selectedBlock + '}}(' + thptVal.toFixed(2) + ') = ' + pct.toFixed(2) + '\\%$$</p>' +
+                        '<p>Bước 2: Đối chiếu sang dải bách phân vị của HSA 2026 (Q02):</p>' +
+                        '<p class="pl-4 font-mono text-white">$$x = P_{\\text{HSA}}^{-1}(' + pct.toFixed(2) + '\\%) = ' + Math.round(hsaVal) + '\\text{ điểm}$$</p>';
+                } else if (activeMethod === 'percentile') {
+                    pct = findPercentileFromEquivalentThpt(thptVal);
+                    hsaVal = findHsa26FromPercentile(pct);
+                    explanationHtml = 
+                        '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Ánh xạ bách phân vị tuyển sinh ngược (THPT 2025 $\\rightarrow$ HSA 2026)</p>' +
+                        '<p>Bước 1: Tra cứu bách phân vị tuyển sinh Bảng 1 của mốc điểm $y = ' + thptVal.toFixed(2) + '$:</p>' +
+                        '<p class="pl-4 font-mono text-white">$$P_{\\text{ĐHQG}}(' + thptVal.toFixed(2) + ') = ' + pct.toFixed(2) + '\\%$$</p>' +
+                        '<p>Bước 2: Tìm điểm HSA 2026 tương ứng có cùng thứ hạng:</p>' +
+                        '<p class="pl-4 font-mono text-white">$$x = P_{\\text{HSA}}^{-1}(' + pct.toFixed(2) + '\\%) = ' + Math.round(hsaVal) + '\\text{ điểm}$$</p>';
+                } else if (activeMethod === 'moet') {
+                    const moetResult = convertReverseMOET(thptVal);
+                    hsaVal = moetResult.score;
+                    pct = findPercentileFromHSA2026(hsaVal);
+                    if (moetResult.x1 !== undefined) {
+                        explanationHtml = 
+                            '<p class="font-bold text-cyan-400 mb-1">Phương pháp: Mốc neo phân vị quy đổi chuẩn ngược (Bộ GD&ĐT)</p>' +
+                            '<p>Điểm THPT $y = ' + thptVal.toFixed(2) + '$ nằm trong khoảng mốc neo từ <span class="text-white font-bold">' + moetResult.bottomLabel + '</span> đến <span class="text-white font-bold">' + moetResult.topLabel + '</span>:</p>' +
+                            '<p class="pl-4 font-mono text-white">$$x = ' + moetResult.x1 + ' + \\frac{y - ' + moetResult.y1.toFixed(2) + '}{' + moetResult.y2.toFixed(2) + ' - ' + moetResult.y1.toFixed(2) + '} \\cdot (' + moetResult.x2 + ' - ' + moetResult.x1 + ') = ' + Math.round(hsaVal) + '\\text{ điểm}$$</p>';
+                    } else {
+                        explanationHtml = 
+                            '<p class="font-bold text-cyan-400 mb-1">Phương pháp: Mốc neo phân vị quy đổi chuẩn ngược (Bộ GD&ĐT)</p>' +
+                            '<p>Điểm THPT $y = ' + thptVal.toFixed(2) + '$ nằm ngoài dải nội suy tiêu chuẩn hoặc chạm mốc cực trị. Điểm HSA quy đổi được cố định theo mốc biên:</p>' +
+                            '<p class="pl-4 font-mono text-white">$$x = ' + Math.round(hsaVal) + '\\text{ điểm}$$</p>';
+                    }
+                } else {
+                    const ptitResult = convertReversePTIT(thptVal);
+                    hsaVal = ptitResult.error ? 19 : ptitResult.score;
+                    pct = findPercentileFromHSA2026(hsaVal);
+                    if (!ptitResult.error) {
+                        explanationHtml = 
+                            '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT ngược (THPT $\\rightarrow$ HSA)</p>' +
+                            '<p>Điểm THPT $y = ' + thptVal.toFixed(2) + '$ thuộc khoảng [' + ptitResult.c.toFixed(2) + ', ' + ptitResult.d.toFixed(2) + '], tương ứng khoảng điểm HSA [' + ptitResult.a + ', ' + ptitResult.b + ']:</p>' +
+                            '<p class="pl-4 font-mono text-white">$$x = ' + ptitResult.a + ' + \\frac{y - ' + ptitResult.c.toFixed(2) + '}{' + ptitResult.d.toFixed(2) - ptitResult.c.toFixed(2) + '} \\cdot (' + ptitResult.b - ptitResult.a + ') = ' + Math.round(hsaVal) + '\\text{ điểm}$$</p>';
+                    } else {
+                        explanationHtml = 
+                            '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT ngược (THPT $\\rightarrow$ HSA)</p>' +
+                            '<p class="text-rose-400 font-bold">Cảnh báo: ' + ptitResult.msg + '</p>' +
+                            '<p>Điểm quy đổi mặc định lấy theo mức tối thiểu:</p>' +
+                            '<p class="pl-4 font-mono text-white">$$x = 19\\text{ điểm}$$</p>';
+                    }
+                }
                 inputHsa.value = Math.round(hsaVal); rangeHsa.value = Math.round(hsaVal);
+                currentHsaValue = Math.round(hsaVal); // Đồng bộ trạng thái
             }
 
             const topPercentile = 100 - pct;
-            resPct.innerText = `${pct.toFixed(2)}%`;
-            resTop.innerHTML = `Top $${topPercentile.toFixed(2)}\\%$ học sinh tốt nhất`;
-            resHsa.innerText = `${Math.round(hsaVal)} / 150`;
+            resPct.innerText = pct.toFixed(2) + "%";
+            resTop.innerHTML = "Top $" + topPercentile.toFixed(2) + "\\%$ học sinh xuất sắc nhất";
+            resHsa.innerText = Math.round(hsaVal) + " / 150";
             resThpt.innerText = thptVal.toFixed(2);
-            progressBar.style.width = `${pct}%`;
-            cursorLabel.innerHTML = `Vị trí bách phân vị của bạn (${pct.toFixed(2)}%)`;
-            document.getElementById('hsaInputLabel').innerHTML = `Mốc: ${Math.round(hsaVal)} (Top $${topPercentile.toFixed(2)}\\%$)`;
+            progressBar.style.width = pct + "%";
+            cursorLabel.innerHTML = "Vị trí bách phân vị của bạn (" + pct.toFixed(2) + "%)";
+            document.getElementById('hsaInputLabel').innerHTML = "Mốc: " + Math.round(hsaVal) + " (Top " + topPercentile.toFixed(2) + "%)";
+
+            // THỐNG KÊ SO SÁNH THỨ HẠNG LIÊN NĂM HSA
+            let rawHsaValue = Math.round(hsaVal);
+            let pct2025 = 0;
+            
+            // Tìm mốc bách phân vị HSA của năm 2025 từ bảng tương đương tuyển sinh
+            const found25 = thptOfficialDataset.find(d => d.hsa25 === rawHsaValue);
+            if (found25) {
+                pct2025 = found25.pct;
+            } else {
+                if (rawHsaValue >= 130) {
+                    pct2025 = 100.00;
+                } else if (rawHsaValue <= 31) {
+                    pct2025 = 0.00;
+                } else {
+                    pct2025 = (rawHsaValue / 130) * 100;
+                }
+            }
+            
+            const pct2026 = pct;
+
+            // Tính toán thứ hạng tuyệt đối dựa theo quy mô từng năm
+            const estRank2025 = Math.max(1, Math.round(hsaPool2025 * (1 - pct2025 / 100)));
+            const estRank2026 = Math.max(1, Math.round(hsaPool2026 * (1 - pct2026 / 100)));
+            const rankShift = estRank2025 - estRank2026;
+
+            // Cập nhật thông số lên panel so sánh các năm
+            document.getElementById('hsaPct2025').innerText = pct2025.toFixed(2) + "%";
+            document.getElementById('hsaPct2026').innerText = pct2026.toFixed(2) + "%";
+            document.getElementById('hsaRank2025').innerText = "#" + estRank2025.toLocaleString('vi-VN');
+            document.getElementById('hsaRank2026').innerText = "#" + estRank2026.toLocaleString('vi-VN');
+
+            // Tính toán giá trị THPT quy đổi tương ứng với từng phân vị của các năm
+            const thptQd2025Val = findThptFromNationalPercentile(pct2025, selectedBlock);
+            const thptQd2026Val = findThptFromNationalPercentile(pct2026, selectedBlock);
+            let thptQd2026ForecastVal = thptQd2026Val + simulatedShiftDelta;
+            thptQd2026ForecastVal = Math.max(blockData[1] || 7.95, Math.min(30.00, thptQd2026ForecastVal));
+
+            document.getElementById('thptQd2025').innerText = thptQd2025Val.toFixed(2) + "đ";
+            document.getElementById('thptQd2026').innerText = thptQd2026Val.toFixed(2) + "đ";
+            document.getElementById('hsaPct2026Forecast').innerText = pct2026.toFixed(2) + "%";
+            document.getElementById('thptQd2026Forecast').innerText = thptQd2026ForecastVal.toFixed(2) + "đ";
+            document.getElementById('thptDeltaForecast').innerText = (simulatedShiftDelta > 0 ? '+' : '') + simulatedShiftDelta.toFixed(2) + "đ";
+
+            const rankShiftBadge = document.getElementById('rankShiftBadge');
+            if (rankShift > 0) {
+                rankShiftBadge.innerText = "Cải thiện +" + rankShift.toLocaleString('vi-VN') + " bậc";
+                rankShiftBadge.className = "text-brand-500 font-bold font-mono bg-brand-500/10 border border-brand-500/20 px-3 py-1 rounded-full text-xs";
+            } else if (rankShift < 0) {
+                rankShiftBadge.innerText = "Tăng thêm -" + Math.abs(rankShift).toLocaleString('vi-VN') + " người cạnh tranh";
+                rankShiftBadge.className = "text-rose-400 font-bold font-mono bg-rose-500/10 border border-rose-500/20 px-3 py-1 rounded-full text-xs";
+            } else {
+                rankShiftBadge.innerText = "Không đổi";
+                rankShiftBadge.className = "text-slate-400 font-bold font-mono bg-slate-900 border border-slate-800 px-3 py-1 rounded-full text-xs";
+            }
+
+            // PHÂN TÍCH BIẾN ĐỘNG THỨ HẠNG QUỐC GIA THPT
+            const poolSize = blockPoolSizes[selectedBlock] || 165467;
+            const currentRank = Math.max(1, Math.round(poolSize * (1 - pct / 100)));
+            
+            // Tính toán biến động nếu điểm THPT tăng/giảm 0.25đ
+            const pctPlus = findPercentileFromNationalThpt(thptVal + 0.25, selectedBlock);
+            const rankPlus = Math.max(1, Math.round(poolSize * (1 - pctPlus / 100)));
+            const surpassedCount = Math.max(0, currentRank - rankPlus);
+
+            const pctMinus = findPercentileFromNationalThpt(thptVal - 0.25, selectedBlock);
+            const rankMinus = Math.max(1, Math.round(poolSize * (1 - pctMinus / 100)));
+            const fallenCount = Math.max(0, rankMinus - currentRank);
+
+            // Cập nhật thông tin phân tích thứ hạng lên UI tốt nghiệp THPT
+            document.getElementById('nationalRankText').innerText = "#" + currentRank.toLocaleString('vi-VN');
+            document.getElementById('nationalPoolText').innerText = "Ước lượng vị thế trên tổng số " + poolSize.toLocaleString('vi-VN') + " thí sinh khối " + selectedBlock + " cả nước";
+            document.getElementById('surpassedCountText').innerText = surpassedCount > 0 ? "Vượt thêm +" + surpassedCount.toLocaleString('vi-VN') + " người" : "Giữ vững vị trí đỉnh đầu";
+            document.getElementById('fallenCountText').innerText = fallenCount > 0 ? "Bị tụt sau -" + fallenCount.toLocaleString('vi-VN') + " người" : "Không đổi";
+
+            // Đánh giá mật độ cạnh tranh tốt nghiệp THPT
+            const densityBadge = document.getElementById('densityBadge');
+            if (surpassedCount > 1500) {
+                densityBadge.innerText = "Cực kỳ khốc liệt";
+                densityBadge.className = "bg-rose-500/10 text-rose-400 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold border border-rose-500/20";
+            } else if (surpassedCount > 500) {
+                densityBadge.innerText = "Cạnh tranh trung bình";
+                densityBadge.className = "bg-amber-500/10 text-amber-400 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold border border-amber-500/20";
+            } else {
+                densityBadge.innerText = "Phân hóa cao (An toàn)";
+                densityBadge.className = "bg-emerald-500/10 text-emerald-400 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold border border-emerald-500/20";
+            }
 
             formulaExplain.innerHTML = explanationHtml;
-
             updateBellCurveChart(thptVal);
             triggerMathJaxRender();
         }
@@ -793,46 +1322,54 @@
 
         function updateBellCurveChart(thptVal) {
             if (!bellCurveChart) return;
-            const targetScore = Math.ceil(thptVal);
+            const targetScore = Math.max(1, Math.min(30, Math.ceil(thptVal)));
             const targetIndex = thptA00Histogram.findIndex(item => item.score === targetScore);
 
             bellCurveChart.data.datasets[0].backgroundColor = thptA00Histogram.map((item, idx) => {
                 if (idx === targetIndex) return '#10b981';
                 return [10, 15, 20, 25, 30].includes(item.score) ? 'rgba(249, 115, 22, 0.85)' : 'rgba(37, 99, 235, 0.5)';
             });
-            bellCurveChart.update();
+            bellCurveChart.update('none'); 
         }
 
         // Đăng ký Event Listeners
-        inputHsa.addEventListener('input', (e) => {
-            let val = parseFloat(e.target.value); if (isNaN(val)) return;
-            val = Math.max(19, Math.min(133, val));
-            currentHsaValue = val; rangeHsa.value = val; calculate();
-        });
-        rangeHsa.addEventListener('input', (e) => {
-            currentHsaValue = parseFloat(e.target.value); inputHsa.value = currentHsaValue; calculate();
-        });
-        inputThpt.addEventListener('input', (e) => {
-            let val = parseFloat(e.target.value); if (isNaN(val)) return;
-            val = Math.max(7.95, Math.min(30.00, val));
-            currentThptValue = val; rangeThpt.value = val; calculate();
-        });
-        rangeThpt.addEventListener('input', (e) => {
-            currentThptValue = parseFloat(e.target.value); inputThpt.value = currentThptValue.toFixed(2); calculate();
-        });
-        searchTable.addEventListener('input', (e) => { renderTable(e.target.value); });
-
-        // Đăng ký sự thay đổi độ lệch dịch chuyển phổ điểm THPT 2026
-        const inputShiftDelta = document.getElementById('inputShiftDelta');
-        const shiftDeltaVal = document.getElementById('shiftDeltaVal');
-        
-        inputShiftDelta.addEventListener('input', (e) => {
-            simulatedShiftDelta = parseFloat(e.target.value);
-            shiftDeltaVal.innerText = `${simulatedShiftDelta > 0 ? '+' : ''}${simulatedShiftDelta.toFixed(2)} điểm`;
+        window.onload = function() {
+            initBellCurveChart();
+            renderTable();
             calculate();
-        });
 
-        window.onload = function() { renderTable(); initBellCurveChart(); calculate(); };
+            inputHsa.addEventListener('input', (e) => {
+                let val = parseFloat(e.target.value); if (isNaN(val)) return;
+                val = Math.max(19, Math.min(133, val));
+                currentHsaValue = val; rangeHsa.value = val; calculate();
+            });
+            rangeHsa.addEventListener('input', (e) => {
+                currentHsaValue = parseFloat(e.target.value); inputHsa.value = currentHsaValue; calculate();
+            });
+            inputThpt.addEventListener('input', (e) => {
+                let val = parseFloat(e.target.value); if (isNaN(val)) return;
+                const minScore = moetNationalDatabase[selectedBlock] ? moetNationalDatabase[selectedBlock][1] : 7.95;
+                val = Math.max(minScore, Math.min(30.00, val));
+                currentThptValue = val; rangeThpt.value = val; calculate();
+            });
+            rangeThpt.addEventListener('input', (e) => {
+                currentThptValue = parseFloat(e.target.value); inputThpt.value = currentThptValue.toFixed(2); calculate();
+            });
+            
+            if (searchTable) {
+                searchTable.addEventListener('input', (e) => { renderTable(e.target.value); });
+            }
+
+            const inputShiftDelta = document.getElementById('inputShiftDelta');
+            const shiftDeltaVal = document.getElementById('shiftDeltaVal');
+            
+            inputShiftDelta.addEventListener('input', (e) => {
+                simulatedShiftDelta = parseFloat(e.target.value);
+                shiftDeltaVal.innerText = (simulatedShiftDelta > 0 ? '+' : '') + simulatedShiftDelta.toFixed(2) + ' điểm';
+                calculate();
+                renderTable(searchTable ? searchTable.value : '');
+            });
+        };
     </script>
 </body>
 </html>
