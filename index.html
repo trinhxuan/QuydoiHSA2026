@@ -111,7 +111,7 @@
             </div>
             <div class="flex items-center gap-2 text-xs bg-slate-900 rounded-full px-3 py-1.5 border border-slate-800">
                 <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-                <span class="text-slate-300 font-medium">Bản cập nhật tư vấn chiến thuật tuyển sinh liên năm</span>
+                <span class="text-slate-300 font-medium">Bản cập nhật tư vấn chiến thuật tuyển sinh liên năm (Đồng bộ UET 2025)</span>
             </div>
         </div>
     </header>
@@ -307,16 +307,16 @@
                 </div>
             </div>
 
-            <!-- 2. TRỢ LÝ CỐ VẤN CHIẾN THUẬT NGUYỆN VỌNG THÔNG MINH (TÍNH NĂNG MỚI NÂNG CẤP) -->
+            <!-- 2. TRỢ LÝ CỐ VẤN CHIẾN THUẬT NGUYỆN VỌNG THÔNG MINH (AI-STRATEGY) -->
             <div class="glass-panel rounded-2xl p-6 border-l-4 border-indigo-500 shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-3xl"></div>
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
                     <div>
                         <h3 class="text-sm font-extrabold text-white flex items-center gap-2">
-                            <span class="p-1.5 bg-indigo-500/10 text-indigo-400 rounded-lg text-xs">🚀 AI-Strategy</span>
+                            <span class="p-1.5 bg-indigo-500/10 text-indigo-400 rounded-lg text-xs">🚀 AI-Strategy v2.0</span>
                             Mô phỏng & Đánh giá chiến thuật Nguyện vọng của bạn
                         </h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Xếp thứ tự nguyện vọng để thuật toán kiểm tra tính hợp lý khoa học</p>
+                        <p class="text-xs text-slate-400 mt-0.5">Sắp xếp các nguyện vọng theo thứ tự ưu tiên của bạn để thuật toán thông minh đánh giá cơ hội tối ưu</p>
                     </div>
                     <button onclick="clearWishlist()" class="text-[10px] text-slate-400 hover:text-rose-400 transition-colors bg-slate-900 px-2 py-1 rounded border border-slate-800">
                         Xóa tất cả
@@ -344,18 +344,18 @@
                 </div>
             </div>
 
-            <!-- 3. BẢNG DỰ BÁO CƠ HỘI ĐỖ/TRƯỢT CHO TỪNG NGÀNH HỌC (ĐỒNG BỘ DỮ LIỆU CHUẨN 2025) -->
+            <!-- 3. BẢNG DỰ BÁO CƠ HỘI ĐỖ/TRƯỢT CHO TỪNG NGÀNH HỌC (ĐỒNG BỘ DỮ LIỆU UET 2025 THEO IMAGE_563AA1.PNG) -->
             <div class="glass-panel rounded-2xl p-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
                     <div>
-                        <h3 class="text-sm font-bold text-white">Tra cứu cơ hội đỗ ĐH năm 2025 theo điểm quy đổi của bạn</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Lọc nhanh ngành của HUS, UET, PTIT và các ngành Hot khối ĐHQG</p>
+                        <h3 class="text-sm font-bold text-white">Tra cứu cơ hội đỗ đại học năm 2025 theo điểm quy đổi của bạn</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Dữ liệu tuyển sinh được đồng bộ hóa chính xác tuyệt đối theo tệp <strong class="text-amber-500">image_563aa1.png</strong></p>
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
                         <select id="selectUniversityFilter" onchange="filterMajors()" class="bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 font-bold focus:outline-none focus:border-brand-500">
                             <option value="all">Tất cả các Trường</option>
-                            <option value="HUS" selected>HUS - ĐH Khoa học Tự nhiên</option>
-                            <option value="UET">UET - ĐH Công nghệ</option>
+                            <option value="HUS">HUS - ĐH Khoa học Tự nhiên</option>
+                            <option value="UET" selected>UET - ĐH Công nghệ (VNU-UET)</option>
                             <option value="PTIT">PTIT - Học viện Công nghệ BCVT</option>
                             <option value="VNU">ĐHQG - Thành viên khác</option>
                         </select>
@@ -381,7 +381,7 @@
                     </table>
                 </div>
                 <div class="flex justify-between items-center text-[10px] text-slate-500 mt-2.5 px-1">
-                    <span>* Điểm chuẩn dựa trên thang điểm chuẩn hóa 30.00 chính thức của các trường</span>
+                    <span>* Điểm chuẩn dựa trên thang điểm chuẩn hóa 30.00 chính thức của các trường năm 2025</span>
                     <span class="text-brand-500">Nhấn "+ Thêm" để đưa vào danh sách cố vấn nguyện vọng ảo</span>
                 </div>
             </div>
@@ -728,9 +728,31 @@
             { hsa: 31, a00: 7.95, top: "Top 100.0%" }
         ];
 
-        // SỐ HÓA TOÀN BỘ CƠ SỞ DỮ LIỆU ĐIỂM CHUẨN TRÚNG TUYỂN CÁC TRƯỜNG THỰC TẾ (HỒ SƠ 2025)
+        // SỐ HÓA CHÍNH XÁC 100%: TOÀN BỘ CƠ SỞ DỮ LIỆU ĐIỂM CHUẨN TRÚNG TUYỂN THỰC TẾ (ĐỒNG BỘ 2025 CHUẨN HÌNH ẢNH)
         const universityMajors = [
-            // Trường ĐH Khoa học Tự nhiên - ĐHQGHN (HUS) - Đầy đủ 28 ngành theo hình ảnh e38713.jpg
+            // Trường ĐH Công nghệ - ĐHQGHN (VNU-UET) - Đồng bộ 100% chuẩn xác theo tệp image_563aa1.png
+            { code: "CN1", name: "Công nghệ thông tin", uni: "UET", benchmark: 28.19, blocks: ["A00", "A01"] },
+            { code: "CN2", name: "Kỹ thuật máy tính", uni: "UET", benchmark: 27.00, blocks: ["A00", "A01"] },
+            { code: "CN3", name: "Vật lý kỹ thuật", uni: "UET", benchmark: 25.20, blocks: ["A00", "A01"] },
+            { code: "CN4", name: "Cơ kỹ thuật", uni: "UET", benchmark: 26.15, blocks: ["A00", "A01"] },
+            { code: "CN5", name: "Công nghệ kỹ thuật xây dựng", uni: "UET", benchmark: 22.25, blocks: ["A00", "A01"] },
+            { code: "CN6", name: "Công nghệ kỹ thuật cơ - điện tử", uni: "UET", benchmark: 26.73, blocks: ["A00", "A01"] },
+            { code: "CN7", name: "Công nghệ hàng không vũ trụ", uni: "UET", benchmark: 23.96, blocks: ["A00", "A01"] },
+            { code: "CN8", name: "Khoa học máy tính", uni: "UET", benchmark: 27.86, blocks: ["A00", "A01"] },
+            { code: "CN9", name: "Công nghệ kỹ thuật điện tử – viễn thông", uni: "UET", benchmark: 26.63, blocks: ["A00", "A01"] },
+            { code: "CN10", name: "Công nghệ nông nghiệp", uni: "UET", benchmark: 22.00, blocks: ["A00", "A01"] },
+            { code: "CN11", name: "Kỹ thuật điều khiển và tự động hoá", uni: "UET", benchmark: 27.90, blocks: ["A00", "A01"] },
+            { code: "CN12", name: "Trí tuệ nhân tạo", uni: "UET", benchmark: 27.75, blocks: ["A00", "A01"] },
+            { code: "CN13", name: "Kỹ thuật năng lượng", uni: "UET", benchmark: 24.87, blocks: ["A00", "A01"] },
+            { code: "CN14", name: "Hệ thống thông tin", uni: "UET", benchmark: 26.38, blocks: ["A00", "A01"] },
+            { code: "CN15", name: "Mạng máy tính và truyền thông dữ liệu", uni: "UET", benchmark: 26.73, blocks: ["A00", "A01"] },
+            { code: "CN17", name: "Kỹ thuật Robot", uni: "UET", benchmark: 26.00, blocks: ["A00", "A01"] },
+            { code: "CN18", name: "Thiết kế công nghiệp và Đồ họa", uni: "UET", benchmark: 24.20, blocks: ["A00", "A01", "D01"] },
+            { code: "CN19", name: "Công nghệ vật liệu", uni: "UET", benchmark: 25.60, blocks: ["A00", "A01"] },
+            { code: "CN20", name: "Khoa học dữ liệu", uni: "UET", benchmark: 27.38, blocks: ["A00", "A01"] },
+            { code: "CN21", name: "Công nghệ sinh học", uni: "UET", benchmark: 22.13, blocks: ["A00", "B00"] },
+            
+            // Trường ĐH Khoa học Tự nhiên - ĐHQGHN (HUS) - Đầy đủ các ngành theo hình ảnh e38713.jpg
             { code: "QHT01", name: "Toán học", uni: "HUS", benchmark: 25.90, blocks: ["A00", "A01"] },
             { code: "QHT02", name: "Toán tin", uni: "HUS", benchmark: 25.50, blocks: ["A00", "A01"] },
             { code: "QHT98", name: "Khoa học máy tính và thông tin", uni: "HUS", benchmark: 25.35, blocks: ["A00", "A01", "D01"] },
@@ -759,12 +781,6 @@
             { code: "QHT92", name: "Tài nguyên và môi trường nước", uni: "HUS", benchmark: 21.10, blocks: ["A00", "A01"] },
             { code: "QHT18", name: "Địa chất học", uni: "HUS", benchmark: 22.05, blocks: ["A00", "A01"] },
             { code: "QHT20", name: "Quản lý tài nguyên và môi trường", uni: "HUS", benchmark: 22.20, blocks: ["A00", "A01", "D01"] },
-            
-            // Trường ĐH Công nghệ - ĐHQGHN (UET)
-            { code: "CN1", name: "Công nghệ Thông tin", uni: "UET", benchmark: 27.85, blocks: ["A00", "A01"] },
-            { code: "CN2", name: "Khoa học Máy tính", uni: "UET", benchmark: 27.20, blocks: ["A00", "A01"] },
-            { code: "CN8", name: "Kỹ thuật Điều khiển & Tự động hóa", uni: "UET", benchmark: 26.50, blocks: ["A00", "A01"] },
-            { code: "CN6", name: "Công nghệ Hàng không Vũ trụ", uni: "UET", benchmark: 24.80, blocks: ["A00", "A01"] },
 
             // Học viện Công nghệ Bưu chính Viễn thông (PTIT)
             { code: "BV01", name: "Công nghệ thông tin", uni: "PTIT", benchmark: 26.55, blocks: ["A00", "A01"] },
@@ -1204,7 +1220,7 @@
                         explanationHtml = 
                             '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT (Bưu chính Viễn thông)</p>' +
                             '<p>Điểm HSA $x = ' + hsaVal + '$ thuộc dải khoảng phân loại thứ ' + ptitResult.rangeIndex + ' từ [' + ptitResult.a + ', ' + ptitResult.b + '], tương ứng dải điểm THPT từ [' + ptitResult.c.toFixed(2) + ', ' + ptitResult.d.toFixed(2) + ']:</p>' +
-                            '<p class="pl-4 font-mono text-white">$$y = ' + ptitResult.c.toFixed(2) + ' + \\frac{x - ' + ptitResult.a + '}{' + ptitResult.b - ptitResult.a + '} \\cdot (' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + ') = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
+                            '<p class="pl-4 font-mono text-white">$$y = ' + ptitResult.c.toFixed(2) + ' + \\frac{x - ' + ptitResult.a + '}{' + (ptitResult.b - ptitResult.a) + '} \\cdot (' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + ') = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
                     } else {
                         explanationHtml = 
                             '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT (Bưu chính Viễn thông)</p>' +
@@ -1248,7 +1264,7 @@
                     baseThpt = ptitResult.error ? 7.95 : ptitResult.score;
                     methodTitle = "Nội suy PTIT";
                     if (!ptitResult.error) {
-                        subStepTex = '$$y_{\\text{PTIT 2025}} = ' + ptitResult.c.toFixed(2) + ' + \\frac{x - ' + ptitResult.a + '}{' + ptitResult.b - ptitResult.a + '} \\cdot (' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + ') = ' + baseThpt.toFixed(2) + '\\text{ điểm}$$';
+                        subStepTex = '$$y_{\\text{PTIT 2025}} = ' + ptitResult.c.toFixed(2) + ' + \\frac{x - ' + ptitResult.a + '}{' + (ptitResult.b - ptitResult.a) + '} \\cdot (' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + ') = ' + baseThpt.toFixed(2) + '\\text{ điểm}$$';
                     } else {
                         subStepTex = '$$y_{\\text{PTIT 2025}} = 7.95\\text{ điểm}$$';
                     }
@@ -1464,8 +1480,8 @@
 
         // ĐỔ DỮ LIỆU & LỌC NGÀNH HỌC DỰ BÁO ĐỖ TRUỘT
         function filterMajors() {
-            const table = document.getElementById('tableBody'); // Mượn hàm này để render bảng ngành phía trên
-            const searchVal = document.getElementById('searchTable') ? document.getElementById('searchTable').value.toLowerCase() : "";
+            const table = document.getElementById('tableBody'); 
+            const searchVal = document.getElementById('searchMajor') ? document.getElementById('searchMajor').value.toLowerCase() : "";
             const uniFilter = document.getElementById('selectUniversityFilter') ? document.getElementById('selectUniversityFilter').value : "all";
 
             const container = document.getElementById('majorTableBody');
@@ -1485,7 +1501,6 @@
             }
 
             filtered.forEach(m => {
-                // Kiểm tra xem tổ hợp của ngành có khớp với tổ hợp đang xét quy đổi không
                 const isMatchingBlock = m.blocks.includes(selectedBlock);
                 const userScore = currentThptValue;
                 const opt = getOpportunityStatus(m.benchmark, userScore);
@@ -1493,7 +1508,6 @@
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-900/60 transition-colors border-b border-slate-800/30 text-xs";
                 
-                // Nút hành động
                 const inWishlist = virtualWishlist.some(item => item.code === m.code);
                 const actionButton = inWishlist 
                     ? `<span class="text-[10px] bg-slate-800 text-slate-500 px-2 py-1 rounded">Đã thêm</span>`
@@ -1503,7 +1517,7 @@
                     <td class="p-3 font-mono font-bold text-slate-400">${m.code}</td>
                     <td class="p-3">
                         <div class="font-bold text-white">${m.name}</div>
-                        <div class="text-[10px] text-slate-400">${m.uni === "HUS" ? "HUS - ĐH Khoa học Tự nhiên" : m.uni === "UET" ? "UET - ĐH Công nghệ" : m.uni === "PTIT" ? "Học viện Công nghệ BCVT" : "ĐHQG - Thành viên"}</div>
+                        <div class="text-[10px] text-slate-400">${m.uni === "HUS" ? "HUS - ĐH Khoa học Tự nhiên" : m.uni === "UET" ? "UET - Đại học Công nghệ" : m.uni === "PTIT" ? "Học viện Công nghệ BCVT" : "ĐHQG - Thành viên"}</div>
                     </td>
                     <td class="p-3 text-center">
                         ${m.blocks.map(b => `<span class="inline-block px-1.5 py-0.5 rounded text-[9px] font-bold mx-0.5 ${b === selectedBlock ? 'bg-brand-500/20 text-brand-500 border border-brand-500/30' : 'bg-slate-900 text-slate-500'}">${b}</span>`).join('')}
@@ -1590,7 +1604,7 @@
                         </span>
                         <div>
                             <div class="font-bold text-white text-xs">${m.name} (${m.code})</div>
-                            <div class="text-[10px] text-slate-400">Trường: ${m.uni} | Điểm chuẩn '25: <span class="font-mono font-bold text-slate-300">${m.benchmark.toFixed(2)}</span></div>
+                            <div class="text-[10px] text-slate-400">Trường: ${m.uni === "UET" ? "ĐH Công nghệ (UET)" : m.uni} | Điểm chuẩn '25: <span class="font-mono font-bold text-slate-300">${m.benchmark.toFixed(2)}</span></div>
                         </div>
                     </div>
                     <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto">
@@ -1640,9 +1654,9 @@
             // 2. Chạy thuật toán kiểm tra các Quy tắc Vàng (Golden Admission Rules)
             let warnings = [];
             let successes = [];
+            let uetSpecialTips = [];
 
             // QUY TẮC 1: Đặt ngành Mơ ước (Reach) xuống dưới ngành An toàn (Safe)
-            // Lỗi này cực kỳ phổ biến: Đặt Safe ở NV1, Reach ở NV2. Nếu đỗ cả hai sẽ trúng tuyển thẳng NV1, làm mất cơ hội xét tuyển NV2.
             let foundSafeBeforeReach = false;
             let firstSafeIndex = -1;
             let lastReachIndex = -1;
@@ -1660,22 +1674,30 @@
             if (firstSafeIndex !== -1 && lastReachIndex !== -1 && firstSafeIndex < lastReachIndex) {
                 const safeMajor = virtualWishlist[firstSafeIndex];
                 const reachMajor = virtualWishlist[lastReachIndex];
-                warnings.push(`⚠️ <strong>Lỗi bố trí thứ tự ưu tiên:</strong> Bạn đang đặt ngành an toàn <strong>${safeMajor.name} (NV ${firstSafeIndex+1})</strong> lên trên ngành thách thức/mơ ước <strong>${reachMajor.name} (NV ${lastReachIndex+1})</strong>. Nếu bạn đủ điểm đỗ cả hai, hệ thống sẽ tự động khóa trúng tuyển ở NV ${firstSafeIndex+1} và bạn sẽ mất hoàn toàn cơ hội thử sức ở ngành mơ ước.`);
+                warnings.push(`⚠️ <strong>Lỗi bố trí thứ tự ưu tiên:</strong> Bạn đang đặt ngành an toàn <strong>${safeMajor.name} (NV ${firstSafeIndex+1})</strong> lên trên ngành thách thức/mơ ước <strong>${reachMajor.name} (NV ${lastReachIndex+1})</strong>. Nếu bạn đủ điểm đỗ cả hai, hệ thống khóa trúng tuyển thẳng ở NV ${firstSafeIndex+1} và bạn mất hoàn toàn cơ hội xét tuyển NV ${lastReachIndex+1}.`);
             } else {
-                successes.push(`✅ <strong>Thứ tự ưu tiên hợp lý:</strong> Bạn đã sắp xếp các nguyện vọng mơ ước (điểm chuẩn cao, tính cạnh tranh lớn) lên trên các nguyện vọng phòng thủ.`);
+                successes.push(`✅ <strong>Thứ tự ưu tiên hợp lý:</strong> Bạn đã sắp xếp các nguyện vọng có điểm chuẩn cao (tính cạnh tranh lớn) lên trên các nguyện vọng phòng thủ.`);
             }
 
             // QUY TẮC 2: Kiểm tra chốt chặn an toàn (Chân đế nguyện vọng)
             if (safeCount === 0) {
-                warnings.push(`❌ <strong>Nguy hiểm - Thiếu "chốt chặn phòng thủ":</strong> Danh sách của bạn không có bất kỳ nguyện vọng "An toàn" hoặc "Khả thi lớn" nào. Nếu phổ điểm biến động tăng, bạn có nguy cơ trượt toàn bộ các nguyện vọng. Hãy bổ sung ít nhất 1-2 ngành có điểm chuẩn thấp hơn điểm của bạn từ 1.5 điểm trở lên.`);
+                warnings.push(`❌ <strong>Thiếu "chốt chặn phòng thủ":</strong> Danh sách không có bất kỳ nguyện vọng "An toàn" hoặc "Khả thi lớn" nào. Hãy bổ sung ít nhất 1-2 ngành có điểm chuẩn thấp hơn điểm của bạn từ 1.5 điểm trở lên đề phòng biến động điểm số.`);
             } else {
-                successes.push(`✅ <strong>Chân đế vững chắc:</strong> Danh sách của bạn đã tích hợp ${safeCount} nguyện vọng an toàn phòng ngự đề phòng biến động điểm số.`);
+                successes.push(`✅ <strong>Chân đế vững chắc:</strong> Danh sách đã tích hợp ${safeCount} nguyện vọng an toàn để bảo hiểm vị thế tuyển sinh.`);
             }
 
-            // QUY TẮC 3: Quy tắc phân bổ rủi ro 30-50-20
-            const total = virtualWishlist.length;
-            const reachPct = ((reachCount + dangerCount) / total) * 100;
-            const safePct = (safeCount / total) * 105;
+            // QUY TẮC 3: PHÂN TÍCH RIÊNG CHO CÁC NGÀNH CỦA ĐẠI HỌC CÔNG NGHỆ (VNU-UET) DỰA TRÊN IMAGE_563AA1.PNG
+            const uetWishes = virtualWishlist.filter(m => m.uni === "UET");
+            if (uetWishes.length > 0) {
+                const hasHotUet = uetWishes.some(m => ["CN1", "CN8", "CN11", "CN12"].includes(m.code));
+                if (hasHotUet) {
+                    uetSpecialTips.push(`💡 <strong>Tư vấn VNU-UET:</strong> Các ngành đỉnh cao của ĐH Công nghệ như <em>Công nghệ thông tin (CN1 - 28.19đ)</em>, <em>Khoa học máy tính (CN8 - 27.86đ)</em>, <em>Kỹ thuật điều khiển & tự động hóa (CN11 - 27.90đ)</em> và <em>Trí tuệ nhân tạo (CN12 - 27.75đ)</em> có mật độ cạnh tranh cực kỳ khốc liệt. Hãy cân nhắc lót thêm các ngành kỹ thuật liên đới có điểm chuẩn mềm hơn như <em>Kỹ thuật Robot (CN17 - 26.00đ)</em> hoặc <em>Cơ kỹ thuật (CN4 - 26.15đ)</em> để phân tán rủi ro.`);
+                }
+                const hasEcoUet = uetWishes.some(m => ["CN10", "CN5", "CN21"].includes(m.code));
+                if (hasEcoUet) {
+                    uetSpecialTips.push(`💡 <strong>Tối ưu hóa VNU-UET:</strong> Bạn đã chọn một số ngành có mức điểm chuẩn vô cùng dễ chịu của UET như <em>Công nghệ nông nghiệp (CN10 - 22.00đ)</em> hay <em>Công nghệ sinh học (CN21 - 22.13đ)</em>. Đây là những "bảo hiểm" tuyệt vời giúp bạn vừa sở hữu cơ hội đỗ rất cao vừa giữ được tấm vé vào học tại trường đại học top đầu cả nước.`);
+                }
+            }
 
             // Đưa ra lời khuyên tổng quát
             html += `<div class="p-3 bg-slate-950/80 rounded-lg border border-slate-800 text-[11px] mb-3">`;
@@ -1686,9 +1708,18 @@
             html += `</div>`;
 
             if (warnings.length > 0) {
-                html += `<div class="space-y-2.5">`;
+                html += `<div class="space-y-2.5 mb-3">`;
                 warnings.forEach(w => {
                     html += `<p class="p-2.5 rounded-lg bg-rose-950/20 text-rose-300 border border-rose-500/20 text-xs">${w}</p>`;
+                });
+                html += `</div>`;
+            }
+
+            if (uetSpecialTips.length > 0) {
+                html += `<div class="space-y-2 mb-3 bg-brand-orange/5 border border-brand-orange/20 rounded-xl p-3">`;
+                html += `<p class="text-[10px] text-brand-orange uppercase font-extrabold tracking-wider mb-1">⚡ Đánh giá chuyên sâu cho VNU-UET:</p>`;
+                uetSpecialTips.forEach(tip => {
+                    html += `<p class="text-slate-300 text-xs leading-relaxed">${tip}</p>`;
                 });
                 html += `</div>`;
             }
@@ -1701,17 +1732,11 @@
                 html += `</div>`;
             }
 
-            // Lời khuyên tối ưu hóa chiến thuật cụ thể
             html += `<div class="mt-3 pt-3 border-t border-indigo-500/10 text-xs text-indigo-300">`;
             html += `💡 <strong>Khuyên dùng:</strong> Hãy đặt Nguyện vọng 1 là ngành bạn yêu thích nhất (dù là mạo hiểm), Nguyện vọng 2-3 là các ngành vừa sức có điểm chuẩn ngang bằng hoặc thấp hơn chút ít, và luôn giữ Nguyện vọng cuối cùng là một ngành chắc chắn đỗ để bảo hiểm vị thế tuyển sinh.`;
             html += `</div>`;
 
             container.innerHTML = html;
-        }
-
-        // LỌC DANH SÁCH NGÀNH TRÊN GIAO DIỆN THEO ĐIỀU KIỆN
-        function filterUniversityMajors() {
-            filterMajors();
         }
 
         let bellCurveChart = null;
