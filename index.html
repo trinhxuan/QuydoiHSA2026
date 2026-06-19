@@ -111,7 +111,7 @@
             </div>
             <div class="flex items-center gap-2 text-xs bg-slate-900 rounded-full px-3 py-1.5 border border-slate-800">
                 <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-                <span class="text-slate-300 font-medium">Bản cập nhật tư vấn chiến thuật tuyển sinh liên năm (Đồng bộ UET 2025)</span>
+                <span class="text-slate-300 font-medium">Bản cập nhật tư vấn chiến thuật tuyển sinh liên năm</span>
             </div>
         </div>
     </header>
@@ -174,9 +174,9 @@
                     <input type="range" id="rangeHsa" min="19" max="133" value="98" step="1"
                            class="w-full accent-brand-500 cursor-pointer">
                     <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-                        <span>Min: 19 (0%)</span>
-                        <span id="hsaInputLabel" class="text-brand-400 font-bold">Mốc: 98 (Top 8.05%)</span>
-                        <span>Max: 133 (100%)</span>
+                        <span>Thấp nhất: 19 (0%)</span>
+                        <span id="hsaInputLabel" class="text-brand-400 font-bold">Mốc: 98 (Nhóm 8.05% đầu)</span>
+                        <span>Cao nhất: 133 (100%)</span>
                     </div>
                 </div>
 
@@ -194,9 +194,9 @@
                     <input type="range" id="rangeThpt" min="5.90" max="30" value="25.46" step="0.01"
                            class="w-full accent-indigo-500 cursor-pointer">
                     <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-                        <span id="labelLimitMin">Min: 5.90</span>
+                        <span id="labelLimitMin">Thấp nhất: 5.90</span>
                         <span>Điểm TB: 17.60</span>
-                        <span>Max: 30.00</span>
+                        <span>Cao nhất: 30.00</span>
                     </div>
                 </div>
             </div>
@@ -276,9 +276,9 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                     <!-- Bách phân vị -->
                     <div class="text-center md:text-left border-b md:border-b-0 md:border-r border-slate-800 pb-4 md:pb-0 md:pr-4">
-                        <span class="text-[10px] text-slate-400 block mb-1">Bách phân vị (Percentile)</span>
+                        <span class="text-[10px] text-slate-400 block mb-1">Bách phân vị</span>
                         <div id="resPct" class="text-4xl font-extrabold text-brand-500 font-mono">92,92%</div>
-                        <span id="resTop" class="text-xs font-semibold text-slate-300 mt-1 inline-block">Top $8,05\%$ xuất sắc nhất</span>
+                        <span id="resTop" class="text-xs font-semibold text-slate-300 mt-1 inline-block">Nhóm $8,05\%$ xuất sắc nhất</span>
                     </div>
 
                     <!-- HSA Gốc -->
@@ -313,7 +313,7 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
                     <div>
                         <h3 class="text-sm font-extrabold text-white flex items-center gap-2">
-                            <span class="p-1.5 bg-indigo-500/10 text-indigo-400 rounded-lg text-xs">🚀 AI-Strategy v2.0</span>
+                            <span class="p-1.5 bg-indigo-500/10 text-indigo-400 rounded-lg text-xs">🚀 Trợ lý chiến thuật v2.0</span>
                             Mô phỏng & Đánh giá chiến thuật Nguyện vọng của bạn
                         </h3>
                         <p class="text-xs text-slate-400 mt-0.5">Sắp xếp các nguyện vọng theo thứ tự ưu tiên của bạn để thuật toán thông minh đánh giá cơ hội tối ưu</p>
@@ -326,7 +326,7 @@
                 <!-- Danh sách Nguyện vọng ảo của bạn -->
                 <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 min-h-[100px] mb-4">
                     <div id="emptyWishlistLabel" class="text-center py-6 text-xs text-slate-500">
-                        <p>Danh sách trống. Hãy nhấn nút <span class="text-brand-500 font-semibold">+ Thêm vào Wishlist</span> ở danh sách ngành học bên dưới để thử nghiệm chiến thuật tuyển sinh.</p>
+                        <p>Danh sách trống. Hãy nhấn nút <span class="text-brand-500 font-semibold">+ Thêm</span> ở danh sách ngành học bên dưới để thử nghiệm chiến thuật đặt nguyện vọng.</p>
                     </div>
                     <div id="wishlistContainer" class="space-y-2">
                         <!-- Nạp động bằng JavaScript -->
@@ -344,12 +344,12 @@
                 </div>
             </div>
 
-            <!-- 3. BẢNG DỰ BÁO CƠ HỘI ĐỖ/TRƯỢT CHO TỪNG NGÀNH HỌC (ĐỒNG BỘ DỮ LIỆU UET 2025 THEO IMAGE_563AA1.PNG) -->
+            <!-- 3. BẢNG DỰ BÁO CƠ HỘI ĐỖ/TRƯỢT CHO TỪNG NGÀNH HỌC -->
             <div class="glass-panel rounded-2xl p-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
                     <div>
                         <h3 class="text-sm font-bold text-white">Tra cứu cơ hội đỗ đại học năm 2025 theo điểm quy đổi của bạn</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Dữ liệu tuyển sinh được đồng bộ hóa chính xác tuyệt đối theo tệp <strong class="text-amber-500">image_563aa1.png</strong></p>
+                        <p class="text-xs text-slate-400 mt-0.5">Dữ liệu tuyển sinh được đồng bộ hóa chính xác theo công bố chính thức của trường</p>
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
                         <select id="selectUniversityFilter" onchange="filterMajors()" class="bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 font-bold focus:outline-none focus:border-brand-500">
@@ -399,14 +399,14 @@
                         <div>
                             <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">HSA 2025</span>
                             <div id="hsaPct2025" class="text-2xl font-black text-slate-300 font-mono mt-1">90.76%</div>
-                            <span class="text-[10px] text-slate-500 block">Bách phân vị (Top 9.24%)</span>
+                            <span class="text-[10px] text-slate-500 block">Bách phân vị (Nhóm 9.24% đầu)</span>
                         </div>
                         <div class="mt-4 pt-3 border-t border-slate-800/80">
                             <span class="text-[10px] text-slate-400">THPT Quy đổi 2025:</span>
                             <div id="thptQd2025" class="text-lg font-bold text-emerald-400 font-mono">24.88đ</div>
                             <span class="text-[10px] text-slate-400 mt-2 block">Thứ hạng HSA:</span>
-                            <div id="hsaRank2025" class="text-md font-bold text-white font-mono">#9,348</div>
-                            <span class="text-[9px] text-slate-500">Quy mô: 101,173 thí sinh</span>
+                            <div id="hsaRank2025" class="text-md font-bold text-white font-mono">Hạng 9.348</div>
+                            <span class="text-[9px] text-slate-500">Quy mô: 101.173 thí sinh</span>
                         </div>
                     </div>
                     <!-- Khung Năm 2026 (THPT 2025) -->
@@ -414,7 +414,22 @@
                         <div>
                             <span class="text-[10px] text-brand-indigo font-bold uppercase tracking-wider">HSA 2026</span>
                             <div id="hsaPct2026" class="text-2xl font-black text-emerald-400 font-mono mt-1">92.92%</div>
-                            <span class="text-[10px] text-slate-500 block">Bách phân vị (Top 7.08%)</span>
+                            <span class="text-[10px] text-slate-500 block">Bách phân vị (Nhóm 7.08% đầu)</span>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800/80">
+                            <span class="text-[10px] text-slate-400">THPT Quy đổi 2025:</span>
+                            <div id="thptQd2026" class="text-lg font-bold text-emerald-400 font-mono">25.46đ</div>
+                            <span class="text-[10px] text-slate-400 mt-2 block">Thứ hạng HSA:</span>
+                            <div id="hsaRank2026" class="text-md font-bold text-white font-mono">Hạng 7.930</div>
+                            <span class="text-[9px] text-slate-500">Quy mô: 112.000 thí sinh</span>
+                        </div>
+                    </div>
+                    <!-- Khung Năm 2026 (THPT 2025) -->
+                    <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-800/60 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] text-brand-indigo font-bold uppercase tracking-wider">HSA 2026</span>
+                            <div id="hsaPct2026" class="text-2xl font-black text-emerald-400 font-mono mt-1">92.92%</div>
+                            <span class="text-[10px] text-slate-500 block">Bách phân vị (Nhóm 7.08% đầu)</span>
                         </div>
                         <div class="mt-4 pt-3 border-t border-slate-800/80">
                             <span class="text-[10px] text-slate-400">THPT Quy đổi 2025:</span>
@@ -456,8 +471,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                     <div>
                         <div class="text-[11px] text-slate-400">Xếp hạng ước lượng quốc gia:</div>
-                        <div id="nationalRankText" class="text-3xl font-black text-indigo-400 font-mono mt-1">#11,715</div>
-                        <div id="nationalPoolText" class="text-[10px] text-slate-500 mt-1">Trên tổng quy mô 165,467 thí sinh khối A00</div>
+                        <div id="nationalRankText" class="text-3xl font-black text-indigo-400 font-mono mt-1">Hạng 11.715</div>
+                        <div id="nationalPoolText" class="text-[10px] text-slate-500 mt-1">Trên tổng quy mô 165.467 thí sinh khối A00</div>
                     </div>
                     
                     <div class="space-y-3 border-t md:border-t-0 md:border-l border-slate-800 pt-4 md:pt-0 md:pl-6">
@@ -716,16 +731,16 @@
 
         // Bách phân vị tuyển sinh và mốc neo vĩ mô quy ước của Bộ GD&ĐT
         const moetOfficialAnchors = [
-            { hsa: 130, a00: 30.00, top: "Top 0.01%" },
-            { hsa: 120, a00: 29.50, top: "Top 0.09%" },
-            { hsa: 110, a00: 28.50, top: "Top 1.27%" },
-            { hsa: 100, a00: 27.25, top: "Top 6.21%" },
-            { hsa: 90, a00: 25.50, top: "Top 18.55%" },
-            { hsa: 80, a00: 23.25, top: "Top 40.26%" },
-            { hsa: 70, a00: 20.50, top: "Top 67.39%" },
-            { hsa: 60, a00: 17.25, top: "Top 89.15%" },
-            { hsa: 50, a00: 13.80, top: "Top 98.23%" },
-            { hsa: 31, a00: 7.95, top: "Top 100.0%" }
+            { hsa: 130, a00: 30.00, top: "Nhóm 0.01%" },
+            { hsa: 120, a00: 29.50, top: "Nhóm 0.09%" },
+            { hsa: 110, a00: 28.50, top: "Nhóm 1.27%" },
+            { hsa: 100, a00: 27.25, top: "Nhóm 6.21%" },
+            { hsa: 90, a00: 25.50, top: "Nhóm 18.55%" },
+            { hsa: 80, a00: 23.25, top: "Nhóm 40.26%" },
+            { hsa: 70, a00: 20.50, top: "Nhóm 67.39%" },
+            { hsa: 60, a00: 17.25, top: "Nhóm 89.15%" },
+            { hsa: 50, a00: 13.80, top: "Nhóm 98.23%" },
+            { hsa: 31, a00: 7.95, top: "Nhóm 100.0%" }
         ];
 
         // SỐ HÓA CHÍNH XÁC 100%: TOÀN BỘ CƠ SỞ DỮ LIỆU ĐIỂM CHUẨN TRÚNG TUYỂN THỰC TẾ (ĐỒNG BỘ 2025 CHUẨN HÌNH ẢNH)
@@ -1220,7 +1235,7 @@
                         explanationHtml = 
                             '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT (Bưu chính Viễn thông)</p>' +
                             '<p>Điểm HSA $x = ' + hsaVal + '$ thuộc dải khoảng phân loại thứ ' + ptitResult.rangeIndex + ' từ [' + ptitResult.a + ', ' + ptitResult.b + '], tương ứng dải điểm THPT từ [' + ptitResult.c.toFixed(2) + ', ' + ptitResult.d.toFixed(2) + ']:</p>' +
-                            '<p class="pl-4 font-mono text-white">$$y = ' + ptitResult.c.toFixed(2) + ' + \\frac{x - ' + ptitResult.a + '}{' + (ptitResult.b - ptitResult.a) + '} \\cdot (' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + ') = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
+                            '<p class="pl-4 font-mono text-white">$$y = ' + ptitResult.c.toFixed(2) + ' + \\frac{x - ' + ptitResult.a + '}{' + ptitResult.b - ptitResult.a + '} \\cdot (' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + ') = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
                     } else {
                         explanationHtml = 
                             '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT (Bưu chính Viễn thông)</p>' +
@@ -1363,12 +1378,12 @@
 
             const topPercentile = 100 - pct;
             resPct.innerText = pct.toFixed(2) + "%";
-            resTop.innerHTML = "Top $" + topPercentile.toFixed(2) + "\\%$ học sinh xuất sắc nhất";
+            resTop.innerHTML = "Nhóm $" + topPercentile.toFixed(2) + "\\%$ xuất sắc nhất";
             resHsa.innerText = Math.round(hsaVal) + " / 150";
             resThpt.innerText = thptVal.toFixed(2);
             progressBar.style.width = pct + "%";
             cursorLabel.innerHTML = "Vị trí bách phân vị của bạn (" + pct.toFixed(2) + "%)";
-            document.getElementById('hsaInputLabel').innerHTML = "Mốc: " + Math.round(hsaVal) + " (Top " + topPercentile.toFixed(2) + "%)";
+            document.getElementById('hsaInputLabel').innerHTML = "Mốc: " + Math.round(hsaVal) + " (Nhóm " + topPercentile.toFixed(2) + "% đầu)";
 
             // THỐNG KÊ SO SÁNH THỨ HẠNG LIÊN NĂM HSA
             let rawHsaValue = Math.round(hsaVal);
@@ -1398,8 +1413,8 @@
             // Cập nhật thông số lên panel so sánh các năm
             document.getElementById('hsaPct2025').innerText = pct2025.toFixed(2) + "%";
             document.getElementById('hsaPct2026').innerText = pct2026.toFixed(2) + "%";
-            document.getElementById('hsaRank2025').innerText = "#" + estRank2025.toLocaleString('vi-VN');
-            document.getElementById('hsaRank2026').innerText = "#" + estRank2026.toLocaleString('vi-VN');
+            document.getElementById('hsaRank2025').innerText = "Hạng " + estRank2025.toLocaleString('vi-VN');
+            document.getElementById('hsaRank2026').innerText = "Hạng " + estRank2026.toLocaleString('vi-VN');
 
             // Tính toán giá trị THPT quy đổi tương ứng với từng phân vị của các năm
             const thptQd2025Val = findThptFromNationalPercentile(pct2025, selectedBlock);
@@ -1439,7 +1454,7 @@
             const fallenCount = Math.max(0, rankMinus - currentRank);
 
             // Cập nhật thông tin phân tích thứ hạng lên UI tốt nghiệp THPT
-            document.getElementById('nationalRankText').innerText = "#" + currentRank.toLocaleString('vi-VN');
+            document.getElementById('nationalRankText').innerText = "Hạng " + currentRank.toLocaleString('vi-VN');
             document.getElementById('nationalPoolText').innerText = "Ước lượng vị thế trên tổng số " + poolSize.toLocaleString('vi-VN') + " thí sinh khối " + selectedBlock + " cả nước";
             document.getElementById('surpassedCountText').innerText = surpassedCount > 0 ? "Vượt thêm +" + surpassedCount.toLocaleString('vi-VN') + " người" : "Giữ vững vị trí đỉnh đầu";
             document.getElementById('fallenCountText').innerText = fallenCount > 0 ? "Bị tụt sau -" + fallenCount.toLocaleString('vi-VN') + " người" : "Không đổi";
@@ -1474,8 +1489,8 @@
             if (diff >= 1.5) return { text: "An toàn cực cao", color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", level: "safe" };
             if (diff >= 0.5) return { text: "Khả thi lớn", color: "text-teal-400", bg: "bg-teal-500/10", border: "border-teal-500/20", level: "high-probable" };
             if (diff >= -0.5) return { text: "Cạnh tranh (50-50)", color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20", level: "borderline" };
-            if (diff >= -1.5) return { text: "Mạo hiểm (Reach)", color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20", level: "reach" };
-            return { text: "Nguy hiểm (Unlikely)", color: "text-rose-400", bg: "bg-rose-500/10", border: "border-rose-500/20", level: "danger" };
+            if (diff >= -1.5) return { text: "Mạo hiểm", color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20", level: "reach" };
+            return { text: "Nguy hiểm", color: "text-rose-400", bg: "bg-rose-500/10", border: "border-rose-500/20", level: "danger" };
         }
 
         // ĐỔ DỮ LIỆU & LỌC NGÀNH HỌC DỰ BÁO ĐỖ TRUỘT
