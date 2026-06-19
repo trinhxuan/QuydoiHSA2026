@@ -344,12 +344,12 @@
                 </div>
             </div>
 
-            <!-- 3. BẢNG DỰ BÁO CƠ HỘI ĐỖ/TRƯỢT CHO TỪNG NGÀNH HỌC -->
+            <!-- 3. BẢNG DỰ BÁO CƠ HỘI ĐỖ/TRƯỢT CHO TỪNG NGÀNH HỌC (ĐỒNG BỘ DỮ LIỆU CHUẨN 2025) -->
             <div class="glass-panel rounded-2xl p-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
                     <div>
-                        <h3 class="text-sm font-bold text-white">Tra cứu cơ hội đỗ đại học năm 2025 theo điểm quy đổi của bạn</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Dữ liệu tuyển sinh được đồng bộ hóa chính xác theo công bố chính thức của trường</p>
+                        <h3 class="text-sm font-bold text-white">Tra cứu cơ hội đỗ đại học năm 2028 theo điểm quy đổi của bạn</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Lọc nhanh ngành của HUS, UET, PTIT và các ngành Hot khối ĐHQG</p>
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
                         <select id="selectUniversityFilter" onchange="filterMajors()" class="bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 font-bold focus:outline-none focus:border-brand-500">
@@ -371,6 +371,7 @@
                                 <th class="p-3">Tên ngành / Trường</th>
                                 <th class="p-3 text-center">Tổ hợp tuyển</th>
                                 <th class="p-3 text-center">Điểm chuẩn '25</th>
+                                <th class="p-3 text-center">Chênh lệch</th>
                                 <th class="p-3 text-center">Đánh giá cơ hội</th>
                                 <th class="p-3 text-right">Hành động</th>
                             </tr>
@@ -1495,8 +1496,8 @@
 
         // ĐỔ DỮ LIỆU & LỌC NGÀNH HỌC DỰ BÁO ĐỖ TRUỘT
         function filterMajors() {
-            const table = document.getElementById('tableBody'); 
-            const searchVal = document.getElementById('searchMajor') ? document.getElementById('searchMajor').value.toLowerCase() : "";
+            const table = document.getElementById('tableBody'); // Mượn hàm này để render bảng ngành phía trên
+            const searchVal = document.getElementById('searchTable') ? document.getElementById('searchTable').value.toLowerCase() : "";
             const uniFilter = document.getElementById('selectUniversityFilter') ? document.getElementById('selectUniversityFilter').value : "all";
 
             const container = document.getElementById('majorTableBody');
@@ -1511,18 +1512,25 @@
             });
 
             if (filtered.length === 0) {
-                container.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">Không tìm thấy ngành học phù hợp điều kiện lọc.</td></tr>`;
+                container.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">Không tìm thấy ngành học phù hợp điều kiện lọc.</td></tr>`;
                 return;
             }
 
             filtered.forEach(m => {
+                // Kiểm tra xem tổ hợp của ngành có khớp với tổ hợp đang xét quy đổi không
                 const isMatchingBlock = m.blocks.includes(selectedBlock);
                 const userScore = currentThptValue;
                 const opt = getOpportunityStatus(m.benchmark, userScore);
+                
+                // Tính toán chênh lệch điểm chi tiết giữa điểm thí sinh và điểm chuẩn của trường
+                const diff = userScore - m.benchmark;
+                const diffText = (diff >= 0 ? '+' : '') + diff.toFixed(2);
+                const diffClass = diff >= 0 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold';
 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-900/60 transition-colors border-b border-slate-800/30 text-xs";
                 
+                // Nút hành động
                 const inWishlist = virtualWishlist.some(item => item.code === m.code);
                 const actionButton = inWishlist 
                     ? `<span class="text-[10px] bg-slate-800 text-slate-500 px-2 py-1 rounded">Đã thêm</span>`
@@ -1532,12 +1540,13 @@
                     <td class="p-3 font-mono font-bold text-slate-400">${m.code}</td>
                     <td class="p-3">
                         <div class="font-bold text-white">${m.name}</div>
-                        <div class="text-[10px] text-slate-400">${m.uni === "HUS" ? "HUS - ĐH Khoa học Tự nhiên" : m.uni === "UET" ? "UET - Đại học Công nghệ" : m.uni === "PTIT" ? "Học viện Công nghệ BCVT" : "ĐHQG - Thành viên"}</div>
+                        <div class="text-[10px] text-slate-400">${m.uni === "HUS" ? "HUS - ĐH Khoa học Tự nhiên" : m.uni === "UET" ? "UET - ĐH Công nghệ" : m.uni === "PTIT" ? "Học viện Công nghệ BCVT" : "ĐHQG - Thành viên"}</div>
                     </td>
                     <td class="p-3 text-center">
                         ${m.blocks.map(b => `<span class="inline-block px-1.5 py-0.5 rounded text-[9px] font-bold mx-0.5 ${b === selectedBlock ? 'bg-brand-500/20 text-brand-500 border border-brand-500/30' : 'bg-slate-900 text-slate-500'}">${b}</span>`).join('')}
                     </td>
                     <td class="p-3 text-center font-mono font-black text-white">${m.benchmark.toFixed(2)}</td>
+                    <td class="p-3 text-center font-mono ${diffClass}">${diffText}</td>
                     <td class="p-3 text-center">
                         <span class="px-2 py-1 rounded-full text-[10px] font-bold ${opt.bg} ${opt.color} border ${opt.border}">
                             ${opt.text}
