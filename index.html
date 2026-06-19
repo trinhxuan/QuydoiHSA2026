@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Quy đổi & Dự báo phân vị HSA sang THPT tốt nghiệp</title>
+    <title>Quy đổi HSA sang THPT & Trợ lý tư vấn nguyện vọng tuyển sinh 2026</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -74,6 +74,21 @@
             position: relative;
             width: 100%;
         }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
     </style>
 </head>
 <body class="text-slate-200 min-h-full flex flex-col pb-12">
@@ -89,22 +104,22 @@
                 </div>
                 <div>
                     <h1 class="font-extrabold text-base md:text-lg tracking-tight text-white leading-snug">
-                        Hệ thống Phân tích & Quy đổi Điểm thi HSA <span class="inline-block text-brand-500 mx-1">&rarr;</span> THPT
+                        Hệ thống Phân tích Quy đổi HSA <span class="inline-block text-brand-500 mx-1">&rarr;</span> Cố vấn Nguyện vọng thông minh
                     </h1>
-                    <p class="text-xs text-slate-400">Hiệu chuẩn bách phân vị Quốc gia Bộ GD&ĐT & Đối sánh Thứ hạng liên năm</p>
+                    <p class="text-xs text-slate-400">Hiệu chuẩn bách phân vị Quốc gia Bộ GD&ĐT & Dự báo chiến thuật đỗ đại học 2026</p>
                 </div>
             </div>
             <div class="flex items-center gap-2 text-xs bg-slate-900 rounded-full px-3 py-1.5 border border-slate-800">
                 <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-                <span class="text-slate-300 font-medium">Bản so sánh điểm quy đổi và thứ hạng liên năm</span>
+                <span class="text-slate-300 font-medium">Bản cập nhật tư vấn chiến thuật tuyển sinh liên năm</span>
             </div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 mt-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- CỘT TRÁI: Nhập điểm & Chọn phương pháp quy đổi -->
-        <section class="lg:col-span-5 flex flex-col gap-6">
+        <!-- CỘT TRÁI (4 cols): Nhập điểm & Cấu hình Quy đổi -->
+        <section class="lg:col-span-4 flex flex-col gap-6">
             
             <!-- Card 1: Công cụ nhập liệu chính -->
             <div class="glass-panel rounded-2xl p-6 shadow-2xl relative overflow-hidden">
@@ -251,10 +266,10 @@
 
         </section>
 
-        <!-- CỘT PHẢI: Kết quả quy đổi, Đồ thị & Công thức chi tiết -->
-        <section class="lg:col-span-7 flex flex-col gap-6">
+        <!-- CỘT PHẢI (8 cols): Kết quả, Bộ cố vấn chiến thuật đặt nguyện vọng và dự báo chi tiết -->
+        <section class="lg:col-span-8 flex flex-col gap-6">
             
-            <!-- Panel Kết quả chính -->
+            <!-- 1. Panel kết quả quy đổi chính -->
             <div class="glass-panel rounded-2xl p-6 border-l-4 border-emerald-500 shadow-xl glow-active">
                 <h2 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-3">Thứ hạng phân vị tương đương sau ánh xạ</h2>
                 
@@ -292,7 +307,86 @@
                 </div>
             </div>
 
-            <!-- Bảng so sánh đối chiếu thứ hạng liên năm -->
+            <!-- 2. TRỢ LÝ CỐ VẤN CHIẾN THUẬT NGUYỆN VỌNG THÔNG MINH (TÍNH NĂNG MỚI NÂNG CẤP) -->
+            <div class="glass-panel rounded-2xl p-6 border-l-4 border-indigo-500 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-3xl"></div>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+                    <div>
+                        <h3 class="text-sm font-extrabold text-white flex items-center gap-2">
+                            <span class="p-1.5 bg-indigo-500/10 text-indigo-400 rounded-lg text-xs">🚀 AI-Strategy</span>
+                            Mô phỏng & Đánh giá chiến thuật Nguyện vọng của bạn
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Xếp thứ tự nguyện vọng để thuật toán kiểm tra tính hợp lý khoa học</p>
+                    </div>
+                    <button onclick="clearWishlist()" class="text-[10px] text-slate-400 hover:text-rose-400 transition-colors bg-slate-900 px-2 py-1 rounded border border-slate-800">
+                        Xóa tất cả
+                    </button>
+                </div>
+
+                <!-- Danh sách Nguyện vọng ảo của bạn -->
+                <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 min-h-[100px] mb-4">
+                    <div id="emptyWishlistLabel" class="text-center py-6 text-xs text-slate-500">
+                        <p>Danh sách trống. Hãy nhấn nút <span class="text-brand-500 font-semibold">+ Thêm vào Wishlist</span> ở danh sách ngành học bên dưới để thử nghiệm chiến thuật tuyển sinh.</p>
+                    </div>
+                    <div id="wishlistContainer" class="space-y-2">
+                        <!-- Nạp động bằng JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Panel kết quả phân tích chiến thuật đặt nguyện vọng -->
+                <div id="strategyAdvicePanel" class="bg-indigo-950/20 border border-indigo-500/20 rounded-xl p-4 hidden">
+                    <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <span>🔍</span> Đánh giá chiến thuật nguyện vọng từ Chuyên gia:
+                    </h4>
+                    <div id="strategyAdviceContent" class="text-xs text-slate-300 space-y-2 leading-relaxed">
+                        <!-- Phân tích thông minh xuất ra ở đây -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. BẢNG DỰ BÁO CƠ HỘI ĐỖ/TRƯỢT CHO TỪNG NGÀNH HỌC (ĐỒNG BỘ DỮ LIỆU CHUẨN 2025) -->
+            <div class="glass-panel rounded-2xl p-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Tra cứu cơ hội đỗ ĐH năm 2025 theo điểm quy đổi của bạn</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Lọc nhanh ngành của HUS, UET, PTIT và các ngành Hot khối ĐHQG</p>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <select id="selectUniversityFilter" onchange="filterMajors()" class="bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 font-bold focus:outline-none focus:border-brand-500">
+                            <option value="all">Tất cả các Trường</option>
+                            <option value="HUS" selected>HUS - ĐH Khoa học Tự nhiên</option>
+                            <option value="UET">UET - ĐH Công nghệ</option>
+                            <option value="PTIT">PTIT - Học viện Công nghệ BCVT</option>
+                            <option value="VNU">ĐHQG - Thành viên khác</option>
+                        </select>
+                        <input type="text" id="searchMajor" oninput="filterMajors()" placeholder="Tìm tên ngành..." class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-brand-500 w-full sm:w-40">
+                    </div>
+                </div>
+
+                <div class="table-container border border-slate-800 rounded-xl bg-slate-950/50 max-h-[350px] overflow-y-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-900 text-slate-400 uppercase border-b border-slate-800 sticky top-0 z-10">
+                            <tr>
+                                <th class="p-3">Mã ngành</th>
+                                <th class="p-3">Tên ngành / Trường</th>
+                                <th class="p-3 text-center">Tổ hợp tuyển</th>
+                                <th class="p-3 text-center">Điểm chuẩn '25</th>
+                                <th class="p-3 text-center">Đánh giá cơ hội</th>
+                                <th class="p-3 text-right">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="majorTableBody" class="divide-y divide-slate-800/40 text-slate-300">
+                            <!-- Nạp động bằng JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex justify-between items-center text-[10px] text-slate-500 mt-2.5 px-1">
+                    <span>* Điểm chuẩn dựa trên thang điểm chuẩn hóa 30.00 chính thức của các trường</span>
+                    <span class="text-brand-500">Nhấn "+ Thêm" để đưa vào danh sách cố vấn nguyện vọng ảo</span>
+                </div>
+            </div>
+
+            <!-- Bảng so sánh đối chiếu thứ hạng liên năm (HSA 2025 vs HSA 2026) -->
             <div id="crossYearRankPanel" class="glass-panel rounded-2xl p-6 border-l-4 border-brand-orange shadow-xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-brand-orange/5 rounded-full blur-2xl"></div>
                 <h3 class="text-xs font-bold text-brand-orange uppercase tracking-wider mb-4 flex items-center gap-1.5">
@@ -634,6 +728,56 @@
             { hsa: 31, a00: 7.95, top: "Top 100.0%" }
         ];
 
+        // SỐ HÓA TOÀN BỘ CƠ SỞ DỮ LIỆU ĐIỂM CHUẨN TRÚNG TUYỂN CÁC TRƯỜNG THỰC TẾ (HỒ SƠ 2025)
+        const universityMajors = [
+            // Trường ĐH Khoa học Tự nhiên - ĐHQGHN (HUS) - Đầy đủ 28 ngành theo hình ảnh e38713.jpg
+            { code: "QHT01", name: "Toán học", uni: "HUS", benchmark: 25.90, blocks: ["A00", "A01"] },
+            { code: "QHT02", name: "Toán tin", uni: "HUS", benchmark: 25.50, blocks: ["A00", "A01"] },
+            { code: "QHT98", name: "Khoa học máy tính và thông tin", uni: "HUS", benchmark: 25.35, blocks: ["A00", "A01", "D01"] },
+            { code: "QHT93", name: "Khoa học dữ liệu", uni: "HUS", benchmark: 26.00, blocks: ["A00", "A01"] },
+            { code: "QHT03", name: "Vật lý học", uni: "HUS", benchmark: 24.65, blocks: ["A00", "A01"] },
+            { code: "QHT04", name: "Khoa học vật liệu", uni: "HUS", benchmark: 24.20, blocks: ["A00", "A01"] },
+            { code: "QHT99", name: "CTĐT Công nghệ bán dẫn", uni: "HUS", benchmark: 25.55, blocks: ["A00", "A01"] },
+            { code: "QHT05", name: "Công nghệ kỹ thuật hạt nhân", uni: "HUS", benchmark: 23.50, blocks: ["A00", "A01"] },
+            { code: "QHT94", name: "Kỹ thuật điện tử và tin học", uni: "HUS", benchmark: 24.57, blocks: ["A00", "A01"] },
+            { code: "QHT06", name: "Hóa học", uni: "HUS", benchmark: 23.90, blocks: ["A00", "B00"] },
+            { code: "QHT07", name: "Công nghệ kỹ thuật hóa học", uni: "HUS", benchmark: 23.45, blocks: ["A00", "B00"] },
+            { code: "QHT43", name: "Hóa dược", uni: "HUS", benchmark: 23.70, blocks: ["A00", "B00"] },
+            { code: "QHT08", name: "Sinh học", uni: "HUS", benchmark: 20.05, blocks: ["B00"] },
+            { code: "QHT09", name: "Công nghệ sinh học", uni: "HUS", benchmark: 22.05, blocks: ["B00"] },
+            { code: "QHT81", name: "Sinh dược học", uni: "HUS", benchmark: 20.10, blocks: ["B00"] },
+            { code: "QHT10", name: "Địa lý tự nhiên", uni: "HUS", benchmark: 23.95, blocks: ["A00", "A01", "C00"] },
+            { code: "QHT91", name: "Khoa học thông tin địa không gian", uni: "HUS", benchmark: 23.50, blocks: ["A00", "A01"] },
+            { code: "QHT12", name: "Quản lý đất đai", uni: "HUS", benchmark: 22.27, blocks: ["A00", "A01", "D01"] },
+            { code: "QHT95", name: "Quản lý phát triển đô thị và bất động sản", uni: "HUS", benchmark: 22.90, blocks: ["A00", "A01", "D01"] },
+            { code: "QHT13", name: "Khoa học môi trường", uni: "HUS", benchmark: 21.25, blocks: ["A00", "B00"] },
+            { code: "QHT15", name: "Công nghệ kỹ thuật môi trường", uni: "HUS", benchmark: 21.55, blocks: ["A00", "B00"] },
+            { code: "QHT96", name: "Khoa học và công nghệ thực phẩm", uni: "HUS", benchmark: 22.80, blocks: ["A00", "B00"] },
+            { code: "QHT82", name: "Môi trường, sức khỏe và an toàn", uni: "HUS", benchmark: 21.20, blocks: ["A00", "B00"] },
+            { code: "QHT16", name: "Khí tượng và khí hậu học", uni: "HUS", benchmark: 22.80, blocks: ["A00", "A01"] },
+            { code: "QHT17", name: "Hải dương học", uni: "HUS", benchmark: 21.50, blocks: ["A00", "A01"] },
+            { code: "QHT92", name: "Tài nguyên và môi trường nước", uni: "HUS", benchmark: 21.10, blocks: ["A00", "A01"] },
+            { code: "QHT18", name: "Địa chất học", uni: "HUS", benchmark: 22.05, blocks: ["A00", "A01"] },
+            { code: "QHT20", name: "Quản lý tài nguyên và môi trường", uni: "HUS", benchmark: 22.20, blocks: ["A00", "A01", "D01"] },
+            
+            // Trường ĐH Công nghệ - ĐHQGHN (UET)
+            { code: "CN1", name: "Công nghệ Thông tin", uni: "UET", benchmark: 27.85, blocks: ["A00", "A01"] },
+            { code: "CN2", name: "Khoa học Máy tính", uni: "UET", benchmark: 27.20, blocks: ["A00", "A01"] },
+            { code: "CN8", name: "Kỹ thuật Điều khiển & Tự động hóa", uni: "UET", benchmark: 26.50, blocks: ["A00", "A01"] },
+            { code: "CN6", name: "Công nghệ Hàng không Vũ trụ", uni: "UET", benchmark: 24.80, blocks: ["A00", "A01"] },
+
+            // Học viện Công nghệ Bưu chính Viễn thông (PTIT)
+            { code: "BV01", name: "Công nghệ thông tin", uni: "PTIT", benchmark: 26.55, blocks: ["A00", "A01"] },
+            { code: "BV02", name: "An toàn thông tin", uni: "PTIT", benchmark: 26.10, blocks: ["A00", "A01"] },
+            { code: "BV03", name: "Truyền thông đa phương tiện", uni: "PTIT", benchmark: 25.90, blocks: ["A00", "A01", "D01"] },
+            { code: "BV04", name: "Công nghệ tài chính (Fintech)", uni: "PTIT", benchmark: 25.10, blocks: ["A00", "A01", "D01"] },
+
+            // Các Đơn vị thành viên khác của ĐHQGHN
+            { code: "HL1", name: "Luật học", uni: "VNU", benchmark: 25.75, blocks: ["C00", "D01"] },
+            { code: "QHX01", name: "Báo chí và Truyền thông", uni: "VNU", benchmark: 27.20, blocks: ["C00", "D01"] },
+            { code: "QHE01", name: "Kinh tế quốc tế", uni: "VNU", benchmark: 26.85, blocks: ["A01", "D01"] }
+        ];
+
         // Quy mô quần thể thí sinh thực tế theo từng khối tốt nghiệp THPT
         const blockPoolSizes = {
             A00: 165467,
@@ -656,6 +800,9 @@
         let activeMethod = 'percentileNational';
         let simulatedShiftDelta = 0.00;
         let mathjaxTimeout = null;
+
+        // Quản lý Nguyện vọng ảo (Wishlist)
+        let virtualWishlist = [];
 
         // Lập bảng bách phân vị dải THPT A00 2025
         const totalCandidates = 165467;
@@ -1057,7 +1204,7 @@
                         explanationHtml = 
                             '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT (Bưu chính Viễn thông)</p>' +
                             '<p>Điểm HSA $x = ' + hsaVal + '$ thuộc dải khoảng phân loại thứ ' + ptitResult.rangeIndex + ' từ [' + ptitResult.a + ', ' + ptitResult.b + '], tương ứng dải điểm THPT từ [' + ptitResult.c.toFixed(2) + ', ' + ptitResult.d.toFixed(2) + ']:</p>' +
-                            '<p class="pl-4 font-mono text-white">$$y = ' + ptitResult.c.toFixed(2) + ' + \\frac{x - ' + ptitResult.a + '}{' + ptitResult.b + ' - ' + ptitResult.a + '} \\cdot (' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + ') = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
+                            '<p class="pl-4 font-mono text-white">$$y = ' + ptitResult.c.toFixed(2) + ' + \\frac{x - ' + ptitResult.a + '}{' + ptitResult.b - ptitResult.a + '} \\cdot (' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + ') = ' + thptVal.toFixed(2) + '\\text{ điểm}$$</p>';
                     } else {
                         explanationHtml = 
                             '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT (Bưu chính Viễn thông)</p>' +
@@ -1101,7 +1248,7 @@
                     baseThpt = ptitResult.error ? 7.95 : ptitResult.score;
                     methodTitle = "Nội suy PTIT";
                     if (!ptitResult.error) {
-                        subStepTex = '$$y_{\\text{PTIT 2025}} = ' + ptitResult.c.toFixed(2) + ' + \\frac{x - ' + ptitResult.a + '}{' + ptitResult.b + ' - ' + ptitResult.a + '} \\cdot (' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + ') = ' + baseThpt.toFixed(2) + '\\text{ điểm}$$';
+                        subStepTex = '$$y_{\\text{PTIT 2025}} = ' + ptitResult.c.toFixed(2) + ' + \\frac{x - ' + ptitResult.a + '}{' + ptitResult.b - ptitResult.a + '} \\cdot (' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + ') = ' + baseThpt.toFixed(2) + '\\text{ điểm}$$';
                     } else {
                         subStepTex = '$$y_{\\text{PTIT 2025}} = 7.95\\text{ điểm}$$';
                     }
@@ -1170,7 +1317,7 @@
                         explanationHtml = 
                             '<p class="font-bold text-cyan-400 mb-1">Phương pháp: Mốc neo phân vị quy đổi chuẩn ngược (Bộ GD&ĐT)</p>' +
                             '<p>Điểm THPT $y = ' + thptVal.toFixed(2) + '$ nằm trong khoảng mốc neo từ <span class="text-white font-bold">' + moetResult.bottomLabel + ' (' + moetResult.y1.toFixed(2) + 'đ)</span> đến <span class="text-white font-bold">' + moetResult.topLabel + ' (' + moetResult.y2.toFixed(2) + 'đ)</span>:</p>' +
-                            '<p class="pl-4 font-mono text-white">$$x = ' + moetResult.x1 + ' + \\frac{y - ' + moetResult.y1.toFixed(2) + '}{' + moetResult.y2.toFixed(2) + ' - ' + moetResult.y1.toFixed(2) + '} \\cdot (' + moetResult.x2 + ' - ' + moetResult.x1 + ') = ' + Math.round(hsaVal) + '\\text{ điểm}$$</p>';
+                            '<p class="pl-4 font-mono text-white">$$x = ' + moetResult.x1 + ' + \\frac{y - ' + moetResult.y1.toFixed(2) + '}{' + (moetResult.y2 - moetResult.y1).toFixed(2) + '} \\cdot (' + (moetResult.x2 - moetResult.x1) + ') = ' + Math.round(hsaVal) + '\\text{ điểm}$$</p>';
                     } else {
                         explanationHtml = 
                             '<p class="font-bold text-cyan-400 mb-1">Phương pháp: Mốc neo phân vị quy đổi chuẩn ngược (Bộ GD&ĐT)</p>' +
@@ -1185,7 +1332,7 @@
                         explanationHtml = 
                             '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT ngược (THPT $\\rightarrow$ HSA)</p>' +
                             '<p>Điểm THPT $y = ' + thptVal.toFixed(2) + '$ thuộc khoảng tốt nghiệp từ ' + ptitResult.c.toFixed(2) + 'đ đến ' + ptitResult.d.toFixed(2) + 'đ, tương ứng khoảng điểm HSA từ ' + ptitResult.a + 'đ đến ' + ptitResult.b + 'đ:</p>' +
-                            '<p class="pl-4 font-mono text-white">$$x = ' + ptitResult.a + ' + \\frac{y - ' + ptitResult.c.toFixed(2) + '}{' + ptitResult.d.toFixed(2) + ' - ' + ptitResult.c.toFixed(2) + '} \\cdot (' + ptitResult.b + ' - ' + ptitResult.a + ') = ' + Math.round(hsaVal) + '\\text{ điểm}$$</p>';
+                            '<p class="pl-4 font-mono text-white">$$x = ' + ptitResult.a + ' + \\frac{y - ' + ptitResult.c.toFixed(2) + '}{' + (ptitResult.d - ptitResult.c).toFixed(2) + '} \\cdot (' + (ptitResult.b - ptitResult.a) + ') = ' + Math.round(hsaVal) + '\\text{ điểm}$$</p>';
                     } else {
                         explanationHtml = 
                             '<p class="font-bold text-indigo-400 mb-1">Phương pháp: Nội suy từng khoảng PTIT ngược (THPT $\\rightarrow$ HSA)</p>' +
@@ -1296,7 +1443,275 @@
 
             formulaExplain.innerHTML = explanationHtml;
             updateBellCurveChart(thptVal);
+            
+            // Cập nhật phễu dự báo đỗ trượt các ngành
+            filterMajors();
+            // Cập nhật phân tích chiến thuật đặt nguyện vọng
+            analyzeStrategy();
+
             triggerMathJaxRender();
+        }
+
+        // TÍNH TOÁN CƠ HỘI TRÚNG TUYỂN DỰA TRÊN ĐIỂM QUY ĐỔI HIỆN TẠI
+        function getOpportunityStatus(benchmark, userScore) {
+            const diff = userScore - benchmark;
+            if (diff >= 1.5) return { text: "An toàn cực cao", color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", level: "safe" };
+            if (diff >= 0.5) return { text: "Khả thi lớn", color: "text-teal-400", bg: "bg-teal-500/10", border: "border-teal-500/20", level: "high-probable" };
+            if (diff >= -0.5) return { text: "Cạnh tranh (50-50)", color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20", level: "borderline" };
+            if (diff >= -1.5) return { text: "Mạo hiểm (Reach)", color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20", level: "reach" };
+            return { text: "Nguy hiểm (Unlikely)", color: "text-rose-400", bg: "bg-rose-500/10", border: "border-rose-500/20", level: "danger" };
+        }
+
+        // ĐỔ DỮ LIỆU & LỌC NGÀNH HỌC DỰ BÁO ĐỖ TRUỘT
+        function filterMajors() {
+            const table = document.getElementById('tableBody'); // Mượn hàm này để render bảng ngành phía trên
+            const searchVal = document.getElementById('searchTable') ? document.getElementById('searchTable').value.toLowerCase() : "";
+            const uniFilter = document.getElementById('selectUniversityFilter') ? document.getElementById('selectUniversityFilter').value : "all";
+
+            const container = document.getElementById('majorTableBody');
+            if (!container) return;
+
+            container.innerHTML = "";
+
+            const filtered = universityMajors.filter(m => {
+                const matchesSearch = m.name.toLowerCase().includes(searchVal) || m.code.toLowerCase().includes(searchVal);
+                const matchesUni = uniFilter === "all" || m.uni === uniFilter;
+                return matchesSearch && matchesUni;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">Không tìm thấy ngành học phù hợp điều kiện lọc.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(m => {
+                // Kiểm tra xem tổ hợp của ngành có khớp với tổ hợp đang xét quy đổi không
+                const isMatchingBlock = m.blocks.includes(selectedBlock);
+                const userScore = currentThptValue;
+                const opt = getOpportunityStatus(m.benchmark, userScore);
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-900/60 transition-colors border-b border-slate-800/30 text-xs";
+                
+                // Nút hành động
+                const inWishlist = virtualWishlist.some(item => item.code === m.code);
+                const actionButton = inWishlist 
+                    ? `<span class="text-[10px] bg-slate-800 text-slate-500 px-2 py-1 rounded">Đã thêm</span>`
+                    : `<button onclick="addToWishlist('${m.code}')" class="text-[10px] bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-2 py-1 rounded transition-colors">+ Thêm</button>`;
+
+                tr.innerHTML = `
+                    <td class="p-3 font-mono font-bold text-slate-400">${m.code}</td>
+                    <td class="p-3">
+                        <div class="font-bold text-white">${m.name}</div>
+                        <div class="text-[10px] text-slate-400">${m.uni === "HUS" ? "HUS - ĐH Khoa học Tự nhiên" : m.uni === "UET" ? "UET - ĐH Công nghệ" : m.uni === "PTIT" ? "Học viện Công nghệ BCVT" : "ĐHQG - Thành viên"}</div>
+                    </td>
+                    <td class="p-3 text-center">
+                        ${m.blocks.map(b => `<span class="inline-block px-1.5 py-0.5 rounded text-[9px] font-bold mx-0.5 ${b === selectedBlock ? 'bg-brand-500/20 text-brand-500 border border-brand-500/30' : 'bg-slate-900 text-slate-500'}">${b}</span>`).join('')}
+                    </td>
+                    <td class="p-3 text-center font-mono font-black text-white">${m.benchmark.toFixed(2)}</td>
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-1 rounded-full text-[10px] font-bold ${opt.bg} ${opt.color} border ${opt.border}">
+                            ${opt.text}
+                        </span>
+                    </td>
+                    <td class="p-3 text-right">${actionButton}</td>
+                `;
+                container.appendChild(tr);
+            });
+        }
+
+        // THÊM NGÀNH VÀO DANH SÁCH NGUYỆN VỌNG ẢO
+        function addToWishlist(code) {
+            const major = universityMajors.find(m => m.code === code);
+            if (!major) return;
+            if (virtualWishlist.some(item => item.code === code)) return;
+
+            virtualWishlist.push(major);
+            renderWishlist();
+            calculate();
+        }
+
+        // XÓA NGÀNH KHỎI DANH SÁCH NGUYỆN VỌNG
+        function removeFromWishlist(code) {
+            virtualWishlist = virtualWishlist.filter(item => item.code !== code);
+            renderWishlist();
+            calculate();
+        }
+
+        // THAY ĐỔI THỨ TỰ NGUYỆN VỌNG (UP / DOWN)
+        function moveWishlist(index, direction) {
+            if (direction === 'up' && index > 0) {
+                const temp = virtualWishlist[index];
+                virtualWishlist[index] = virtualWishlist[index - 1];
+                virtualWishlist[index - 1] = temp;
+            } else if (direction === 'down' && index < virtualWishlist.length - 1) {
+                const temp = virtualWishlist[index];
+                virtualWishlist[index] = virtualWishlist[index + 1];
+                virtualWishlist[index + 1] = temp;
+            }
+            renderWishlist();
+            calculate();
+        }
+
+        // XÓA TOÀN BỘ NGUYỆN VỌNG
+        function clearWishlist() {
+            virtualWishlist = [];
+            renderWishlist();
+            calculate();
+        }
+
+        // HIỂN THỊ DANH SÁCH NGUYỆN VỌNG LÊN GIAO DIỆN
+        function renderWishlist() {
+            const container = document.getElementById('wishlistContainer');
+            const emptyLabel = document.getElementById('emptyWishlistLabel');
+            const advicePanel = document.getElementById('strategyAdvicePanel');
+
+            if (virtualWishlist.length === 0) {
+                container.innerHTML = "";
+                emptyLabel.classList.remove('hidden');
+                advicePanel.classList.add('hidden');
+                return;
+            }
+
+            emptyLabel.classList.add('hidden');
+            advicePanel.classList.remove('hidden');
+            container.innerHTML = "";
+
+            virtualWishlist.forEach((m, idx) => {
+                const userScore = currentThptValue;
+                const opt = getOpportunityStatus(m.benchmark, userScore);
+
+                const div = document.createElement('div');
+                div.className = "flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-900/80 hover:bg-slate-900 border border-slate-800 rounded-xl p-3 gap-2 transition-colors";
+                div.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 h-6 flex items-center justify-center bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 rounded-full font-mono text-xs font-black">
+                            ${idx + 1}
+                        </span>
+                        <div>
+                            <div class="font-bold text-white text-xs">${m.name} (${m.code})</div>
+                            <div class="text-[10px] text-slate-400">Trường: ${m.uni} | Điểm chuẩn '25: <span class="font-mono font-bold text-slate-300">${m.benchmark.toFixed(2)}</span></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${opt.bg} ${opt.color} border ${opt.border}">
+                            ${opt.text}
+                        </span>
+                        <div class="flex items-center gap-1">
+                            <button onclick="moveWishlist(${idx}, 'up')" ${idx === 0 ? 'disabled class="opacity-30 cursor-not-allowed"' : 'class="p-1 hover:bg-slate-800 text-slate-400 hover:text-white rounded"'} title="Di chuyển lên">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                            </button>
+                            <button onclick="moveWishlist(${idx}, 'down')" ${idx === virtualWishlist.length - 1 ? 'disabled class="opacity-30 cursor-not-allowed"' : 'class="p-1 hover:bg-slate-800 text-slate-400 hover:text-white rounded"'} title="Di chuyển xuống">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <button onclick="removeFromWishlist('${m.code}')" class="p-1 hover:bg-rose-950/40 text-slate-500 hover:text-rose-400 rounded" title="Xóa">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // HỆ THỐNG CHUYÊN GIA PHÂN TÍCH VÀ ĐÁNH GIÁ CHIẾN THUẬT NGUYỆN VỌNG (AI STRATEGY ALGORITHM)
+        function analyzeStrategy() {
+            const container = document.getElementById('strategyAdviceContent');
+            if (!container || virtualWishlist.length === 0) return;
+
+            let html = "";
+            const userScore = currentThptValue;
+            
+            // 1. Phân loại cơ cấu nguyện vọng
+            let safeCount = 0;
+            let targetCount = 0;
+            let borderlineCount = 0;
+            let reachCount = 0;
+            let dangerCount = 0;
+
+            virtualWishlist.forEach(m => {
+                const opt = getOpportunityStatus(m.benchmark, userScore);
+                if (opt.level === 'safe' || opt.level === 'high-probable') safeCount++;
+                else if (opt.level === 'borderline') targetCount++;
+                else if (opt.level === 'reach') reachCount++;
+                else dangerCount++;
+            });
+
+            // 2. Chạy thuật toán kiểm tra các Quy tắc Vàng (Golden Admission Rules)
+            let warnings = [];
+            let successes = [];
+
+            // QUY TẮC 1: Đặt ngành Mơ ước (Reach) xuống dưới ngành An toàn (Safe)
+            // Lỗi này cực kỳ phổ biến: Đặt Safe ở NV1, Reach ở NV2. Nếu đỗ cả hai sẽ trúng tuyển thẳng NV1, làm mất cơ hội xét tuyển NV2.
+            let foundSafeBeforeReach = false;
+            let firstSafeIndex = -1;
+            let lastReachIndex = -1;
+
+            virtualWishlist.forEach((m, idx) => {
+                const opt = getOpportunityStatus(m.benchmark, userScore);
+                if ((opt.level === 'safe' || opt.level === 'high-probable') && firstSafeIndex === -1) {
+                    firstSafeIndex = idx;
+                }
+                if ((opt.level === 'reach' || opt.level === 'danger')) {
+                    lastReachIndex = idx;
+                }
+            });
+
+            if (firstSafeIndex !== -1 && lastReachIndex !== -1 && firstSafeIndex < lastReachIndex) {
+                const safeMajor = virtualWishlist[firstSafeIndex];
+                const reachMajor = virtualWishlist[lastReachIndex];
+                warnings.push(`⚠️ <strong>Lỗi bố trí thứ tự ưu tiên:</strong> Bạn đang đặt ngành an toàn <strong>${safeMajor.name} (NV ${firstSafeIndex+1})</strong> lên trên ngành thách thức/mơ ước <strong>${reachMajor.name} (NV ${lastReachIndex+1})</strong>. Nếu bạn đủ điểm đỗ cả hai, hệ thống sẽ tự động khóa trúng tuyển ở NV ${firstSafeIndex+1} và bạn sẽ mất hoàn toàn cơ hội thử sức ở ngành mơ ước.`);
+            } else {
+                successes.push(`✅ <strong>Thứ tự ưu tiên hợp lý:</strong> Bạn đã sắp xếp các nguyện vọng mơ ước (điểm chuẩn cao, tính cạnh tranh lớn) lên trên các nguyện vọng phòng thủ.`);
+            }
+
+            // QUY TẮC 2: Kiểm tra chốt chặn an toàn (Chân đế nguyện vọng)
+            if (safeCount === 0) {
+                warnings.push(`❌ <strong>Nguy hiểm - Thiếu "chốt chặn phòng thủ":</strong> Danh sách của bạn không có bất kỳ nguyện vọng "An toàn" hoặc "Khả thi lớn" nào. Nếu phổ điểm biến động tăng, bạn có nguy cơ trượt toàn bộ các nguyện vọng. Hãy bổ sung ít nhất 1-2 ngành có điểm chuẩn thấp hơn điểm của bạn từ 1.5 điểm trở lên.`);
+            } else {
+                successes.push(`✅ <strong>Chân đế vững chắc:</strong> Danh sách của bạn đã tích hợp ${safeCount} nguyện vọng an toàn phòng ngự đề phòng biến động điểm số.`);
+            }
+
+            // QUY TẮC 3: Quy tắc phân bổ rủi ro 30-50-20
+            const total = virtualWishlist.length;
+            const reachPct = ((reachCount + dangerCount) / total) * 100;
+            const safePct = (safeCount / total) * 105;
+
+            // Đưa ra lời khuyên tổng quát
+            html += `<div class="p-3 bg-slate-950/80 rounded-lg border border-slate-800 text-[11px] mb-3">`;
+            html += `<span class="text-slate-400">Cơ cấu nguyện vọng hiện tại của bạn: </span>`;
+            html += `<span class="text-rose-400 font-bold">${dangerCount + reachCount} Mạo hiểm</span> | `;
+            html += `<span class="text-amber-400 font-bold">${targetCount} Cạnh tranh</span> | `;
+            html += `<span class="text-emerald-400 font-bold">${safeCount} An toàn</span>`;
+            html += `</div>`;
+
+            if (warnings.length > 0) {
+                html += `<div class="space-y-2.5">`;
+                warnings.forEach(w => {
+                    html += `<p class="p-2.5 rounded-lg bg-rose-950/20 text-rose-300 border border-rose-500/20 text-xs">${w}</p>`;
+                });
+                html += `</div>`;
+            }
+
+            if (successes.length > 0) {
+                html += `<div class="space-y-1.5 mt-2">`;
+                successes.forEach(s => {
+                    html += `<p class="text-slate-400 text-xs">${s}</p>`;
+                });
+                html += `</div>`;
+            }
+
+            // Lời khuyên tối ưu hóa chiến thuật cụ thể
+            html += `<div class="mt-3 pt-3 border-t border-indigo-500/10 text-xs text-indigo-300">`;
+            html += `💡 <strong>Khuyên dùng:</strong> Hãy đặt Nguyện vọng 1 là ngành bạn yêu thích nhất (dù là mạo hiểm), Nguyện vọng 2-3 là các ngành vừa sức có điểm chuẩn ngang bằng hoặc thấp hơn chút ít, và luôn giữ Nguyện vọng cuối cùng là một ngành chắc chắn đỗ để bảo hiểm vị thế tuyển sinh.`;
+            html += `</div>`;
+
+            container.innerHTML = html;
+        }
+
+        // LỌC DANH SÁCH NGÀNH TRÊN GIAO DIỆN THEO ĐIỀU KIỆN
+        function filterUniversityMajors() {
+            filterMajors();
         }
 
         let bellCurveChart = null;
