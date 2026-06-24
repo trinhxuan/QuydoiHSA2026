@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hệ thống Phân tích Quy đổi HSA & Cố vấn Nguyện vọng thông minh 2026</title>
-    <meta name="description" content="Ứng dụng mô phỏng quy đổi HSA 2026 sang điểm THPT theo bách phân vị, kèm cố vấn nguyện vọng đại học.">
+    <title>Ứng dụng Đặt Nguyện vọng Đại học 2026 | HSA - THPT - VNU</title>
+    <meta name="description" content="Ứng dụng đặt nguyện vọng đại học năm 2026: quy đổi HSA/THPT, dự báo điểm chuẩn, tự xây dựng 15 nguyện vọng và xuất Excel.">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -94,6 +94,13 @@
         .toast-notification {
             animation: slideIn 0.3s ease-out forwards;
         }
+        .planner-kpi {
+            background: linear-gradient(135deg, rgba(16,185,129,.12), rgba(99,102,241,.08));
+            border: 1px solid rgba(148,163,184,.14);
+        }
+        .wish-glow {
+            box-shadow: inset 0 0 0 1px rgba(16,185,129,.12), 0 14px 45px rgba(15,23,42,.35);
+        }
         @keyframes slideIn {
             from { transform: translateY(-1rem); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
@@ -115,14 +122,14 @@
                 </div>
                 <div>
                     <h1 class="font-extrabold text-base md:text-lg tracking-tight text-white leading-snug flex items-center flex-wrap gap-1">
-                        Hệ thống Quy đổi HSA <span class="text-brand-500">&rarr;</span> Đối sánh Bách phân vị Quốc gia Bộ GD&ĐT 2026
+                        Ứng dụng Đặt Nguyện vọng Đại học 2026 <span class="text-brand-500">&rarr;</span> HSA · THPT · Chiến thuật 15 NV
                     </h1>
-                    <p class="text-xs text-slate-400">Đồng bộ theo Công văn 2304/BGDĐT-GDĐH 2026, Phụ lục III và dữ liệu HSA/THPT chính thức</p>
+                    <p class="text-xs text-slate-400">Kết hợp quy đổi HSA 2026, dự báo điểm chuẩn và trợ lý sắp xếp nguyện vọng theo mức rủi ro</p>
                 </div>
             </div>
             <div class="flex items-center gap-2 text-xs bg-slate-900 rounded-full px-3 py-1.5 border border-slate-800">
                 <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-                <span class="text-slate-300 font-medium">Chuẩn hóa 15 NV · Điều kiện nguồn 15 điểm · Quy đổi bách phân vị</span>
+                <span class="text-slate-300 font-medium">15 NV · Dự báo HSA tăng · Xuất Excel · In chiến thuật</span>
             </div>
         </div>
     </header>
@@ -420,8 +427,8 @@
                     <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-800 hover:bg-slate-900/40 cursor-pointer transition-all">
                         <input type="radio" name="conversionMethod" value="ptit" onchange="handleMethodChange()" class="mt-1 accent-brand-500">
                         <div>
-                            <span class="text-xs font-bold text-white block">Nội suy từng khoảng PTIT (Bưu chính Viễn thông)</span>
-                            <span class="text-[10px] text-slate-400 block mt-0.5">Áp dụng công thức nội suy tuyến tính chia theo 5 khoảng điểm tuyển sinh của Học viện.</span>
+                            <span class="text-xs font-bold text-white block">PTIT riêng: nội suy HSA → thang 30</span>
+                            <span class="text-[10px] text-slate-400 block mt-0.5">Dùng 5 khoảng nội suy riêng PTIT; trong planner, nhánh này tự bật cho ngành PTIT-BVH dù phương thức chung đang chọn là VNU/Công văn 2304.</span>
                         </div>
                     </label>
                 </div>
@@ -480,6 +487,52 @@
                 </div>
             </div>
 
+            <div id="admissionPlannerPanel" class="glass-panel rounded-2xl p-6 border-l-4 border-emerald-500 shadow-xl relative overflow-hidden">
+                <div class="absolute -right-8 -top-8 w-36 h-36 bg-emerald-500/5 rounded-full blur-3xl"></div>
+                <div class="flex flex-col xl:flex-row xl:items-start justify-between gap-4 mb-5">
+                    <div>
+                        <h3 class="text-sm font-extrabold text-white flex items-center gap-2">
+                            <span class="p-1.5 bg-emerald-500/10 text-emerald-400 rounded-lg text-xs">🎓 Planner 2026</span>
+                            Hồ sơ đặt nguyện vọng đại học theo HSA/THPT
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-1 leading-relaxed">Ứng dụng dùng điểm quy đổi hiện tại, ưu tiên khu vực, dữ liệu HSA 2026 và điểm chuẩn 2025 để tự phân tầng mơ ước – mục tiêu – an toàn.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="autoBuildWishlist('balanced')" class="text-[10px] text-white bg-emerald-600 hover:bg-emerald-500 px-3 py-2 rounded-xl font-extrabold transition-colors">Tự tạo 15 NV cân bằng</button>
+                        <button onclick="autoBuildWishlist('safe')" class="text-[10px] text-cyan-300 bg-cyan-500/10 border border-cyan-500/20 hover:bg-cyan-500/20 px-3 py-2 rounded-xl font-bold transition-colors">Chiến thuật an toàn</button>
+                        <button onclick="autoBuildWishlist('ambitious')" class="text-[10px] text-amber-300 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 px-3 py-2 rounded-xl font-bold transition-colors">Chiến thuật bứt phá</button>
+                        <button onclick="sortWishlistByStrategy()" class="text-[10px] text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/20 px-3 py-2 rounded-xl font-bold transition-colors">Tự sắp xếp</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+                    <div class="planner-kpi rounded-2xl p-3">
+                        <div class="text-[9px] uppercase font-extrabold text-slate-400">Điểm xét tuyển</div>
+                        <div id="plannerAdmissionScore" class="text-2xl font-black text-emerald-300 font-mono mt-1">27.25</div>
+                        <div id="plannerScoreNote" class="text-[10px] text-slate-500">HSA/THPT + ưu tiên KV</div>
+                    </div>
+                    <div class="planner-kpi rounded-2xl p-3">
+                        <div class="text-[9px] uppercase font-extrabold text-slate-400">Áp lực HSA</div>
+                        <div id="plannerPressureBadge" class="text-lg font-black text-amber-300 mt-1">Tăng mạnh</div>
+                        <div class="text-[10px] text-slate-500">≥100 tăng ~63%, ≥105 tăng ~72%</div>
+                    </div>
+                    <div class="planner-kpi rounded-2xl p-3">
+                        <div class="text-[9px] uppercase font-extrabold text-slate-400">Danh sách NV</div>
+                        <div id="plannerWishCount" class="text-2xl font-black text-indigo-300 font-mono mt-1">0/15</div>
+                        <div id="plannerWishMix" class="text-[10px] text-slate-500">Chưa tạo chiến thuật</div>
+                    </div>
+                    <div class="planner-kpi rounded-2xl p-3">
+                        <div class="text-[9px] uppercase font-extrabold text-slate-400">Gợi ý chiến thuật</div>
+                        <div id="plannerMainAdvice" class="text-sm font-black text-white mt-1 leading-snug">Tạo 15 NV cân bằng</div>
+                        <div class="text-[10px] text-slate-500">3 mơ ước · 6 mục tiêu · 6 an toàn</div>
+                    </div>
+                </div>
+
+                <div id="plannerPressureExplain" class="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-xs text-slate-300 leading-relaxed">
+                    Dữ liệu HSA 2026 cho thấy quy mô có điểm là 116.839 lượt, nhóm điểm cao tăng mạnh. Vì vậy ứng dụng cộng hệ số áp lực riêng cho ngành nóng như CNTT, AI, Khoa học dữ liệu, An toàn thông tin, Y khoa, truyền thông và kinh tế.
+                </div>
+            </div>
+
             <div id="cv2304CompliancePanel" class="glass-panel rounded-2xl p-5 border-l-4 border-amber-500 shadow-xl">
                 <div class="flex flex-col md:flex-row md:items-start justify-between gap-3">
                     <div>
@@ -502,11 +555,13 @@
                     <div>
                         <h3 class="text-sm font-extrabold text-white flex items-center gap-2">
                             <span class="p-1.5 bg-indigo-500/10 text-indigo-400 rounded-lg text-xs">🚀 Trợ lý chiến thuật v2.3</span>
-                            Mô phỏng & Đánh giá chiến thuật Nguyện vọng của bạn
+                            Đặt, tự tạo và đánh giá chiến thuật Nguyện vọng 2026
                         </h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Sắp xếp các nguyện vọng theo thứ tự ưu tiên của bạn để thuật toán thông minh đánh giá cơ hội tối ưu</p>
+                        <p class="text-xs text-slate-400 mt-0.5">Tự tạo tối đa 15 nguyện vọng, sắp xếp theo mức ưu tiên, kiểm tra rủi ro và xuất Excel để nộp kế hoạch</p>
                     </div>
                     <div class="flex flex-wrap gap-2">
+                        <button onclick="autoBuildWishlist('balanced')" class="text-[10px] text-white bg-emerald-600 hover:bg-emerald-500 transition-colors px-2.5 py-1.5 rounded border border-emerald-500/30 font-extrabold">Tự tạo 15 NV</button>
+                        <button onclick="fillVnuPriorityWishlist()" class="text-[10px] text-amber-300 hover:text-white transition-colors bg-amber-500/10 px-2.5 py-1.5 rounded border border-amber-500/20">Ưu tiên UET/HUS/PTIT</button>
                         <button onclick="exportWishlistExcel()" class="text-[10px] text-emerald-400 hover:text-white transition-colors bg-emerald-500/10 px-2.5 py-1.5 rounded border border-emerald-500/20">Xuất Excel NV</button>
                         <button onclick="printWishlist()" class="text-[10px] text-indigo-400 hover:text-white transition-colors bg-indigo-500/10 px-2.5 py-1.5 rounded border border-indigo-500/20">In NV</button>
                         <button onclick="clearWishlist()" class="text-[10px] text-slate-400 hover:text-rose-400 transition-colors bg-slate-900 px-2.5 py-1.5 rounded border border-slate-800">
@@ -539,18 +594,52 @@
             <div class="glass-panel rounded-2xl p-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
                     <div>
-                        <h3 class="text-sm font-bold text-white">Tra cứu cơ hội đỗ đại học năm 2026 theo điểm quy đổi của bạn</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Lọc nhanh ngành của HUS, UET, PTIT và các ngành Hot khối ĐHQG</p>
+                        <h3 class="text-sm font-bold text-white">Tra cứu và thêm ngành UET/HUS/PTIT vào danh sách nguyện vọng 2026</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Lọc nhanh ngành UET, HUS và PTIT-BVH; PTIT đã cập nhật điểm chuẩn 2025 và chỉ tiêu 2026 chính thức</p>
                     </div>
                     <div class="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
                         <select id="selectUniversityFilter" onchange="filterMajors()" class="bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 font-bold focus:outline-none focus:border-brand-500 w-full sm:w-auto">
-                            <option value="all">Tất cả các Trường</option>
+                            <option value="all" selected>Tất cả các Trường</option>
                             <option value="HUS">HUS - ĐH Khoa học Tự nhiên</option>
-                            <option value="UET" selected>UET - ĐH Công nghệ (VNU-UET)</option>
-                            <option value="PTIT">PTIT - Học viện Công nghệ BCVT</option>
-                            <option value="VNU">ĐHQG - Thành viên khác</option>
+                            <option value="UET">UET - ĐH Công nghệ (VNU-UET)</option>
+                            <option value="PTIT">PTIT - Học viện Công nghệ BCVT (BVH)</option>
+                        </select>
+                        <select id="selectMajorGroupFilter" onchange="filterMajors()" class="bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 font-bold focus:outline-none focus:border-brand-500 w-full sm:w-auto">
+                            <option value="all">Tất cả nhóm ngành</option>
+                            <option value="tech">Công nghệ - Kỹ thuật</option>
+                            <option value="medical">Y dược - Sức khỏe</option>
+                            <option value="economy">Kinh tế - Truyền thông</option>
+                            <option value="teacher">Sư phạm</option>
+                            <option value="safe">Nhóm an toàn</option>
                         </select>
                         <input type="text" id="searchMajor" oninput="filterMajors()" placeholder="Tìm tên ngành..." class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-brand-500 w-full sm:w-40">
+                    </div>
+                </div>
+
+                <div id="ptitOfficialPanel" class="mb-4 rounded-2xl border border-sky-500/20 bg-sky-500/10 p-4 text-[11px] leading-relaxed text-slate-300">
+                    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                        <div>
+                            <div class="font-extrabold text-sky-300 uppercase tracking-wider mb-1">PTIT 2025–2026 đã cập nhật</div>
+                            <p>Danh sách PTIT trong planner dùng <b>điểm trúng tuyển 2025 chính thức của cơ sở phía Bắc BVH</b> và <b>chỉ tiêu dự kiến 2026</b>. Logic dự báo cộng thêm biên áp lực HSA, hiệu chỉnh nhẹ theo biến động chỉ tiêu từng ngành và tự áp dụng nhánh quy đổi riêng PTIT khi đánh giá ngành PTIT.</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 min-w-[210px] text-center">
+                            <div class="rounded-xl border border-slate-700 bg-slate-950/50 p-2"><div class="text-[9px] text-slate-500 uppercase font-bold">Số ngành BVH</div><div class="text-lg font-black text-white font-mono">28</div></div>
+                            <div class="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-2"><div class="text-[9px] text-emerald-300 uppercase font-bold">HSA sàn PTIT</div><div class="text-lg font-black text-emerald-300 font-mono">75+</div></div>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-slate-400">Ghi chú PTIT 2026: xét 05 phương thức; HSA 2026 từ 75 điểm trở lên; nếu dùng phần thi Khoa học thì phần 3 phải có <b>Vật lí + Hóa học</b>; tổ hợp THPT gồm A00, A01, D01, X06, X26; điểm trúng tuyển giữa các tổ hợp cùng phương thức và cùng ngành là bằng nhau.</div>
+                    <div id="ptitAutoConversionPanel" class="mt-3 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3">
+                        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+                            <div>
+                                <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-300">PTIT Auto Conversion</div>
+                                <div id="ptitAutoExplain" class="text-[11px] text-slate-300 leading-relaxed mt-1">Khi đánh giá ngành PTIT, ứng dụng tự dùng công thức quy đổi riêng PTIT, không phụ thuộc phương thức quy đổi đang chọn cho UET/HUS.</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 min-w-[300px] text-center">
+                                <div class="rounded-xl border border-slate-700 bg-slate-950/60 p-2"><div class="text-[9px] text-slate-500 uppercase font-bold">HSA nhập</div><div id="ptitAutoHsa" class="text-lg font-black text-white font-mono">98</div></div>
+                                <div class="rounded-xl border border-sky-500/20 bg-sky-500/10 p-2"><div class="text-[9px] text-sky-300 uppercase font-bold">PTIT quy đổi</div><div id="ptitAutoBase" class="text-lg font-black text-sky-300 font-mono">25.50</div></div>
+                                <div class="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-2"><div class="text-[9px] text-emerald-300 uppercase font-bold">Sau ưu tiên</div><div id="ptitAutoFinal" class="text-lg font-black text-emerald-300 font-mono">25.50</div></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -563,6 +652,7 @@
                                 <th class="p-3 text-center">Tổ hợp / gốc quy đổi</th>
                                 <th class="p-3 text-center">Điểm chuẩn '25</th>
                                 <th class="p-3 text-center text-amber-400">Dự báo điểm chuẩn '26</th>
+                                <th class="p-3 text-center">Áp lực HSA</th>
                                 <th class="p-3 text-center">Chênh lệch</th>
                                 <th class="p-3 text-center">Đánh giá cơ hội</th>
                                 <th class="p-3 text-right">Hành động</th>
@@ -766,7 +856,7 @@
     </section>
 
     <footer class="max-w-7xl mx-auto px-4 mt-12 text-center text-xs text-slate-500 border-t border-slate-900 pt-6 w-full">
-        <p>© 2026 Hệ thống Quy đổi HSA & Cố vấn Nguyện vọng. Logic tuân thủ Công văn 2304/BGDĐT-GDĐH: tối đa 15 NV, điều kiện nguồn 15 điểm, quy đổi bách phân vị và nội suy từng khoảng.</p>
+        <p>© 2026 Ứng dụng Đặt Nguyện vọng Đại học. Logic tuân thủ Công văn 2304/BGDĐT-GDĐH: tối đa 15 NV, điều kiện nguồn 15 điểm, quy đổi bách phân vị và nội suy từng khoảng.</p>
     </footer>
 
     <script>
@@ -1193,14 +1283,39 @@
             { code: "QHT18", name: "Địa chất học", uni: "HUS", benchmark: 22.05, blocks: ["A00", "A01"] },
             { code: "QHT20", name: "Quản lý tài nguyên và môi trường", uni: "HUS", benchmark: 22.20, blocks: ["A00", "A01", "D01"] },
 
-            { code: "BV01", name: "Công nghệ thông tin", uni: "PTIT", benchmark: 26.55, blocks: ["A00", "A01"] },
-            { code: "BV02", name: "An toàn thông tin", uni: "PTIT", benchmark: 26.10, blocks: ["A00", "A01"] },
-            { code: "BV03", name: "Truyền thông đa phương tiện", uni: "PTIT", benchmark: 25.90, blocks: ["A00", "A01", "D01"] },
-            { code: "BV04", name: "Công nghệ tài chính (Fintech)", uni: "PTIT", benchmark: 25.10, blocks: ["A00", "A01", "D01"] },
+            { code: "BVH7340101", name: "Quản trị kinh doanh", uni: "PTIT", campus: "BVH", benchmark: 22.75, quota2025: 200, intake2025: 200, quota2026: 170, ttnv2025: "TTNV<=13", blocks: ["A00", "A01", "D01", "X06", "X26"] },
+            { code: "BVH7340101LG", name: "Logistics và quản trị chuỗi cung ứng", uni: "PTIT", campus: "BVH", benchmark: 24.20, quota2025: 100, intake2025: 100, quota2026: 80, ttnv2025: "TTNV<=5", blocks: ["A00", "A01", "D01", "X06", "X26"] },
+            { code: "BVH7340115", name: "Marketing", uni: "PTIT", campus: "BVH", benchmark: 24.00, quota2025: 240, intake2025: 234, quota2026: 240, ttnv2025: "TTNV<=5", blocks: ["A00", "A01", "D01", "X06", "X26"] },
+            { code: "BVH7340115QH", name: "Quan hệ công chúng", uni: "PTIT", campus: "BVH", benchmark: 23.47, quota2025: 100, intake2025: 94, quota2026: 110, ttnv2025: "TTNV<=3", blocks: ["A00", "A01", "D01", "X06", "X26"] },
+            { code: "BVH7340301", name: "Kế toán", uni: "PTIT", campus: "BVH", benchmark: 22.50, quota2025: 180, intake2025: 173, quota2026: 200, ttnv2025: "TTNV<=6", blocks: ["A00", "A01", "D01", "X06", "X26"] },
+            { code: "BVH7340122", name: "Thương mại điện tử", uni: "PTIT", campus: "BVH", benchmark: 25.10, quota2025: 170, intake2025: 167, quota2026: 180, ttnv2025: "TTNV<=4", blocks: ["A00", "A01", "D01", "X06", "X26"] },
+            { code: "BVH7340205", name: "Công nghệ tài chính (Fintech)", uni: "PTIT", campus: "BVH", benchmark: 23.63, quota2025: 150, intake2025: 146, quota2026: 160, ttnv2025: "TTNV=1", blocks: ["A00", "A01", "D01", "X06", "X26"] },
+            { code: "BVH7480101", name: "Khoa học dữ liệu", uni: "PTIT", campus: "BVH", benchmark: 26.21, quota2025: 150, intake2025: 144, quota2026: 165, ttnv2025: "TTNV<=3", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7480102", name: "Kỹ thuật dữ liệu", uni: "PTIT", campus: "BVH", benchmark: 24.40, quota2025: 120, intake2025: 121, quota2026: 140, ttnv2025: "TTNV<=3", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7480107", name: "Trí tuệ nhân tạo", uni: "PTIT", campus: "BVH", benchmark: 25.67, quota2025: 150, intake2025: 144, quota2026: 180, ttnv2025: "TTNV<=8", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7480201", name: "Công nghệ thông tin", uni: "PTIT", campus: "BVH", benchmark: 25.80, quota2025: 600, intake2025: 593, quota2026: 600, ttnv2025: "TTNV<=3", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7480201UD", name: "Công nghệ thông tin (Cử nhân định hướng ứng dụng)", uni: "PTIT", campus: "BVH", benchmark: 22.20, quota2025: 300, intake2025: 299, quota2026: 330, ttnv2025: "TTNV<=8", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7480201VJ", name: "Công nghệ thông tin Việt - Nhật", uni: "PTIT", campus: "BVH", benchmark: 23.48, quota2025: 100, intake2025: 99, quota2026: 110, ttnv2025: "TTNV<=7", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7480202", name: "An toàn thông tin", uni: "PTIT", campus: "BVH", benchmark: 25.21, quota2025: 200, intake2025: 189, quota2026: 200, ttnv2025: "TTNV<=2", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7510301", name: "Công nghệ kỹ thuật Điện, điện tử", uni: "PTIT", campus: "BVH", benchmark: 24.61, quota2025: 230, intake2025: 240, quota2026: 240, ttnv2025: "TTNV<=3", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7510301VM", name: "Công nghệ vi mạch bán dẫn", uni: "PTIT", campus: "BVH", benchmark: 25.50, quota2025: 150, intake2025: 149, quota2026: 175, ttnv2025: "TTNV<=16", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7520207", name: "Kỹ thuật Điện tử viễn thông", uni: "PTIT", campus: "BVH", benchmark: 25.10, quota2025: 430, intake2025: 416, quota2026: 410, ttnv2025: "TTNV<=2", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7520207AT", name: "Trí tuệ nhân tạo vạn vật (AIoT)", uni: "PTIT", campus: "BVH", benchmark: 24.87, quota2025: 80, intake2025: 78, quota2026: 90, ttnv2025: "TTNV<=2", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7520216", name: "Kỹ thuật Điều khiển và tự động hóa", uni: "PTIT", campus: "BVH", benchmark: 26.19, quota2025: 110, intake2025: 113, quota2026: 80, ttnv2025: "TTNV<=6", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7329001", name: "Công nghệ đa phương tiện", uni: "PTIT", campus: "BVH", benchmark: 24.00, quota2025: 260, intake2025: 256, quota2026: 260, ttnv2025: "TTNV<=2", blocks: ["A00", "A01", "D01", "X06", "X26"] },
+            { code: "BVH7329001GM", name: "Thiết kế và phát triển Game", uni: "PTIT", campus: "BVH", benchmark: 23.48, quota2025: 200, intake2025: 190, quota2026: 150, ttnv2025: "TTNV=1", blocks: ["A00", "A01", "D01", "X06", "X26"] },
+            { code: "BVH7320104", name: "Truyền thông đa phương tiện", uni: "PTIT", campus: "BVH", benchmark: 25.25, quota2025: 120, intake2025: 116, quota2026: 120, ttnv2025: "TTNV<=3", blocks: ["A00", "A01", "D01", "X06", "X26"] },
+            { code: "BVH7320101", name: "Báo chí", uni: "PTIT", campus: "BVH", benchmark: 22.67, quota2025: 90, intake2025: 93, quota2026: 100, ttnv2025: "TTNV<=9", blocks: ["A00", "A01", "D01", "X06", "X26"] },
+            { code: "BVH7480201CL", name: "Công nghệ thông tin chất lượng cao", uni: "PTIT", campus: "BVH", benchmark: 23.60, quota2025: 300, intake2025: 285, quota2026: 370, ttnv2025: "TTNV=1", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7480202CL", name: "An toàn thông tin chất lượng cao", uni: "PTIT", campus: "BVH", benchmark: 23.14, quota2025: 100, intake2025: 104, quota2026: 120, ttnv2025: "TTNV=1", blocks: ["A00", "A01", "X06", "X26"] },
+            { code: "BVH7340301CL", name: "Kế toán chất lượng cao (ACCA)", uni: "PTIT", campus: "BVH", benchmark: 21.00, quota2025: 60, intake2025: 60, quota2026: 60, ttnv2025: "TTNV=1", blocks: ["A00", "A01", "D01", "X06", "X26"] },
+            { code: "BVH7340115CL", name: "Marketing chất lượng cao", uni: "PTIT", campus: "BVH", benchmark: 22.00, quota2025: 120, intake2025: 118, quota2026: 130, ttnv2025: "TTNV<=2", blocks: ["A00", "A01", "D01", "X06", "X26"] },
+            { code: "BVH7320104CL", name: "Truyền thông đa phương tiện chất lượng cao", uni: "PTIT", campus: "BVH", benchmark: 22.65, quota2025: 90, intake2025: 83, quota2026: 110, ttnv2025: "TTNV<=2", blocks: ["A00", "A01", "D01", "X06", "X26"] },
 
-            { code: "HL1", name: "Luật học", uni: "VNU", benchmark: 25.75, blocks: ["C00", "D01"] },
-            { code: "QHX01", name: "Báo chí và Truyền thông", uni: "VNU", benchmark: 27.20, blocks: ["C00", "D01"] },
-            { code: "QHE01", name: "Kinh tế quốc tế", uni: "VNU", benchmark: 26.85, blocks: ["A01", "D01"] }
+
+
+
+
         ];
 
         // Quy mô quần thể thí sinh theo từng tổ hợp THPT dùng cho mô phỏng thứ hạng.
@@ -1282,6 +1397,277 @@
         let mathjaxTimeout = null;
 
         let virtualWishlist = [];
+
+        const hsaCompetitionModel2026 = {
+            registered2025: 90632,
+            registered2026: 121010,
+            scored2025: 89059,
+            scored2026: 116839,
+            growthRegisteredPct: 33.52,
+            growthScoredPct: 31.19,
+            highScoreGrowth: {
+                ge105: 72.5,
+                ge100: 63.1,
+                ge90: 45.0,
+                ge80: 35.6
+            },
+            note: 'HSA 2026 tăng quy mô và tăng mạnh ở vùng điểm cao, nên điểm chuẩn ngành nóng cần cộng biên rủi ro.'
+        };
+
+        const ptitConversionConfig = {
+            autoApplyForPtit: true,
+            sourceYear: 2026,
+            hsaFloor: 75,
+            thptFloor: 15.00,
+            validBlocks: ['A00', 'A01', 'D01', 'X06', 'X26'],
+            scienceRequirement: 'HSA phần 3 Khoa học phải có 2 chủ đề Vật lí và Hóa học',
+            methodLabel: 'PTIT riêng: nội suy HSA → thang 30',
+            anchors: [
+                { minHsa: 105, maxHsa: 150, minScore: 27.25, maxScore: 30.00, rangeIndex: 1, label: 'Nhóm rất cao' },
+                { minHsa: 97, maxHsa: 105, minScore: 25.25, maxScore: 27.25, rangeIndex: 2, label: 'Nhóm cao' },
+                { minHsa: 91, maxHsa: 97, minScore: 23.50, maxScore: 25.25, rangeIndex: 3, label: 'Nhóm khá cao' },
+                { minHsa: 82, maxHsa: 91, minScore: 20.50, maxScore: 23.50, rangeIndex: 4, label: 'Nhóm trung bình khá' },
+                { minHsa: 75, maxHsa: 82, minScore: 15.00, maxScore: 20.50, rangeIndex: 5, label: 'Nhóm đạt sàn PTIT' }
+            ],
+            note: 'Tự động áp dụng riêng cho ngành PTIT-BVH trong planner; UET/HUS vẫn dùng phương thức quy đổi đang chọn của ứng dụng.'
+        };
+
+        function getMajorPressureLevel(major) {
+            const text = ((major?.name || '') + ' ' + (major?.code || '') + ' ' + (major?.uni || '')).toLowerCase();
+            const bm = Number(major?.benchmark || 0);
+            let adjustment = 0.10;
+            let label = 'Ổn định';
+            let cls = 'bg-slate-500/10 text-slate-300 border-slate-500/20';
+            let note = 'Nguồn cạnh tranh vừa phải, cộng biên rủi ro thấp.';
+
+            const veryHot = ['trí tuệ nhân tạo', 'khoa học dữ liệu', 'khoa học máy tính', 'công nghệ thông tin', 'an toàn thông tin', 'y khoa', 'răng', 'chẩn đoán', 'kỹ thuật hình ảnh'];
+            const hot = ['kỹ thuật máy tính', 'hệ thống thông tin', 'robot', 'tự động', 'điện tử', 'viễn thông', 'fintech', 'thương mại điện tử', 'kinh tế quốc tế', 'truyền thông đa phương tiện'];
+            const safe = ['môi trường', 'hải dương', 'địa chất', 'xây dựng', 'cấp thoát', 'vật liệu', 'nông nghiệp'];
+
+            if (veryHot.some(k => text.includes(k)) || bm >= 27.30) {
+                adjustment = 0.55;
+                label = 'Rất nóng';
+                cls = 'bg-rose-500/10 text-rose-300 border-rose-500/20';
+                note = 'Ngành nóng, vùng điểm cao HSA tăng mạnh; nên cộng biên rủi ro lớn.';
+            } else if (hot.some(k => text.includes(k)) || bm >= 26.20) {
+                adjustment = 0.35;
+                label = 'Nóng';
+                cls = 'bg-orange-500/10 text-orange-300 border-orange-500/20';
+                note = 'Nhu cầu cao, cần cộng biên rủi ro vừa.';
+            } else if (safe.some(k => text.includes(k)) || bm <= 23.00) {
+                adjustment = 0.05;
+                label = 'Dễ thở';
+                cls = 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20';
+                note = 'Áp lực thấp hơn nhóm ngành hot.';
+            } else if (bm >= 24.50) {
+                adjustment = 0.20;
+                label = 'Trung bình+';
+                cls = 'bg-amber-500/10 text-amber-300 border-amber-500/20';
+                note = 'Có cạnh tranh nhưng chưa thuộc nhóm nóng nhất.';
+            }
+            if (major?.uni === 'PTIT' && Number(major.quota2025) > 0 && Number(major.quota2026) > 0) {
+                const quotaDeltaPct = (Number(major.quota2026) - Number(major.quota2025)) / Number(major.quota2025);
+                let quotaAdj = 0;
+                if (quotaDeltaPct <= -0.20) quotaAdj = 0.18;
+                else if (quotaDeltaPct <= -0.08) quotaAdj = 0.10;
+                else if (quotaDeltaPct >= 0.20) quotaAdj = -0.08;
+                else if (quotaDeltaPct >= 0.08) quotaAdj = -0.04;
+                adjustment = Math.max(0.02, adjustment + quotaAdj);
+                const sign = quotaDeltaPct >= 0 ? '+' : '';
+                note += ' PTIT BVH: chỉ tiêu 2026 ' + major.quota2026 + ' so với 2025 ' + major.quota2025 + ' (' + sign + (quotaDeltaPct * 100).toFixed(1) + '%), app hiệu chỉnh biên rủi ro ' + (quotaAdj >= 0 ? '+' : '') + quotaAdj.toFixed(2) + ' điểm.';
+            }
+            if (isTeacherProgram(major)) {
+                adjustment = Math.max(adjustment, 0.25);
+                label = label === 'Ổn định' ? 'Cạnh tranh' : label;
+                cls = label === 'Cạnh tranh' ? 'bg-amber-500/10 text-amber-300 border-amber-500/20' : cls;
+                note += ' CTĐT giáo viên cần chú ý điều kiện NV1–NV5.';
+            }
+            return { adjustment, label, cls, note };
+        }
+
+        function predictBenchmarkForMajor(major, mainBlock) {
+            if (!major) return 30;
+            const block = mainBlock || getMajorBaseBlock(major);
+            const base = predictBenchmark2026(major.benchmark, block);
+            const pressure = getMajorPressureLevel(major);
+            return clamp(base + pressure.adjustment, 10, 30);
+        }
+
+        function matchesMajorGroup(major, group) {
+            if (!major || !group || group === 'all') return true;
+            const text = ((major.name || '') + ' ' + (major.code || '') + ' ' + (major.uni || '')).toLowerCase();
+            if (group === 'tech') return /(công nghệ|kỹ thuật|máy tính|thông tin|dữ liệu|ai|trí tuệ|robot|tự động|điện tử|viễn thông|phần mềm|an toàn|bán dẫn|ô tô)/i.test(text);
+            if (group === 'medical') return /(y khoa|y học|dược|răng|điều dưỡng|sinh học|sinh dược|chẩn đoán|hình ảnh)/i.test(text);
+            if (group === 'economy') return /(kinh tế|quản trị|tài chính|ngân hàng|kế toán|thương mại|truyền thông|báo chí|luật|logistics|marketing)/i.test(text);
+            if (group === 'teacher') return isTeacherProgram(major);
+            if (group === 'safe') return Number(major.benchmark || 0) <= 24.50;
+            return true;
+        }
+
+
+        function shouldUseHsaScale30ForMajor(major) {
+            // Các trường còn lại trong danh sách hiện dùng logic bách phân vị/Công văn 2304/VNU đang có.
+            return false;
+        }
+
+        function getScoreContextForMajor(major) {
+            if (major?.uni === 'PTIT' && ptitConversionConfig.autoApplyForPtit && currentDirection !== 'thpt_to_hsa') {
+                const ptitResult = convertPTIT(currentHsaValue);
+                if (ptitResult.error) {
+                    return {
+                        score: 0,
+                        baseScore: 0,
+                        priorityApplied: 0,
+                        mode: 'PTIT riêng: chưa đạt sàn HSA',
+                        note: ptitResult.msg,
+                        ptit: ptitResult,
+                        error: true
+                    };
+                }
+                const priorityInfo = calculateAreaPriority(ptitResult.score, currentPriorityRegion);
+                return {
+                    score: priorityInfo.finalScore,
+                    baseScore: priorityInfo.baseScore,
+                    priorityApplied: priorityInfo.applied,
+                    mode: 'PTIT Auto',
+                    note: 'Tự động áp dụng ' + ptitConversionConfig.methodLabel + ' cho ngành PTIT-BVH: HSA ' + Number(currentHsaValue).toFixed(0) + ' → ' + ptitResult.score.toFixed(2) + '/30; sau ưu tiên ' + priorityInfo.finalScore.toFixed(2) + '. ' + ptitConversionConfig.note,
+                    ptit: ptitResult,
+                    priority: priorityInfo
+                };
+            }
+            return {
+                score: currentAdmissionScore,
+                baseScore: currentThptValue,
+                priorityApplied: currentAreaPriorityApplied,
+                mode: getSelectedMethodName(),
+                note: 'Dùng điểm quy đổi/dự báo theo phương thức đang chọn của ứng dụng.'
+            };
+        }
+
+        function evaluateMajorForPlanner(major) {
+            const mainBlock = getMajorBaseBlock(major);
+            const predicted = predictBenchmarkForMajor(major, mainBlock);
+            const scoreContext = getScoreContextForMajor(major);
+            const diff = scoreContext.score - predicted;
+            const chance = getChanceInfo(diff);
+            const pressure = getMajorPressureLevel(major);
+            const preference = getPreferenceScore(major);
+            return { ...major, mainBlock, predicted, diff, chance, pressure, preference, scoreUsed: scoreContext.score, scoreBase: scoreContext.baseScore, scoreMode: scoreContext.mode, scoreNote: scoreContext.note, scorePriorityApplied: scoreContext.priorityApplied };
+        }
+
+        function getPreferenceScore(major) {
+            const uniScore = { UET: 4.5, PTIT: 4.2, HUS: 3.7 };
+            const base = uniScore[major?.uni] || 2.0;
+            const text = ((major?.name || '') + ' ' + (major?.code || '')).toLowerCase();
+            let bonus = 0;
+            if (/(hệ thống thông tin|robot|mạng máy tính|điện tử|viễn thông|cơ - điện tử|công nghệ vật liệu)/i.test(text)) bonus += 0.5;
+            if (/(khoa học dữ liệu|trí tuệ nhân tạo|công nghệ thông tin|khoa học máy tính)/i.test(text)) bonus += 0.3;
+            return base + bonus;
+        }
+
+        function getFilteredPlannerRows(ignoreUiFilter = false) {
+            const uniFilter = ignoreUiFilter ? 'all' : (document.getElementById('selectUniversityFilter')?.value || 'all');
+            const groupFilter = ignoreUiFilter ? 'all' : (document.getElementById('selectMajorGroupFilter')?.value || 'all');
+            const keyword = ignoreUiFilter ? '' : ((document.getElementById('searchMajor')?.value || '').trim().toLowerCase());
+            return universityMajors
+                .filter(major => (uniFilter === 'all' || major.uni === uniFilter))
+                .filter(major => matchesMajorGroup(major, groupFilter))
+                .filter(major => !keyword || (major.name + ' ' + major.code + ' ' + major.uni).toLowerCase().includes(keyword))
+                .map(evaluateMajorForPlanner);
+        }
+
+        function pickRowsForStrategy(rows, strategy) {
+            const chosen = [];
+            const used = new Set();
+            const addFrom = (bucket, count, targetDiff) => {
+                bucket
+                    .slice()
+                    .sort((a, b) => (Math.abs(a.diff - targetDiff) - Math.abs(b.diff - targetDiff)) || (b.preference - a.preference) || (b.benchmark - a.benchmark))
+                    .forEach(row => {
+                        if (chosen.length >= admissionRegulationConfig.maxWishlist || count <= 0 || used.has(row.code)) return;
+                        chosen.push(row); used.add(row.code); count--;
+                    });
+            };
+            const dream = rows.filter(r => r.diff >= -1.60 && r.diff < -0.35);
+            const target = rows.filter(r => r.diff >= -0.35 && r.diff < 0.75);
+            const safe = rows.filter(r => r.diff >= 0.75);
+            const veryDream = rows.filter(r => r.diff < -1.60 && r.diff >= -2.50);
+            if (strategy === 'safe') {
+                addFrom(dream, 1, -0.70); addFrom(target, 5, 0.15); addFrom(safe, 9, 1.20);
+            } else if (strategy === 'ambitious') {
+                addFrom(veryDream, 2, -1.90); addFrom(dream, 4, -0.85); addFrom(target, 6, 0.10); addFrom(safe, 3, 1.05);
+            } else {
+                addFrom(dream, 3, -0.80); addFrom(target, 6, 0.15); addFrom(safe, 6, 1.10);
+            }
+            rows.slice().sort((a, b) => b.preference - a.preference || b.diff - a.diff).forEach(row => {
+                if (chosen.length < admissionRegulationConfig.maxWishlist && !used.has(row.code)) {
+                    chosen.push(row); used.add(row.code);
+                }
+            });
+            return chosen.slice(0, admissionRegulationConfig.maxWishlist);
+        }
+
+        function autoBuildWishlist(strategy = 'balanced') {
+            let rows = getFilteredPlannerRows(false);
+            if (rows.length < 8) rows = getFilteredPlannerRows(true);
+            const picked = pickRowsForStrategy(rows, strategy);
+            virtualWishlist = picked.map(r => r.code);
+            saveWishlist();
+            renderWishlist();
+            filterMajors();
+            const label = strategy === 'safe' ? 'an toàn' : strategy === 'ambitious' ? 'bứt phá' : 'cân bằng';
+            showToast('Đã tự tạo danh sách nguyện vọng chiến thuật ' + label + ' với ' + virtualWishlist.length + ' ngành.', 'success');
+        }
+
+        function sortWishlistByStrategy() {
+            if (!virtualWishlist.length) {
+                autoBuildWishlist('balanced');
+                return;
+            }
+            const rows = virtualWishlist.map(code => universityMajors.find(m => m.code === code)).filter(Boolean).map(evaluateMajorForPlanner);
+            const dream = rows.filter(r => r.diff < -0.35).sort((a, b) => b.preference - a.preference || b.predicted - a.predicted);
+            const target = rows.filter(r => r.diff >= -0.35 && r.diff < 0.75).sort((a, b) => b.preference - a.preference || Math.abs(a.diff) - Math.abs(b.diff));
+            const safe = rows.filter(r => r.diff >= 0.75).sort((a, b) => b.preference - a.preference || a.predicted - b.predicted);
+            virtualWishlist = [...dream, ...target, ...safe].map(r => r.code).slice(0, admissionRegulationConfig.maxWishlist);
+            saveWishlist();
+            renderWishlist();
+            showToast('Đã sắp xếp lại nguyện vọng theo thứ tự: mơ ước → mục tiêu → an toàn.', 'success');
+        }
+
+        function fillVnuPriorityWishlist() {
+            const priorityCodes = ['CN14','CN17','CN19','CN15','CN9','CN6','BVH7480201','BVH7480202','BVH7480101','BVH7480107','BVH7520216','CN20','CN12','QHT99','QHT01','QHT02'];
+            const pool = priorityCodes.map(code => universityMajors.find(m => m.code === code)).filter(Boolean).map(evaluateMajorForPlanner);
+            const rest = getFilteredPlannerRows(true).filter(row => !priorityCodes.includes(row.code));
+            virtualWishlist = pickRowsForStrategy([...pool, ...rest], 'balanced').map(r => r.code).slice(0, admissionRegulationConfig.maxWishlist);
+            saveWishlist();
+            renderWishlist();
+            showToast('Đã tạo danh sách ưu tiên UET/HUS/PTIT theo chiến thuật 15 NV.', 'success');
+        }
+
+        function updatePlannerDashboard() {
+            const setText = (id, text) => { const el = document.getElementById(id); if (el) el.innerText = text; };
+            setText('plannerAdmissionScore', currentAdmissionScore.toFixed(2));
+            setText('plannerScoreNote', 'Điểm quy đổi/dự báo: ' + currentAdmissionScore.toFixed(2));
+            setText('plannerWishCount', virtualWishlist.length + '/' + admissionRegulationConfig.maxWishlist);
+            const evaluated = virtualWishlist.map(code => universityMajors.find(m => m.code === code)).filter(Boolean).map(evaluateMajorForPlanner);
+            const dream = evaluated.filter(x => x.diff < -0.35).length;
+            const target = evaluated.filter(x => x.diff >= -0.35 && x.diff < 0.75).length;
+            const safe = evaluated.filter(x => x.diff >= 0.75).length;
+            setText('plannerWishMix', dream + ' mơ ước · ' + target + ' mục tiêu · ' + safe + ' an toàn');
+            let advice = 'Tạo 15 NV cân bằng';
+            if (evaluated.length) {
+                if (safe < 4) advice = 'Bổ sung NV an toàn';
+                else if (dream === 0) advice = 'Thêm 2–3 NV mơ ước';
+                else if (target < 4) advice = 'Tăng nhóm mục tiêu';
+                else advice = 'Cấu trúc khá cân bằng';
+            }
+            setText('plannerMainAdvice', advice);
+            const explain = document.getElementById('plannerPressureExplain');
+            if (explain) {
+                explain.innerHTML = 'HSA 2026 có <b class="text-white">121.010</b> lượt đăng ký và <b class="text-white">116.839</b> lượt có điểm; so với 2025, quy mô có điểm tăng khoảng <b class="text-emerald-300">31,2%</b>. Vùng điểm cao tăng mạnh: ≥100 tăng khoảng <b class="text-amber-300">63%</b>, ≥105 tăng khoảng <b class="text-rose-300">72%</b>. Vì vậy ứng dụng cộng biên áp lực cho ngành nóng khi dự báo điểm chuẩn 2026.';
+            }
+        }
+
 
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
@@ -1926,25 +2312,49 @@
         }
 
         function convertPTIT(x) {
-            if (x < 75) return { error: true, msg: "Dưới ngưỡng sàn tuyển sinh PTIT (HSA < 75)" };
-            let a, b, c, d, rangeIndex;
-            if (x >= 105) { rangeIndex = 1; a = 105; b = 150; c = 27.25; d = 30.00; }
-            else if (x >= 97) { rangeIndex = 2; a = 97; b = 105; c = 25.25; d = 27.25; }
-            else if (x >= 91) { rangeIndex = 3; a = 91; b = 97; c = 23.50; d = 25.25; }
-            else if (x >= 82) { rangeIndex = 4; a = 82; b = 91; c = 20.50; d = 23.50; }
-            else { rangeIndex = 5; a = 75; b = 82; c = 15.00; d = 20.50; }
-            return { error: false, score: c + ((x - a) / (b - a)) * (d - c), a, b, c, d, rangeIndex };
+            const hsa = Number(x);
+            const cfg = ptitConversionConfig;
+            if (!Number.isFinite(hsa)) return { error: true, msg: "Điểm HSA không hợp lệ" };
+            if (hsa < cfg.hsaFloor) return { error: true, msg: "Dưới ngưỡng sàn tuyển sinh PTIT (HSA < " + cfg.hsaFloor + ")" };
+            const capped = clamp(hsa, cfg.hsaFloor, 150);
+            const range = cfg.anchors.find(r => capped >= r.minHsa && capped <= r.maxHsa) || cfg.anchors[0];
+            const score = range.minScore + ((capped - range.minHsa) / (range.maxHsa - range.minHsa)) * (range.maxScore - range.minScore);
+            return {
+                error: false,
+                score: round2(score),
+                rawScore: score,
+                a: range.minHsa,
+                b: range.maxHsa,
+                c: range.minScore,
+                d: range.maxScore,
+                rangeIndex: range.rangeIndex,
+                label: range.label,
+                method: cfg.methodLabel,
+                autoApplied: true
+            };
         }
 
         function convertReversePTIT(y) {
-            if (y < 15.00) return { error: true, msg: "Dưới ngưỡng sàn tuyển sinh PTIT (THPT < 15.00)" };
-            let a, b, c, d, rangeIndex;
-            if (y >= 27.25) { rangeIndex = 1; a = 105; b = 150; c = 27.25; d = 30.00; }
-            else if (y >= 25.25) { rangeIndex = 2; a = 97; b = 105; c = 25.25; d = 27.25; }
-            else if (y >= 23.50) { rangeIndex = 3; a = 91; b = 97; c = 23.50; d = 25.25; }
-            else if (y >= 20.50) { rangeIndex = 4; a = 82; b = 91; c = 20.50; d = 23.50; }
-            else { rangeIndex = 5; a = 75; b = 82; c = 15.00; d = 20.50; }
-            return { error: false, score: a + ((y - c) / (d - c)) * (b - a), a, b, c, d, rangeIndex };
+            const score30 = Number(y);
+            const cfg = ptitConversionConfig;
+            if (!Number.isFinite(score30)) return { error: true, msg: "Điểm THPT/thang 30 không hợp lệ" };
+            if (score30 < cfg.thptFloor) return { error: true, msg: "Dưới ngưỡng sàn tuyển sinh PTIT (THPT < " + cfg.thptFloor.toFixed(2) + ")" };
+            const capped = clamp(score30, cfg.thptFloor, 30);
+            const range = cfg.anchors.find(r => capped >= r.minScore && capped <= r.maxScore) || cfg.anchors[0];
+            const hsa = range.minHsa + ((capped - range.minScore) / (range.maxScore - range.minScore)) * (range.maxHsa - range.minHsa);
+            return {
+                error: false,
+                score: round2(hsa),
+                rawScore: hsa,
+                a: range.minHsa,
+                b: range.maxHsa,
+                c: range.minScore,
+                d: range.maxScore,
+                rangeIndex: range.rangeIndex,
+                label: range.label,
+                method: cfg.methodLabel,
+                autoApplied: true
+            };
         }
 
         // LẬP TRÌNH LẠI: Hàm dự đoán điểm chuẩn 2026 dựa trên Rank-Preservation (Bảo toàn thứ hạng) và Delta dịch phổ
@@ -2359,7 +2769,7 @@
                 moet: 'Khung mốc Tốp theo Công văn 2304',
                 percentileNational: 'Bách phân vị THPT 2025 tham chiếu',
                 percentile: 'Chuẩn VNU mô phỏng HSA 2026 → THPT 2025',
-                ptit: 'Nội suy từng khoảng PTIT'
+                ptit: 'PTIT riêng: nội suy HSA → thang 30'
             };
             return map[activeMethod] || map.percentile;
         }
@@ -2655,6 +3065,7 @@
             renderMoetEquivalenceTable(Math.round(hsaVal));
             updateCrossYearPanels(hsaVal, pct, thptVal);
             renderMajorTable();
+            updatePlannerDashboard();
             updateCompliancePanel();
             renderForecastScenarioPanel();
             updateChart(thptVal);
@@ -2864,27 +3275,49 @@
             return { label: 'Rất khó', cls: 'bg-rose-500/10 text-rose-400 border-rose-500/20' };
         }
 
+        function updatePtitAutoConversionPanel() {
+            const panel = document.getElementById('ptitAutoConversionPanel');
+            if (!panel) return;
+            const hsaVal = Number(currentHsaValue || document.getElementById('inputHsa')?.value || 0);
+            const result = convertPTIT(hsaVal);
+            const hsaEl = document.getElementById('ptitAutoHsa');
+            const baseEl = document.getElementById('ptitAutoBase');
+            const finalEl = document.getElementById('ptitAutoFinal');
+            const explainEl = document.getElementById('ptitAutoExplain');
+            if (hsaEl) hsaEl.innerText = Number.isFinite(hsaVal) ? hsaVal.toFixed(0) : '--';
+            if (result.error) {
+                if (baseEl) baseEl.innerText = '--';
+                if (finalEl) finalEl.innerText = '--';
+                if (explainEl) explainEl.innerHTML = '<b class="text-rose-300">' + result.msg + '</b>. PTIT yêu cầu HSA từ ' + ptitConversionConfig.hsaFloor + ' điểm trở lên; các ngành PTIT trong planner sẽ tạm đánh giá là chưa đủ điều kiện.';
+                panel.className = 'mt-3 rounded-xl border border-rose-500/20 bg-rose-500/10 p-3';
+                return;
+            }
+            const priorityInfo = calculateAreaPriority(result.score, currentPriorityRegion);
+            if (baseEl) baseEl.innerText = result.score.toFixed(2);
+            if (finalEl) finalEl.innerText = priorityInfo.finalScore.toFixed(2);
+            if (explainEl) explainEl.innerHTML = 'Đang bật <b class="text-emerald-300">PTIT Auto</b>: mọi ngành PTIT-BVH tự dùng khoảng ' + result.rangeIndex + ' (' + result.label + '), HSA [' + result.a + '; ' + result.b + '] ↔ thang 30 [' + result.c.toFixed(2) + '; ' + result.d.toFixed(2) + ']. UET/HUS vẫn giữ phương thức quy đổi đang chọn.';
+            panel.className = 'mt-3 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3';
+        }
+
         function renderMajorTable() {
             const tbody = document.getElementById('majorTableBody');
             if (!tbody) return;
             tbody.innerHTML = '';
             const uniFilter = document.getElementById('selectUniversityFilter')?.value || 'all';
+            const groupFilter = document.getElementById('selectMajorGroupFilter')?.value || 'all';
             const keyword = (document.getElementById('searchMajor')?.value || '').trim().toLowerCase();
             const currentScore = currentAdmissionScore;
+            updatePtitAutoConversionPanel();
 
             const rows = universityMajors.filter(major => {
                 const matchUni = uniFilter === 'all' || major.uni === uniFilter;
+                const matchGroup = matchesMajorGroup(major, groupFilter);
                 const matchKeyword = !keyword || (major.name + ' ' + major.code + ' ' + major.uni).toLowerCase().includes(keyword);
-                return matchUni && matchKeyword;
-            }).map(major => {
-                const mainBlock = getMajorBaseBlock(major);
-                const predicted = predictBenchmark2026(major.benchmark, mainBlock);
-                const diff = currentScore - predicted;
-                return { ...major, mainBlock, predicted, diff, chance: getChanceInfo(diff) };
-            }).sort((a, b) => b.diff - a.diff);
+                return matchUni && matchGroup && matchKeyword;
+            }).map(major => evaluateMajorForPlanner(major)).sort((a, b) => b.diff - a.diff);
 
             if (!rows.length) {
-                tbody.innerHTML = '<tr><td colspan="8" class="p-6 text-center text-slate-500">Không tìm thấy ngành phù hợp với bộ lọc hiện tại.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="9" class="p-6 text-center text-slate-500">Không tìm thấy ngành phù hợp với bộ lọc hiện tại.</td></tr>';
                 return;
             }
 
@@ -2893,10 +3326,11 @@
                 tr.className = 'hover:bg-slate-900/60 transition-colors';
                 tr.innerHTML = `
                     <td class="p-3 font-mono font-bold text-white">${major.code}</td>
-                    <td class="p-3"><div class="font-bold text-slate-100 text-xs">${major.name}</div><div class="text-[10px] text-slate-500">${major.uni}</div></td>
-                    <td class="p-3 text-center font-mono text-slate-300 text-xs">${major.blocks.join(', ')}<div class="text-[9px] text-amber-400 mt-1">Gốc: ${major.mainBlock}</div></td>
+                    <td class="p-3"><div class="font-bold text-slate-100 text-xs">${major.name}</div><div class="text-[10px] text-slate-500">${major.uni}${major.campus ? ' · ' + major.campus : ''}${major.quota2026 ? ' · CT 2026: ' + major.quota2026 : ''}</div>${major.ttnv2025 ? '<div class="text-[9px] text-slate-500 mt-1">Điểm 2025: ' + major.ttnv2025 + '</div>' : ''}</td>
+                    <td class="p-3 text-center font-mono text-slate-300 text-xs">${major.blocks.join(', ')}<div class="text-[9px] text-amber-400 mt-1">Gốc: ${major.mainBlock}</div><div class="text-[9px] text-sky-300 mt-1">${major.scoreMode}: ${major.scoreUsed.toFixed(2)}</div></td>
                     <td class="p-3 text-center font-mono text-xs">${major.benchmark.toFixed(2)}</td>
                     <td class="p-3 text-center font-mono text-amber-400 font-bold text-xs">${major.predicted.toFixed(2)}</td>
+                    <td class="p-3 text-center"><span title="${major.pressure.note}" class="px-2 py-1 rounded-full border text-[10px] font-bold ${major.pressure.cls}">${major.pressure.label}</span><div class="text-[9px] text-slate-500 mt-1">+${major.pressure.adjustment.toFixed(2)}</div></td>
                     <td class="p-3 text-center font-mono text-xs ${major.diff >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${major.diff >= 0 ? '+' : ''}${major.diff.toFixed(2)}</td>
                     <td class="p-3 text-center"><span class="px-2 py-1 rounded-full border text-[10px] font-bold ${major.chance.cls}">${major.chance.label}</span></td>
                     <td class="p-3 text-right"><button onclick="addToWishlist('${major.code}')" class="px-2 py-1 rounded-lg bg-brand-500/10 text-brand-500 border border-brand-500/20 hover:bg-brand-500 hover:text-white text-[10px] font-bold transition-colors">+ Thêm</button></td>
@@ -2977,16 +3411,18 @@
             const container = document.getElementById('wishlistContainer');
             const empty = document.getElementById('emptyWishlistLabel');
             if (!container || !empty) return;
+            updatePlannerDashboard();
             container.innerHTML = '';
             empty.classList.toggle('hidden', virtualWishlist.length > 0);
 
             virtualWishlist.forEach((code, index) => {
                 const major = universityMajors.find(m => m.code === code);
                 if (!major) return;
-                const mainBlock = getMajorBaseBlock(major);
-                const predicted = predictBenchmark2026(major.benchmark, mainBlock);
-                const diff = currentAdmissionScore - predicted;
-                const chance = getChanceInfo(diff);
+                const evaluatedMajor = evaluateMajorForPlanner(major);
+                const mainBlock = evaluatedMajor.mainBlock;
+                const predicted = evaluatedMajor.predicted;
+                const diff = evaluatedMajor.diff;
+                const chance = evaluatedMajor.chance;
                 const item = document.createElement('div');
                 item.className = 'flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-xl border border-slate-800 bg-slate-900/60 p-3';
                 item.innerHTML = `
@@ -2995,7 +3431,7 @@
                         <div class="min-w-0">
                             <div class="font-bold text-white text-xs break-words">${major.code} · ${major.name}</div>
                             <div class="text-[10px] text-slate-500 leading-relaxed">
-                                ${major.uni} · Gốc quy đổi: ${mainBlock} · Chuẩn 2025: ${major.benchmark.toFixed(2)} · Dự báo 2026: ${predicted.toFixed(2)} · Điểm xét tuyển: ${currentAdmissionScore.toFixed(2)} (${priorityRegionLevels[currentPriorityRegion]?.label || 'KV3'} +${currentAreaPriorityApplied.toFixed(2)})
+                                ${major.uni} · Gốc quy đổi: ${mainBlock} · Chuẩn 2025: ${major.benchmark.toFixed(2)} · Dự báo 2026: ${predicted.toFixed(2)} · Áp lực: ${getMajorPressureLevel(major).label} (+${getMajorPressureLevel(major).adjustment.toFixed(2)}) · Điểm dùng: ${evaluatedMajor.scoreUsed.toFixed(2)} (${evaluatedMajor.scoreMode})
                             </div>
                             ${isTeacherProgram(major) && index >= admissionRegulationConfig.teacherMaxOrder ? '<div class="text-[10px] text-rose-400 font-bold mt-1">Cảnh báo: ngành giáo viên phải nằm trong NV1–NV5.</div>' : ''}
                         </div>
@@ -3028,22 +3464,20 @@
                 .map(code => {
                     const major = universityMajors.find(m => m.code === code);
                     if (!major) return null;
-                    const mainBlock = getMajorBaseBlock(major);
-                    const predicted = predictBenchmark2026(major.benchmark, mainBlock);
-                    const diff = currentAdmissionScore - predicted;
-                    return { major, predicted, diff, chance: getChanceInfo(diff), mainBlock };
+                    const ev = evaluateMajorForPlanner(major);
+                    return { major, predicted: ev.predicted, diff: ev.diff, chance: ev.chance, mainBlock: ev.mainBlock, scoreUsed: ev.scoreUsed, scoreMode: ev.scoreMode };
                 })
                 .filter(Boolean);
 
-            const safe = evaluated.filter(x => x.diff >= 0.35).length;
-            const focus = evaluated.filter(x => x.diff >= -0.50 && x.diff < 0.35).length;
-            const risky = evaluated.filter(x => x.diff < -0.50).length;
+            const safe = evaluated.filter(x => x.diff >= 0.75).length;
+            const focus = evaluated.filter(x => x.diff >= -0.35 && x.diff < 0.75).length;
+            const risky = evaluated.filter(x => x.diff < -0.35).length;
             const firstSafeIndex = evaluated.findIndex(x => x.diff >= 0.35);
             const eligibility = getSourceEligibility();
             const teacherIssues = evaluated.filter((x, idx) => isTeacherProgram(x.major) && idx >= admissionRegulationConfig.teacherMaxOrder);
 
             let html = '';
-            html += '<p>Điểm xét tuyển dự đoán hiện tại: <span class="text-emerald-400 font-bold">' + currentAdmissionScore.toFixed(2) + '</span> = điểm nền <span class="text-amber-400 font-bold">' + currentThptValue.toFixed(2) + '</span> + ưu tiên khu vực <span class="text-cyan-300 font-bold">' + currentAreaPriorityApplied.toFixed(2) + '</span> (' + (priorityRegionLevels[currentPriorityRegion]?.label || 'KV3') + '). Danh sách có <span class="text-white font-bold">' + evaluated.length + '/' + admissionRegulationConfig.maxWishlist + '</span> nguyện vọng.</p>';
+            html += '<p>Điểm xét tuyển chính trong app: <span class="text-emerald-400 font-bold">' + currentAdmissionScore.toFixed(2) + '</span> = điểm nền <span class="text-amber-400 font-bold">' + currentThptValue.toFixed(2) + '</span> + ưu tiên khu vực <span class="text-cyan-300 font-bold">' + currentAreaPriorityApplied.toFixed(2) + '</span> (' + (priorityRegionLevels[currentPriorityRegion]?.label || 'KV3') + '). Danh sách có <span class="text-white font-bold">' + evaluated.length + '/' + admissionRegulationConfig.maxWishlist + '</span> nguyện vọng.</p>';
             html += '<p>Phân tầng nhanh: <span class="text-emerald-400 font-bold">' + safe + '</span> NV an toàn/có cơ hội tốt, <span class="text-amber-400 font-bold">' + focus + '</span> NV sát mục tiêu, <span class="text-rose-300 font-bold">' + risky + '</span> NV rủi ro cao.</p>';
             if (!eligibility.passed) html += '<p class="text-rose-300">Cảnh báo điều kiện nguồn: điểm THPT gốc đang dưới 15,00/30. Cần kiểm tra lại trước khi dùng kết quả HSA để đăng ký xét tuyển.</p>';
             if (teacherIssues.length) html += '<p class="text-rose-300">Cảnh báo CTĐT giáo viên: ' + teacherIssues.map(x => x.major.code).join(', ') + ' đang nằm sau NV5.</p>';
@@ -3054,7 +3488,10 @@
             } else {
                 html += '<p class="text-amber-300">Chưa có NV nào đạt vùng an toàn rõ rệt; nên bổ sung thêm ngành có điểm dự báo thấp hơn điểm xét tuyển ít nhất 0,35 điểm.</p>';
             }
+            const hot = evaluated.filter(x => x.pressure && (x.pressure.label === 'Rất nóng' || x.pressure.label === 'Nóng')).length;
+            if (hot >= 5) html += '<p class="text-amber-300">Danh sách có nhiều ngành nóng (' + hot + ' NV). Nên giữ biên an toàn ở cuối danh sách vì nhóm điểm cao HSA 2026 tăng mạnh.</p>';
             content.innerHTML = html;
+            updatePlannerDashboard();
         }
 
         function buildExportRowsFromConversionTable() {
@@ -3126,25 +3563,24 @@
                 showToast('Danh sách nguyện vọng đang trống.', 'info');
                 return;
             }
-            const headers = ['NV', 'Mã ngành', 'Tên ngành', 'Trường', 'Tổ hợp/gốc quy đổi', 'Điểm chuẩn 2025', 'Dự báo 2026', 'Điểm xét tuyển', 'Chênh lệch', 'Đánh giá'];
+            const headers = ['NV', 'Mã ngành', 'Tên ngành', 'Trường/cơ sở', 'Chỉ tiêu 2026', 'Tổ hợp/gốc quy đổi', 'Điểm chuẩn 2025', 'Dự báo 2026', 'Áp lực HSA', 'Điểm xét tuyển', 'Chênh lệch', 'Đánh giá'];
             const rows = virtualWishlist.map((code, index) => {
                 const major = universityMajors.find(m => m.code === code);
                 if (!major) return null;
-                const mainBlock = getMajorBaseBlock(major);
-                const predicted = predictBenchmark2026(major.benchmark, mainBlock);
-                const diff = currentAdmissionScore - predicted;
-                const chance = getChanceInfo(diff);
+                const ev = evaluateMajorForPlanner(major);
                 return [
                     'NV' + (index + 1),
                     major.code,
                     major.name,
-                    major.uni,
-                    mainBlock,
+                    major.uni + (major.campus ? ' - ' + major.campus : ''),
+                    major.quota2026 || '',
+                    ev.mainBlock,
                     major.benchmark.toFixed(2),
-                    predicted.toFixed(2),
-                    currentAdmissionScore.toFixed(2),
-                    (diff >= 0 ? '+' : '') + diff.toFixed(2),
-                    chance.label
+                    ev.predicted.toFixed(2),
+                    getMajorPressureLevel(major).label + ' (+' + getMajorPressureLevel(major).adjustment.toFixed(2) + ')',
+                    ev.scoreUsed.toFixed(2) + ' (' + ev.scoreMode + ')',
+                    (ev.diff >= 0 ? '+' : '') + ev.diff.toFixed(2),
+                    ev.chance.label
                 ];
             }).filter(Boolean);
             exportRowsAsExcel('chien_thuat_nguyen_vong_hsa_2026.xls', 'Chiến thuật nguyện vọng HSA 2026', headers, rows);
@@ -3159,21 +3595,19 @@
             const rows = virtualWishlist.map((code, index) => {
                 const major = universityMajors.find(m => m.code === code);
                 if (!major) return '';
-                const mainBlock = getMajorBaseBlock(major);
-                const predicted = predictBenchmark2026(major.benchmark, mainBlock);
-                const diff = currentAdmissionScore - predicted;
-                const chance = getChanceInfo(diff);
+                const ev = evaluateMajorForPlanner(major);
                 return `<tr>
                     <td>NV${index + 1}</td>
                     <td>${escapeHtml(major.code)}</td>
                     <td>${escapeHtml(major.name)}</td>
                     <td>${escapeHtml(major.uni)}</td>
-                    <td>${escapeHtml(mainBlock)}</td>
+                    <td>${escapeHtml(ev.mainBlock)}</td>
                     <td>${major.benchmark.toFixed(2)}</td>
-                    <td>${predicted.toFixed(2)}</td>
-                    <td>${currentAdmissionScore.toFixed(2)}</td>
-                    <td>${(diff >= 0 ? '+' : '') + diff.toFixed(2)}</td>
-                    <td>${escapeHtml(chance.label)}</td>
+                    <td>${ev.predicted.toFixed(2)}</td>
+                    <td>${escapeHtml(getMajorPressureLevel(major).label)}</td>
+                    <td>${ev.scoreUsed.toFixed(2)} (${escapeHtml(ev.scoreMode)})</td>
+                    <td>${(ev.diff >= 0 ? '+' : '') + ev.diff.toFixed(2)}</td>
+                    <td>${escapeHtml(ev.chance.label)}</td>
                 </tr>`;
             }).join('');
             const win = window.open('', '_blank', 'width=1100,height=800');
@@ -3186,8 +3620,8 @@
                     body{font-family:Arial,sans-serif;margin:24px;color:#111827}h1{font-size:20px}p{font-size:12px;color:#4b5563}table{border-collapse:collapse;width:100%;font-size:12px}th,td{border:1px solid #d1d5db;padding:6px;text-align:left}th{background:#f3f4f6}.note{margin-top:12px;font-size:11px;color:#6b7280}
                 </style></head><body>
                 <h1>Chiến thuật nguyện vọng HSA 2026</h1>
-                <p>Điểm xét tuyển dự đoán: <b>${currentAdmissionScore.toFixed(2)}</b> · Điểm nền: ${currentThptValue.toFixed(2)} · Ưu tiên KV: +${currentAreaPriorityApplied.toFixed(2)} · Phương pháp: ${escapeHtml(getSelectedMethodName())}</p>
-                <table><thead><tr><th>NV</th><th>Mã</th><th>Ngành</th><th>Trường</th><th>Gốc</th><th>Chuẩn 2025</th><th>Dự báo 2026</th><th>Điểm XT</th><th>Chênh</th><th>Đánh giá</th></tr></thead><tbody>${rows}</tbody></table>
+                <p>Điểm xét tuyển chính: <b>${currentAdmissionScore.toFixed(2)}</b> · Phương pháp chính: ${escapeHtml(getSelectedMethodName())}</p>
+                <table><thead><tr><th>NV</th><th>Mã</th><th>Ngành</th><th>Trường</th><th>Gốc</th><th>Chuẩn 2025</th><th>Dự báo 2026</th><th>Áp lực</th><th>Điểm XT</th><th>Chênh</th><th>Đánh giá</th></tr></thead><tbody>${rows}</tbody></table>
                 <div class="note">Kết quả là mô phỏng tham khảo, cần cập nhật khi có phổ THPT 2026 và bảng quy đổi chính thức.</div>
                 <script>window.onload=function(){window.print();};<\/script>
                 </body></html>`);
@@ -3580,6 +4014,9 @@
         window.removeFromWishlist = removeFromWishlist;
         window.moveWishlist = moveWishlist;
         window.clearWishlist = clearWishlist;
+        window.autoBuildWishlist = autoBuildWishlist;
+        window.sortWishlistByStrategy = sortWishlistByStrategy;
+        window.fillVnuPriorityWishlist = fillVnuPriorityWishlist;
         window.exportConversionTableExcel = exportConversionTableExcel;
         window.exportWishlistExcel = exportWishlistExcel;
         window.printWishlist = printWishlist;
