@@ -129,7 +129,7 @@
             </div>
             <div class="flex items-center gap-2 text-xs bg-slate-900 rounded-full px-3 py-1.5 border border-slate-800">
                 <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-                <span class="text-slate-300 font-medium">15 NV · Dự báo HSA tăng · Xuất Excel · In chiến thuật</span>
+                <span class="text-slate-300 font-medium">15 NV · BPV HSA & THPT 2026 chính thức · Xuất Excel</span>
             </div>
         </div>
     </header>
@@ -144,7 +144,7 @@
                 
                 <h2 class="text-base font-bold text-white mb-4 flex items-center gap-2">
                     <span class="p-1.5 bg-slate-800 rounded-lg text-brand-500 text-xs font-bold">01</span>
-                    Nhập điểm & Dự báo bách phân vị
+                    Nhập điểm & bách phân vị chính thức
                 </h2>
 
                 <!-- Bộ nút chuyển đổi hướng đi -->
@@ -153,7 +153,7 @@
                         HSA 2026 &rarr; THPT 25<br><span class="font-medium opacity-80">CV2304 + BPV BGD</span>
                     </button>
                     <button id="tabHsa26ToThpt26" onclick="switchDirection('hsa26_to_thpt26')" class="py-2 text-[10px] font-bold rounded-lg transition-all text-slate-400 hover:text-white text-center">
-                        HSA 2026 &rarr; THPT 26<br><span class="font-medium opacity-80">dự báo</span>
+                        HSA 2026 &rarr; THPT 26<br><span class="font-medium opacity-80">chính thức</span>
                     </button>
                     <button id="tabHsa25ToThpt" onclick="switchDirection('hsa25_to_thpt')" class="py-2 text-[10px] font-bold rounded-lg transition-all text-slate-400 hover:text-white text-center col-span-1">
                         HSA 2025 &rarr; THPT 25<br><span class="font-medium opacity-80">mở so sánh</span>
@@ -178,6 +178,31 @@
                     </select>
                 </div>
 
+                <div id="hsaOfficialSourceCard" class="mb-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-[10px] text-emerald-50 leading-relaxed">
+                    <div class="flex items-start justify-between gap-3 mb-2">
+                        <div>
+                            <div class="font-extrabold text-emerald-300 uppercase tracking-wider">HSA 2026 chính thức - ĐHQGHN</div>
+                            <div id="hsaOfficialSource" class="text-slate-300 mt-0.5">Bảng 3 - HSA Khoa học Q01-Q10, N=41.235</div>
+                        </div>
+                        <span id="hsaOfficialPool" class="shrink-0 rounded-full border border-emerald-500/20 bg-slate-950/60 px-2 py-0.5 text-[9px] font-extrabold text-emerald-300">41.235</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <div class="rounded-lg border border-slate-700/70 bg-slate-950/50 p-2">
+                            <div class="text-[8px] uppercase font-bold text-slate-500">Điểm đang xét</div>
+                            <div id="hsaOfficialCurrent" class="text-sm font-black text-white font-mono">98</div>
+                        </div>
+                        <div class="rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-2">
+                            <div class="text-[8px] uppercase font-bold text-emerald-300">Phân vị</div>
+                            <div id="hsaOfficialPct" class="text-sm font-black text-emerald-300 font-mono">92.92%</div>
+                        </div>
+                        <div class="rounded-lg border border-amber-500/20 bg-amber-500/10 p-2">
+                            <div class="text-[8px] uppercase font-bold text-amber-300">Tốp</div>
+                            <div id="hsaOfficialTop" class="text-sm font-black text-amber-300 font-mono">8.05%</div>
+                        </div>
+                    </div>
+                    <div id="hsaOfficialNote" class="mt-2 text-slate-300">Nguồn PDF: Phụ lục phổ điểm và bách phân vị HSA 2026; số liệu làm tròn đến 2 chữ số sau dấu phẩy.</div>
+                </div>
+
                 <!-- Bộ chọn tổ hợp môn THPT quy đổi -->
                 <div class="mb-4">
                     <label class="text-xs font-semibold text-slate-300 block mb-1.5">Tổ hợp môn THPT quy đổi:</label>
@@ -190,6 +215,21 @@
                         <option value="D01">Khối D01 (Toán, Ngữ văn, Tiếng Anh)</option>
                         <option value="D07">Khối D07 (Toán, Hóa học, Tiếng Anh)</option>
                     </select>
+                </div>
+
+                <div id="thpt2026OfficialStatsCard" class="mb-4 rounded-2xl border border-emerald-500/25 bg-emerald-500/10 p-3">
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                        <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-300">THPT 2026 chính thức - Bộ GD&ĐT</div>
+                        <span id="officialBlockStatsBadge" class="text-[9px] bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 px-2 py-0.5 rounded-full font-bold">A00</span>
+                    </div>
+                    <div id="officialBlockStatsName" class="text-[11px] text-slate-300 font-semibold mb-2">Toán, Vật lí, Hóa học</div>
+                    <div class="grid grid-cols-4 gap-2 text-center">
+                        <div class="rounded-xl bg-slate-950/60 border border-slate-800 p-2"><div class="text-[8px] text-slate-500 uppercase font-bold">Số TS</div><div id="officialBlockStatsPool" class="text-xs font-black text-white font-mono">175.241</div></div>
+                        <div class="rounded-xl bg-slate-950/60 border border-slate-800 p-2"><div class="text-[8px] text-slate-500 uppercase font-bold">ĐTB</div><div id="officialBlockStatsMean" class="text-xs font-black text-emerald-300 font-mono">19.41</div></div>
+                        <div class="rounded-xl bg-slate-950/60 border border-slate-800 p-2"><div class="text-[8px] text-slate-500 uppercase font-bold">Trung vị</div><div id="officialBlockStatsMedian" class="text-xs font-black text-cyan-300 font-mono">19.75</div></div>
+                        <div class="rounded-xl bg-slate-950/60 border border-slate-800 p-2"><div class="text-[8px] text-slate-500 uppercase font-bold">Điểm 30</div><div id="officialBlockStatsPerfect" class="text-xs font-black text-amber-300 font-mono">1</div></div>
+                    </div>
+                    <div id="officialBlockStatsSource" class="mt-2 text-[9px] text-slate-400 leading-relaxed">Nguồn: Báo cáo thống kê và phân tích phổ điểm thi THPT năm 2026, trang 66-72.</div>
                 </div>
 
                 <!-- Ô nhập điểm HSA -->
@@ -291,19 +331,19 @@
                 </div>
             </div>
 
-            <!-- Panel tùy chỉnh tham số mô phỏng dự báo điểm thi THPT 2026 -->
+            <!-- Panel dữ liệu bách phân vị THPT 2026 chính thức -->
             <div id="containerSimulate2026" class="glass-panel rounded-2xl p-6 relative hidden border border-emerald-500/30">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl"></div>
                 <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-1.5">
                     <span class="text-emerald-400">⚙️</span>
-                    Mô phỏng Phổ điểm THPT 2026
+                    Bách phân vị THPT 2026 chính thức
                 </h3>
                 <p class="text-[10px] text-slate-400 leading-relaxed mb-4">
-                    Tùy chỉnh độ lệch xu hướng phổ điểm tốt nghiệp THPT năm 2026 (Khó/Dễ) để tính toán khoảng điểm quy đổi dự báo theo kịch bản.
+                    Ứng dụng đã nạp bảng bách phân vị THPT 2026 chính thức cho 5 tổ hợp A00, A01, B00, C00, D01. Các thanh trượt phía dưới chỉ còn dùng làm kịch bản dự phòng khi chọn tổ hợp chưa có bảng chính thức.
                 </p>
                 <div class="space-y-4">
                     <div class="flex justify-between items-center text-xs">
-                        <span class="text-slate-300 font-medium">Độ lệch điểm dự báo ($\Delta$ điểm):</span>
+                        <span class="text-slate-300 font-medium">Độ lệch dự phòng ($\Delta$ điểm):</span>
                         <span id="shiftDeltaVal" class="text-brand-500 font-bold font-mono">0.00 điểm</span>
                     </div>
                     <input type="range" id="inputShiftDelta" min="-2.00" max="2.00" value="0.00" step="0.25"
@@ -318,15 +358,15 @@
                 <!-- Thanh trượt mô phỏng quy mô thí sinh năm 2026 -->
                 <div class="mt-4 pt-4 border-t border-slate-800/80">
                     <div class="flex justify-between items-center text-xs mb-1.5">
-                        <span class="text-slate-300 font-medium">Quy mô thí sinh dự báo 2026:</span>
-                        <span id="forecastPoolVal" class="text-amber-500 font-bold font-mono">170.000 thí sinh</span>
+                        <span class="text-slate-300 font-medium">Quy mô dự phòng nếu cần mô phỏng:</span>
+                        <span id="forecastPoolVal" class="text-amber-500 font-bold font-mono">175.000 thí sinh</span>
                     </div>
-                    <input type="range" id="inputForecastPool" min="50000" max="300000" value="170000" step="5000"
+                    <input type="range" id="inputForecastPool" min="50000" max="400000" value="175000" step="5000"
                            class="w-full accent-amber-500 cursor-pointer">
                     <div class="flex justify-between text-[9px] text-slate-500 font-mono">
                         <span>Cận dưới: 50k</span>
                         <span>Trung bình: 170k</span>
-                        <span>Cận trên: 300k</span>
+                        <span>Cận trên: 400k</span>
                     </div>
                 </div>
 
@@ -335,12 +375,12 @@
                     <div class="flex flex-col gap-2 mb-3">
                         <div class="flex items-center justify-between gap-2">
                             <h4 class="text-xs font-extrabold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
-                                <span>🧭</span> Dự báo theo 3 kịch bản dữ liệu
+                                <span>🧭</span> Trạng thái dữ liệu THPT 2026
                             </h4>
-                            <span id="forecastScenarioStatus" class="text-[9px] bg-amber-500/10 text-amber-300 border border-amber-500/20 px-2 py-0.5 rounded-full font-bold">Chờ phổ THPT 2026</span>
+                            <span id="forecastScenarioStatus" class="text-[9px] bg-amber-500/10 text-amber-300 border border-amber-500/20 px-2 py-0.5 rounded-full font-bold">Đã có BPV chính thức</span>
                         </div>
                         <p class="text-[10px] text-slate-400 leading-relaxed">
-                            Khi chưa có phổ điểm THPT 2026, hệ thống dùng HSA 2026 + bảng bách phân vị THPT 2025 làm nền, sau đó tạo 3 kịch bản thận trọng/cơ sở/tích cực. Đây là dự báo, không phải bảng chính thức.
+                            Với A00, A01, B00, C00, D01, hệ thống dùng trực tiếp bảng bách phân vị THPT 2026 chính thức của Bộ GD&ĐT và nội suy tuyến tính theo bách phân vị HSA. Nếu chọn C01/D07, hệ thống tự chuyển về chế độ dự phòng vì chưa có cột chính thức.
                         </p>
                     </div>
                     <div class="grid grid-cols-3 gap-2 mb-3">
@@ -355,7 +395,7 @@
                                     <th class="p-2">Kịch bản</th>
                                     <th class="p-2 text-center">Quy mô</th>
                                     <th class="p-2 text-center">Δ</th>
-                                    <th class="p-2 text-right">Điểm dự báo</th>
+                                    <th class="p-2 text-right">Điểm quy đổi</th>
                                 </tr>
                             </thead>
                             <tbody id="forecastScenarioTableBody" class="divide-y divide-slate-800/30 text-slate-300"></tbody>
@@ -417,11 +457,14 @@
                             <span class="text-[10px] text-slate-400 block mt-0.5">Dùng khung mốc tốp 0,5% - 1% - 2% - 5% - 10% - 20% - 30% - 50%; đối sánh sang BPV THPT 25 và nội suy theo tổ hợp đang chọn.</span>
                         </div>
                     </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-800 hover:bg-slate-900/40 cursor-pointer transition-all">
-                        <input type="radio" name="conversionMethod" value="percentile" onchange="handleMethodChange()" class="mt-1 accent-brand-500">
+                    <label id="official2026MethodCard" class="flex items-start gap-3 p-3 rounded-xl border border-emerald-500/30 bg-emerald-500/5 hover:bg-emerald-500/10 cursor-pointer transition-all">
+                        <input id="methodOfficial2026" type="radio" name="conversionMethod" value="official2026" onchange="handleMethodChange()" class="mt-1 accent-emerald-500">
                         <div>
-                            <span class="text-xs font-bold text-white block">Chuẩn VNU mô phỏng HSA 2026 → THPT 2025</span>
-                            <span class="text-[10px] text-slate-400 block mt-0.5">Lấy bách phân vị HSA 2026, đối sánh vào bảng phân vị tương đương ĐHQGHN/VNU 2025 rồi nội suy điểm THPT 2025: $y=y_0+\frac{P-P_0}{P_1-P_0}(y_1-y_0)$. Đây là chuẩn áp dụng cho mục HSA 2026 → THPT 2025.</span>
+                            <span class="text-xs font-bold text-emerald-300 flex items-center gap-2">
+                                Công thức VNU – dữ liệu HSA/THPT 2026
+                                <span class="text-[8px] uppercase tracking-wider rounded-full border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5">01/07/2026</span>
+                            </span>
+                            <span class="text-[10px] text-slate-300 block mt-1 leading-relaxed">Áp dụng Percentile Equating của VNU: với điểm HSA $x\in[a,b]$, lấy khoảng điểm THPT 2026 tương đương $[c,d]$ theo cùng bách phân vị rồi nội suy $y=c+\frac{x-a}{b-a}(d-c)$. Dữ liệu 2026 chính thức hiện có cho A00, A01, B00, C00, D01.</span>
                         </div>
                     </label>
                     <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-800 hover:bg-slate-900/40 cursor-pointer transition-all">
@@ -705,12 +748,12 @@
                     <!-- Khung Năm 2026 Dự báo (THPT 2026) -->
                     <div id="columnHsa2026Forecast" class="bg-slate-900/60 rounded-xl p-4 border border-emerald-500/20 flex flex-col justify-between">
                         <div>
-                            <span class="text-[10px] text-brand-orange font-bold uppercase tracking-wider">Dự báo THPT 2026</span>
+                            <span class="text-[10px] text-brand-orange font-bold uppercase tracking-wider">THPT 2026 chính thức</span>
                             <div id="hsaPct2026Forecast" class="text-2xl font-black text-brand-orange font-mono mt-1">92.92%</div>
                             <span class="text-[10px] text-slate-500 block">Bách phân vị bảo toàn</span>
                         </div>
                         <div class="mt-4 pt-3 border-t border-slate-800/80">
-                            <span class="text-[10px] text-slate-400">THPT Dự kiến 2026:</span>
+                            <span class="text-[10px] text-slate-400">THPT chính thức 2026:</span>
                             <div id="thptQd2026Forecast" class="text-lg font-bold text-brand-orange font-mono">27.25đ</div>
                             <span class="text-[10px] text-slate-400 mt-2 block">Biến động giả định:</span>
                             <div id="thptDeltaForecast" class="text-md font-bold text-slate-300 font-mono">0.00đ</div>
@@ -770,7 +813,7 @@
                 <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 mb-4">
                     <div>
                         <h3 id="chartMainTitle" class="text-sm font-bold text-white">Biểu đồ đối sánh phổ điểm liên năm THPT 2025 ↔ THPT 2026</h3>
-                        <p id="chartSubtitle" class="text-xs text-slate-400 mt-0.5">So sánh phổ THPT 2025 chính thức/tham chiếu với phổ THPT 2026 giả lập theo độ lệch đang chọn; đồng thời đặt mốc HSA 2025 và HSA 2026 lên cùng thang điểm 30.</p>
+                        <p id="chartSubtitle" class="text-xs text-slate-400 mt-0.5">So sánh phổ THPT 2025 tham chiếu với phổ THPT 2026 chính thức dựng từ bảng bách phân vị Bộ GD&ĐT; đồng thời đặt mốc HSA 2025 và HSA 2026 lên cùng thang điểm 30.</p>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2 w-full xl:w-auto">
                         <select id="selectChartCompareMode" onchange="calculate()" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-[10px] text-slate-200 font-bold focus:outline-none focus:border-emerald-500">
@@ -795,7 +838,7 @@
                         <div id="chartPct2025" class="text-[10px] text-slate-400">BPV 92.92%</div>
                     </div>
                     <div class="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3">
-                        <div class="text-[9px] uppercase font-extrabold text-emerald-300">THPT 2026 giả lập</div>
+                        <div class="text-[9px] uppercase font-extrabold text-emerald-300">THPT 2026 BPV chính thức/dự phòng</div>
                         <div id="chartScore2026" class="text-lg font-black text-emerald-300 font-mono mt-1">27.25đ</div>
                         <div id="chartDelta2026" class="text-[10px] text-slate-400">Δ 0.00đ</div>
                     </div>
@@ -841,9 +884,9 @@
                             <th class="p-3 text-slate-400 font-semibold">BPV HSA 2025 (%)</th>
                             <th id="thQd25_26" class="p-3 text-emerald-400 font-bold">Công văn 2304: HSA 26 → THPT 25</th>
                             <th id="thQd25_25" class="p-3 text-slate-300 font-bold">HSA 25 → THPT 25 theo phương thức chọn</th>
-                            <th id="thQd26_26" class="p-3 text-amber-400 font-bold">Dự báo THPT 26 (HSA 26)</th>
+                            <th id="thQd26_26" class="p-3 text-amber-400 font-bold">THPT 26 chính thức (HSA 26)</th>
                             <th class="p-3 text-cyan-300 font-bold">Ưu tiên KV</th>
-                            <th class="p-3 text-emerald-300 font-bold">Điểm xét tuyển dự đoán</th>
+                            <th class="p-3 text-emerald-300 font-bold">Điểm xét tuyển</th>
                             <th class="p-3 text-cyan-400 font-bold">Chênh HSA26 - HSA25</th>
                         </tr>
                     </thead>
@@ -986,7 +1029,7 @@
             { hsa: 19, pct: 0.00, top: 100.00 }
         ];
 
-        // SỐ HÓA HOÀN TOÀN CHÍNH XÁC 100% TOÀN BỘ CÁC BẢNG 1, 2, 3, 4 TỪ FILE PDF PHỤ LỤC MỚI NHẤT TRUYỀN THỐNG 2025
+        // DỮ LIỆU ĐỐI SÁNH CŨ GIỮ LẠI ĐỂ SO SÁNH LIÊN NĂM/THAM CHIẾU
         const hsaToThptMapping = [
             { hsa: 130, pct: 100.00, A00: 30.00, B00: 29.50, C00: 29.50, D01: 27.75 },
             { hsa: 129, pct: 100.00, A00: 30.00, B00: 29.50, C00: 29.49, D01: 27.75 },
@@ -1218,6 +1261,85 @@
             ]
         };
 
+        // BẢNG CHÍNH THỨC 2026: Bách phân vị các tổ hợp A00, A01, B00, C00, D01 (Bộ GD&ĐT công bố sáng 01/07/2026).
+        // Chỉ có mốc PTPV 1-99; index 0 là mốc kỹ thuật để tra cứu theo chỉ số bách phân vị.
+        const moetOfficial2026Database = {
+            A00: [
+                0.00, 9.95, 10.70, 11.30, 11.70, 12.10, 12.45, 12.70, 12.95, 13.25,
+                13.45, 13.70, 13.85, 14.10, 14.30, 14.50, 14.70, 14.85, 15.05, 15.25,
+                15.35, 15.60, 15.75, 15.85, 16.05, 16.25, 16.35, 16.50, 16.70, 16.85,
+                17.00, 17.10, 17.25, 17.45, 17.60, 17.75, 17.85, 18.00, 18.10, 18.25,
+                18.35, 18.50, 18.70, 18.75, 19.00, 19.05, 19.25, 19.35, 19.50, 19.60,
+                19.75, 19.85, 20.00, 20.10, 20.25, 20.35, 20.50, 20.60, 20.75, 20.85,
+                21.00, 21.10, 21.25, 21.35, 21.50, 21.60, 21.75, 21.75, 22.00, 22.00,
+                22.25, 22.25, 22.50, 22.50, 22.75, 22.75, 22.95, 23.00, 23.10, 23.25,
+                23.50, 23.50, 23.75, 23.75, 24.00, 24.00, 24.25, 24.25, 24.50, 24.75,
+                24.75, 25.00, 25.25, 25.25, 25.50, 25.75, 26.00, 26.50, 26.85, 27.50
+            ],
+            A01: [
+                0.00, 10.10, 10.80, 11.25, 11.60, 11.95, 12.20, 12.45, 12.60, 12.85,
+                13.10, 13.25, 13.50, 13.60, 13.75, 14.00, 14.10, 14.25, 14.45, 14.50,
+                14.75, 14.85, 15.00, 15.10, 15.25, 15.35, 15.50, 15.70, 15.75, 16.00,
+                16.00, 16.25, 16.25, 16.50, 16.50, 16.75, 16.75, 17.00, 17.00, 17.20,
+                17.25, 17.35, 17.50, 17.60, 17.75, 17.85, 18.00, 18.00, 18.25, 18.25,
+                18.50, 18.50, 18.75, 18.75, 18.85, 19.00, 19.10, 19.25, 19.35, 19.50,
+                19.50, 19.75, 19.75, 20.00, 20.00, 20.25, 20.50, 20.25, 20.75, 20.50,
+                21.00, 20.75, 21.25, 21.00, 21.50, 21.25, 21.50, 21.75, 21.75, 22.00,
+                22.25, 22.00, 22.50, 22.35, 22.75, 22.75, 23.25, 23.00, 23.25, 23.75,
+                23.50, 24.00, 24.25, 24.00, 24.50, 24.75, 25.25, 25.50, 26.00, 26.75
+            ],
+            B00: [
+                0.00, 10.05, 10.95, 11.50, 11.95, 12.35, 12.70, 13.00, 13.25, 13.50,
+                13.75, 13.95, 14.20, 14.35, 14.60, 14.75, 14.95, 15.10, 15.35, 15.50,
+                15.60, 15.85, 16.00, 16.10, 16.25, 16.45, 16.60, 16.75, 16.85, 17.00,
+                17.20, 17.35, 17.50, 17.60, 17.75, 17.85, 18.00, 18.20, 18.35, 18.50,
+                18.60, 18.75, 18.85, 19.00, 19.10, 19.25, 19.35, 19.50, 19.65, 19.75,
+                19.95, 20.00, 20.20, 20.25, 20.50, 20.50, 20.75, 20.75, 21.00, 21.00,
+                21.25, 21.25, 21.50, 21.50, 21.75, 21.75, 22.00, 21.95, 22.25, 22.25,
+                22.50, 22.50, 22.75, 22.75, 23.00, 23.00, 23.25, 23.25, 23.50, 23.60,
+                23.85, 23.75, 24.25, 24.00, 24.50, 24.25, 24.75, 24.60, 25.00, 25.25,
+                25.10, 25.50, 26.00, 25.75, 26.25, 26.50, 26.75, 27.00, 27.50, 28.25
+            ],
+            C00: [
+                0.00, 8.20, 9.10, 9.70, 10.10, 10.50, 10.85, 11.10, 11.35, 11.60,
+                11.85, 12.05, 12.20, 12.45, 12.60, 12.75, 12.95, 13.10, 13.25, 13.35,
+                13.55, 13.70, 13.85, 13.95, 14.10, 14.20, 14.35, 14.50, 14.60, 14.75,
+                14.85, 15.00, 15.10, 15.20, 15.35, 15.45, 15.60, 15.70, 15.80, 15.95,
+                16.05, 16.20, 16.25, 16.35, 16.50, 16.60, 16.75, 16.85, 17.00, 17.10,
+                17.25, 17.35, 17.45, 17.50, 17.70, 17.75, 17.85, 18.00, 18.10, 18.25,
+                18.35, 18.50, 18.60, 18.75, 18.85, 19.00, 19.25, 19.10, 19.50, 19.35,
+                19.75, 19.60, 20.00, 19.85, 20.25, 20.10, 20.50, 20.60, 20.75, 20.85,
+                21.25, 21.00, 21.50, 21.25, 21.75, 21.60, 22.25, 22.00, 22.35, 22.75,
+                22.50, 23.00, 23.50, 23.25, 23.75, 24.00, 24.25, 24.75, 25.25, 25.75
+            ],
+            D01: [
+                0.00, 12.00, 12.75, 13.25, 13.50, 13.85, 14.10, 14.25, 14.50, 14.75,
+                15.00, 15.00, 15.25, 15.35, 15.50, 15.60, 15.75, 15.85, 16.00, 16.00,
+                16.25, 16.25, 16.50, 16.50, 16.75, 16.75, 16.75, 17.00, 17.00, 17.25,
+                17.25, 17.25, 17.50, 17.50, 17.50, 17.75, 17.75, 17.85, 18.00, 18.00,
+                18.25, 18.25, 18.25, 18.50, 18.50, 18.50, 18.75, 18.75, 18.75, 19.00,
+                19.00, 19.00, 19.25, 19.25, 19.25, 19.50, 19.50, 19.50, 19.75, 19.75,
+                19.75, 20.00, 20.00, 20.25, 20.25, 20.25, 20.50, 20.50, 20.75, 20.50,
+                21.00, 20.75, 21.00, 21.00, 21.25, 21.25, 21.50, 21.50, 21.75, 21.75,
+                22.00, 21.75, 22.25, 22.00, 22.50, 22.25, 22.75, 22.50, 23.00, 23.25,
+                23.00, 23.50, 23.75, 23.50, 24.00, 24.25, 24.50, 24.75, 25.25, 25.75
+            ]
+        };
+
+        const thpt2026PercentileMeta = {
+            source: 'Bách phân vị các tổ hợp môn A00, A01, B00, C00, D01 - Kỳ thi tốt nghiệp THPT năm 2026, Bộ GD&ĐT công bố sáng 01/07/2026',
+            url: 'https://xaydungchinhsach.chinhphu.vn/bach-phan-vi-cac-to-hop-mon-a00-a01-b00-c00-d01-ky-thi-tot-nghiep-thpt-nam-2026-11926070110255949.htm',
+            percentileMin: 1,
+            percentileMax: 99,
+            blocks: {
+                A00: 'Toán, Vật lí, Hóa học',
+                A01: 'Toán, Vật lí, Tiếng Anh',
+                B00: 'Toán, Hóa học, Sinh học',
+                C00: 'Ngữ văn, Lịch sử, Địa lí',
+                D01: 'Toán, Ngữ văn, Tiếng Anh'
+            }
+        };
+
         const thpt2025PercentileMeta = {
             source: 'Phụ lục II - Bách phân vị tổng điểm một số tổ hợp truyền thống theo kết quả thi tốt nghiệp THPT 2025 đã hiệu chuẩn',
             blocks: {
@@ -1318,14 +1440,33 @@
 
         ];
 
-        // Quy mô quần thể thí sinh theo từng tổ hợp THPT dùng cho mô phỏng thứ hạng.
+        // Quy mô quần thể thí sinh theo từng tổ hợp THPT 2026 chính thức.
+        // Nguồn: Báo cáo thống kê và phân tích phổ điểm thi THPT năm 2026, các trang 66-70.
         const blockPoolSizes = {
-            A00: 165000,
-            A01: 132450,
-            B00: 98640,
-            C00: 210530,
+            A00: 175241,
+            A01: 143177,
+            B00: 47200,
+            C00: 277165,
             C01: 170000,
-            D01: 245120,
+            D01: 330523,
+            D07: 170000
+        };
+
+        const thpt2026OfficialBlockStats = {
+            A00: { label: 'A00', name: 'Toán, Vật lí, Hóa học', pool: 175241, mean: 19.41, median: 19.75, perfect30: 1, zero: 0, page: 66 },
+            A01: { label: 'A01', name: 'Toán, Vật lí, Ngoại ngữ', pool: 143177, mean: 18.41, median: 18.50, perfect30: 0, zero: 0, page: 67 },
+            B00: { label: 'B00', name: 'Toán, Hóa học, Sinh học', pool: 47200, mean: 19.69, median: 19.95, perfect30: 4, zero: 0, page: 68 },
+            C00: { label: 'C00', name: 'Ngữ văn, Lịch sử, Địa lí', pool: 277165, mean: 17.23, median: 17.25, perfect30: 0, zero: 0, page: 69 },
+            D01: { label: 'D01', name: 'Toán, Ngoại ngữ, Ngữ văn', pool: 330523, mean: 19.01, median: 19.00, perfect30: 0, zero: 0, page: 70 }
+        };
+
+        const thpt2025BlockPoolSizes = {
+            A00: 162200,
+            A01: 146960,
+            B00: 44964,
+            C00: 297377,
+            D01: 350654,
+            C01: 170000,
             D07: 170000
         };
 
@@ -1334,7 +1475,7 @@
             maxWishlist: 15,
             teacherMaxOrder: 5,
             minSourceThptScore: 15.00,
-            official2026Ready: false,
+            official2026Ready: true,
             registrationWindow: '02/7/2026–14/7/2026',
             feeWindow: '15/7/2026–21/7/2026',
             confirmationDeadline: '21/8/2026'
@@ -1389,8 +1530,8 @@
         };
 
         const forecastModelConfig = {
-            officialThpt2026Ready: false,
-            sourceMode: 'HSA 2026 + bách phân vị THPT 2025 + Công văn 2304',
+            officialThpt2026Ready: true,
+            sourceMode: 'Bảng bách phân vị THPT 2026 chính thức Bộ GD&ĐT cho A00, A01, B00, C00, D01',
             uncertaintyBand: 0.35,
             highDensityBand: 0.50
         };
@@ -1709,25 +1850,28 @@
                 dataset: hsa2026ScienceDataset,
                 pool: 41235,
                 label: "41.235 thí sinh (Khoa học Q01-Q10)",
-                source: "Bảng 3 - HSA Khoa học Q01-Q10, N=41.235",
+                source: "Bảng 3 - Phân vị và tốp điểm HSA Khoa học Q01-Q10, N=41.235",
                 min: 19,
-                max: 133
+                max: 133,
+                note: "Bảng chính thức cho phần thi Khoa học Q01-Q10. Ví dụ: HSA 98 có phân vị 92,92% và tốp 8,05%."
             },
             english: {
                 dataset: hsa2026EnglishDataset,
                 pool: 75604,
                 label: "75.604 thí sinh (Tiếng Anh Q21)",
-                source: "Bảng 4 - HSA-F Tiếng Anh Q21, N=75.604",
+                source: "Bảng 4 - Phân vị và tốp điểm HSA-F Tiếng Anh Q21, N=75.604",
                 min: 22,
-                max: 133
+                max: 133,
+                note: "Bảng chính thức cho phần thi Tiếng Anh HSA-F Q21; dải điểm hiển thị chính thức từ 22 đến 133."
             },
             general: {
                 dataset: hsa2026GeneralDataset,
                 pool: 116839,
                 label: "116.839 thí sinh (Không phân biệt mã bài thi)",
-                source: "Bảng 2 - HSA không phân biệt mã bài thi, N=116.839",
+                source: "Bảng 2 - Phân vị và tốp điểm HSA không phân biệt mã bài thi, N=116.839",
                 min: 19,
-                max: 133
+                max: 133,
+                note: "Phổ chung HSA 2026: điểm trung bình 79,39/150; trung vị 79,0; độ lệch chuẩn 15,0; thấp nhất 19; cao nhất 133."
             }
         };
 
@@ -1805,6 +1949,20 @@
                 min: Math.min(...values),
                 max: Math.max(...values)
             };
+        }
+
+        function updateHsaOfficialSourceCard() {
+            const meta = getActiveHsaMeta();
+            if (!meta) return;
+            const current = Math.round(Number(currentHsaValue || document.getElementById('inputHsa')?.value || 0));
+            const pct = findDatasetValueByHsa(meta.dataset, current, 'pct');
+            const top = findDatasetValueByHsa(meta.dataset, current, 'top');
+            setText('hsaOfficialSource', meta.source);
+            setText('hsaOfficialPool', 'N = ' + formatNumberVN(meta.pool));
+            setText('hsaOfficialCurrent', current + ' điểm');
+            setText('hsaOfficialPct', Number(pct).toFixed(2) + '%');
+            setText('hsaOfficialTop', Number(top).toFixed(2) + '%');
+            setText('hsaOfficialNote', meta.note || 'Nguồn PDF: Phụ lục phổ điểm và bách phân vị HSA 2026; số liệu làm tròn đến 2 chữ số sau dấu phẩy.');
         }
 
         function findDatasetValueByHsa(dataset, hsa, key) {
@@ -2150,6 +2308,108 @@
             return 1;
         }
 
+
+        function getOfficialThpt2026BlockData(blockKey) {
+            return moetOfficial2026Database[blockKey] || null;
+        }
+
+        function isOfficialThpt2026Block(blockKey = selectedBlock) {
+            return !!getOfficialThpt2026BlockData(blockKey);
+        }
+
+        function findThptFromOfficial2026Percentile(pct, blockKey = selectedBlock) {
+            const blockData = getOfficialThpt2026BlockData(blockKey);
+            if (!blockData || blockData.length < 100) {
+                return findThptFromNationalPercentile(pct, blockKey);
+            }
+            const p = clamp(Number(pct), thpt2026PercentileMeta.percentileMin, thpt2026PercentileMeta.percentileMax);
+            const lo = Math.max(thpt2026PercentileMeta.percentileMin, Math.floor(p));
+            const hi = Math.min(thpt2026PercentileMeta.percentileMax, Math.ceil(p));
+            if (lo === hi) return blockData[lo];
+            const s1 = blockData[lo];
+            const s2 = blockData[hi];
+            return s1 + (p - lo) * (s2 - s1);
+        }
+
+        function findOfficial2026PercentileFromThpt(thptScore, blockKey = selectedBlock) {
+            const blockData = getOfficialThpt2026BlockData(blockKey);
+            const score = Number(thptScore);
+            if (!Number.isFinite(score) || !blockData || blockData.length < 100) {
+                return findPercentileFromNationalThpt(thptScore, blockKey);
+            }
+            const pMin = thpt2026PercentileMeta.percentileMin;
+            const pMax = thpt2026PercentileMeta.percentileMax;
+            if (score <= blockData[pMin]) return pMin;
+            if (score >= blockData[pMax]) return pMax;
+            for (let i = pMin; i < pMax; i++) {
+                const s1 = blockData[i];
+                const s2 = blockData[i + 1];
+                const minScore = Math.min(s1, s2);
+                const maxScore = Math.max(s1, s2);
+                if (score >= minScore && score <= maxScore) {
+                    if (Math.abs(s2 - s1) < 1e-9) {
+                        let j = i + 1;
+                        while (j < pMax && Math.abs(blockData[j + 1] - s1) < 1e-9) j++;
+                        return (i + j) / 2;
+                    }
+                    const ratio = (score - s1) / (s2 - s1);
+                    return i + ratio;
+                }
+            }
+            return pMin;
+        }
+
+        // Công thức VNU: Percentile Equating và nội suy tuyến tính từng khoảng điểm.
+        // Dữ liệu nguồn: phổ HSA 2026 của ĐHQGHN và phổ THPT 2026 của Bộ GD&ĐT.
+        function getVnuHsa2026Interval(hsaScore) {
+            const dataset = getActiveHsaDataset().slice().sort((a, b) => a.hsa - b.hsa);
+            if (!dataset.length) return null;
+            const numericScore = Number(hsaScore);
+            const x = clamp(Number.isFinite(numericScore) ? numericScore : currentHsaValue, dataset[0].hsa, dataset[dataset.length - 1].hsa);
+            const exact = dataset.find(item => Math.abs(item.hsa - x) < 1e-9);
+            if (exact) return { x, lower: exact, upper: exact };
+            for (let i = 0; i < dataset.length - 1; i++) {
+                const lower = dataset[i];
+                const upper = dataset[i + 1];
+                if (x > lower.hsa && x < upper.hsa) return { x, lower, upper };
+            }
+            const edge = x <= dataset[0].hsa ? dataset[0] : dataset[dataset.length - 1];
+            return { x, lower: edge, upper: edge };
+        }
+
+        function convertVnuHsa2026ToThpt2026(hsaScore, blockKey = selectedBlock) {
+            if (!isOfficialThpt2026Block(blockKey)) {
+                return { score: NaN, error: true, official2026: false, method: 'vnu-percentile-equating-2026', detail: 'Chưa có bảng bách phân vị THPT 2026 chính thức cho tổ hợp ' + blockKey + '.' };
+            }
+            const interval = getVnuHsa2026Interval(hsaScore);
+            if (!interval) return { score: NaN, error: true, official2026: false, detail: 'Không có dữ liệu phổ HSA 2026.' };
+            const { x, lower, upper } = interval;
+            const p0 = clamp(Number(lower.pct), thpt2026PercentileMeta.percentileMin, thpt2026PercentileMeta.percentileMax);
+            const p1 = clamp(Number(upper.pct), thpt2026PercentileMeta.percentileMin, thpt2026PercentileMeta.percentileMax);
+            const c = findThptFromOfficial2026Percentile(p0, blockKey);
+            const d = findThptFromOfficial2026Percentile(p1, blockKey);
+            const sameAnchor = Math.abs(upper.hsa - lower.hsa) < 1e-9;
+            const ratio = sameAnchor ? 0 : (x - lower.hsa) / (upper.hsa - lower.hsa);
+            const score = sameAnchor ? c : c + ratio * (d - c);
+            const rawPct = sameAnchor ? Number(lower.pct) : Number(lower.pct) + ratio * (Number(upper.pct) - Number(lower.pct));
+            const pct = clamp(rawPct, thpt2026PercentileMeta.percentileMin, thpt2026PercentileMeta.percentileMax);
+            const top = sameAnchor ? Number(lower.top) : Number(lower.top) + ratio * (Number(upper.top) - Number(lower.top));
+            return {
+                score: clamp(score, 0, 30), baseScore: clamp(score, 0, 30), adjustedPct: pct, pct, rawPct, top,
+                official2026: true, method: 'vnu-percentile-equating-2026', category: getActiveHsaCategoryKey(),
+                x, a: lower.hsa, b: upper.hsa, c, d, p0, p1, ratio, exactAnchor: sameAnchor,
+                detail: 'Áp dụng công thức VNU Percentile Equating trên dữ liệu 2026: HSA x = ' + x.toFixed(2) + ' thuộc khoảng [' + lower.hsa.toFixed(2) + '; ' + upper.hsa.toFixed(2) + '], đối sánh cùng bách phân vị sang điểm THPT ' + blockKey + ' trong khoảng [' + c.toFixed(2) + '; ' + d.toFixed(2) + '] rồi nội suy tuyến tính.'
+            };
+        }
+
+        function convertVnuThpt2026ToHsa2026(thptScore, blockKey = selectedBlock) {
+            if (!isOfficialThpt2026Block(blockKey)) return { score: NaN, error: true, official2026: false, detail: 'Chưa có bảng bách phân vị THPT 2026 chính thức cho tổ hợp ' + blockKey + '.' };
+            const pct = findOfficial2026PercentileFromThpt(thptScore, blockKey);
+            const hsa = findHsa26FromPercentile(pct);
+            return { score: hsa, hsa, thpt: Number(thptScore), pct, top: clamp(100 - pct, 0, 100), official2026: true, method: 'vnu-percentile-equating-2026-reverse', detail: 'Tra ngược theo công thức VNU: THPT 2026 → bách phân vị tương đương → HSA 2026.' };
+        }
+
+
         const bpvThpt2025AnchorTops = [0.5, 1, 2, 5, 10, 20, 30, 50];
 
         function formatAnchorTopLabel(top) {
@@ -2382,6 +2642,10 @@
 
         // LẬP TRÌNH LẠI: Tính toán điểm quy đổi 2026 đồng nhất cho cá nhân theo phương thức đang chọn
         function calculateForecastFromHsa26(hsaVal, pctVal) {
+            const officialBlockData = getOfficialThpt2026BlockData(selectedBlock);
+            if (officialBlockData) {
+                return convertVnuHsa2026ToThpt2026(hsaVal, selectedBlock);
+            }
             const pool2025 = blockPoolSizes[selectedBlock] || 165000;
             const pool2026 = parseInt(document.getElementById('inputForecastPool')?.value || '170000', 10);
             
@@ -2428,9 +2692,10 @@
             tableElement.innerHTML = '';
             const dataset = getActiveHsaDataset();
             
-            document.getElementById('thQd25_26').innerText = getSelectedMethodName() + ": HSA 26 → THPT 25 - Khối " + selectedBlock;
+            const thpt25ReferenceMethod = activeMethod === 'official2026' ? 'BPV HSA 26 → THPT 25 tham chiếu' : getSelectedMethodName();
+            document.getElementById('thQd25_26').innerText = thpt25ReferenceMethod + ": HSA 26 → THPT 25 - Khối " + selectedBlock;
             document.getElementById('thQd25_25').innerText = "HSA 25 → THPT 25 theo " + getSelectedMethodName() + " - Khối " + selectedBlock;
-            document.getElementById('thQd26_26').innerText = "Dự báo THPT 26 (HSA 26 - Khối " + selectedBlock + ")";
+            document.getElementById('thQd26_26').innerText = (isOfficialThpt2026Block(selectedBlock) ? "THPT 26 chính thức (HSA 26 - Khối " : "Dự phòng THPT 26 (HSA 26 - Khối ") + selectedBlock + ")";
 
             dataset.forEach(item => {
                 const hsaScore = item.hsa;
@@ -2508,13 +2773,47 @@
             if (maxLabel) maxLabel.innerText = 'Cận trên: ' + maxHsa;
             const hsaLabel = document.getElementById('hsaInputLabel');
             if (hsaLabel) hsaLabel.innerText = 'Mốc: ' + Math.round(currentHsaValue);
+            updateHsaOfficialSourceCard();
             showToast('Đã đồng bộ phổ HSA 2026 theo ' + meta.source + '.', 'success');
             calculate();
             renderTable(searchTable ? searchTable.value : '');
         }
 
+        function updateThpt2026OfficialStatsCard() {
+            const card = document.getElementById('thpt2026OfficialStatsCard');
+            if (!card) return;
+            const stats = thpt2026OfficialBlockStats[selectedBlock];
+            const setText = (id, text) => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = text;
+            };
+            if (!stats) {
+                card.classList.remove('border-emerald-500/25', 'bg-emerald-500/10');
+                card.classList.add('border-amber-500/25', 'bg-amber-500/10');
+                setText('officialBlockStatsBadge', selectedBlock + ' dự phòng');
+                setText('officialBlockStatsName', 'Chưa có bảng chính thức trong báo cáo Bộ GD&ĐT 2026 cho tổ hợp này. Ứng dụng sẽ dùng nhánh dữ liệu tham chiếu/dự phòng.');
+                setText('officialBlockStatsPool', formatNumberVN(blockPoolSizes[selectedBlock] || 170000));
+                setText('officialBlockStatsMean', '—');
+                setText('officialBlockStatsMedian', '—');
+                setText('officialBlockStatsPerfect', '—');
+                setText('officialBlockStatsSource', 'Nguồn chính thức hiện có trong PDF chỉ gồm A00, A01, B00, C00, D01.');
+                return;
+            }
+            card.classList.remove('border-amber-500/25', 'bg-amber-500/10');
+            card.classList.add('border-emerald-500/25', 'bg-emerald-500/10');
+            setText('officialBlockStatsBadge', stats.label);
+            setText('officialBlockStatsName', stats.name);
+            setText('officialBlockStatsPool', formatNumberVN(stats.pool));
+            setText('officialBlockStatsMean', stats.mean.toFixed(2));
+            setText('officialBlockStatsMedian', stats.median.toFixed(2));
+            setText('officialBlockStatsPerfect', formatNumberVN(stats.perfect30));
+            setText('officialBlockStatsSource', 'Nguồn: Báo cáo thống kê và phân tích phổ điểm thi THPT năm 2026, trang ' + stats.page + '; bảng BPV tổ hợp ở trang 71-72.');
+        }
+
         function handleBlockChange() {
             selectedBlock = document.getElementById('selectTargetBlock').value;
+            updateThpt2026OfficialStatsCard();
+            updateMethodAvailabilityForDirection();
             
             document.getElementById('labelThptEquivalent').innerText = "Điểm THPT " + selectedBlock + " quy đổi";
             document.getElementById('thNational').innerText = "Quy đổi Quốc gia (Phụ lục II " + selectedBlock + " Bộ GD&ĐT)";
@@ -2562,12 +2861,21 @@
         function updateMethodAvailabilityForDirection() {
             const methods = document.getElementsByName('conversionMethod');
             const note = document.getElementById('methodLockNote');
+            const official2026Available = isOfficialThpt2026Block(selectedBlock);
+            if (activeMethod === 'official2026' && !official2026Available) {
+                setActiveConversionMethod('moet', false);
+                showToast('Bộ GD&ĐT chưa công bố bảng bách phân vị THPT 2026 cho tổ hợp ' + selectedBlock + '. Đã chuyển về phương thức tham chiếu.', 'info');
+            }
             for (let i = 0; i < methods.length; i++) {
                 const radio = methods[i];
-                radio.disabled = false;
+                const isUnavailableOfficial2026 = radio.value === 'official2026' && !official2026Available;
+                radio.disabled = isUnavailableOfficial2026;
                 const label = typeof radio.closest === 'function' ? radio.closest('label') : null;
                 if (label && label.classList) {
                     label.classList.remove('opacity-45', 'cursor-not-allowed', 'ring-1', 'ring-emerald-500/30');
+                    if (isUnavailableOfficial2026) {
+                        label.classList.add('opacity-45', 'cursor-not-allowed');
+                    }
                     if (radio.value === activeMethod) {
                         label.classList.add('ring-1', 'ring-emerald-500/30');
                     }
@@ -2581,7 +2889,7 @@
                 } else if (currentDirection === 'hsa25_to_thpt') {
                     note.innerHTML = 'Đã mở lại phương thức cho HSA 2025 → THPT 2025. Có thể so sánh bảng VNU 2025 với cách đối sánh bách phân vị theo Công văn 2304/Bộ GD&ĐT.';
                 } else if (currentDirection === 'hsa26_to_thpt26') {
-                    note.innerHTML = 'Mục HSA 2026 → THPT 2026 là dự báo. Đang dùng: <b>' + methodName + '</b>; kết quả sẽ còn phụ thuộc phổ THPT 2026 chính thức.';
+                    note.innerHTML = isOfficialThpt2026Block(selectedBlock) ? 'Đang áp dụng <b>công thức VNU Percentile Equating</b>: xác định khoảng điểm HSA 2026, đối sánh khoảng điểm THPT 2026 cùng bách phân vị cho tổ hợp ' + selectedBlock + ', rồi nội suy tuyến tính từng khoảng.' : 'Tổ hợp ' + selectedBlock + ' chưa có cột chính thức trong bảng THPT 2026; ứng dụng chỉ dùng chế độ dự phòng theo <b>' + methodName + '</b>.';
                 } else {
                     note.innerHTML = 'Mục THPT 2025 → HSA 2026 là tra ngược. Đang dùng: <b>' + methodName + '</b>. Ứng dụng giữ nguyên nguyên tắc đối sánh trực tiếp, không đi vòng qua tổ hợp khác.';
                 }
@@ -2589,6 +2897,9 @@
         }
 
         function switchDirection(dir) {
+            if (dir !== 'hsa26_to_thpt26' && activeMethod === 'official2026') {
+                setActiveConversionMethod('moet', false);
+            }
             currentDirection = dir;
             const btn26 = document.getElementById('tabHsa26ToThpt');
             const btn26To26 = document.getElementById('tabHsa26ToThpt26');
@@ -2644,6 +2955,23 @@
             for (let i = 0; i < methods.length; i++) {
                 if (methods[i].checked) { activeMethod = methods[i].value; break; }
             }
+            if (activeMethod === 'official2026') {
+                if (!isOfficialThpt2026Block(selectedBlock)) {
+                    setActiveConversionMethod('moet', false);
+                    updateMethodAvailabilityForDirection();
+                    calculate();
+                    showToast('Chưa có bảng bách phân vị THPT 2026 chính thức cho tổ hợp ' + selectedBlock + '.', 'error');
+                    return;
+                }
+                if (currentDirection !== 'hsa26_to_thpt26') {
+                    switchDirection('hsa26_to_thpt26');
+                } else {
+                    updateMethodAvailabilityForDirection();
+                    calculate();
+                }
+                showToast('Đã áp dụng công thức VNU trên dữ liệu HSA/THPT 2026 cho tổ hợp ' + selectedBlock + '.', 'success');
+                return;
+            }
             updateMethodAvailabilityForDirection();
             calculate();
             showToast('Đã chuyển phương thức quy đổi sang: ' + getSelectedMethodName() + '.', 'success');
@@ -2673,6 +3001,11 @@
                 minimumFractionDigits: digits,
                 maximumFractionDigits: digits
             });
+        }
+
+        function setText(id, value) {
+            const element = document.getElementById(id);
+            if (element) element.textContent = String(value ?? '');
         }
 
         function clamp(value, min, max) {
@@ -2727,6 +3060,25 @@
             const status = document.getElementById('forecastScenarioStatus');
             if (!body || !summary) return;
             const hsaVal = currentDirection === 'thpt_to_hsa' ? getHsa26FromThptByActiveMethod(currentThptValue, selectedBlock, activeMethod).score : currentHsaValue;
+            if (currentDirection === 'hsa26_to_thpt26' && isOfficialThpt2026Block(selectedBlock)) {
+                const vnu2026 = convertVnuHsa2026ToThpt2026(hsaVal, selectedBlock);
+                const officialPct = vnu2026.pct;
+                const officialScore = vnu2026.score;
+                body.innerHTML = `
+                <tr class="hover:bg-slate-900/70 transition-colors">
+                    <td class="p-2 font-bold text-emerald-300">Công thức VNU · dữ liệu 2026</td>
+                    <td class="p-2 text-center font-mono">PTPV ${officialPct.toFixed(2)}%</td>
+                    <td class="p-2 text-center font-mono text-slate-300">0.00</td>
+                    <td class="p-2 text-right font-black text-emerald-300 font-mono">${officialScore.toFixed(2)}</td>
+                </tr>`;
+                if (status) {
+                    status.innerText = 'VNU Percentile Equating 2026';
+                    status.className = 'text-[9px] bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 px-2 py-0.5 rounded-full font-bold';
+                }
+                summary.innerHTML = '<b class="text-emerald-300">Điểm chính thức ' + selectedBlock + ':</b> ' + officialScore.toFixed(2) + ' điểm tại BPV ' + officialPct.toFixed(2) + '%. ' +
+                    '<span class="text-slate-400">Nguồn: bảng bách phân vị THPT 2026 chính thức của Bộ GD&ĐT; dùng nội suy tuyến tính giữa hai mốc PTPV liền kề.</span>';
+                return;
+            }
             const results = getForecastScenarioResults(hsaVal, selectedBlock);
             body.innerHTML = results.map(r => `
                 <tr class="hover:bg-slate-900/70 transition-colors">
@@ -2739,12 +3091,13 @@
             const high = Math.max(...results.map(r => r.score));
             const base = results.find(r => r.key === 'base') || results[1];
             if (status) {
-                status.innerText = forecastModelConfig.officialThpt2026Ready ? 'Đã có dữ liệu chính thức' : 'Dự báo chờ THPT 2026';
-                status.className = forecastModelConfig.officialThpt2026Ready
+                const officialReadyForBlock = forecastModelConfig.officialThpt2026Ready && isOfficialThpt2026Block(selectedBlock);
+                status.innerText = officialReadyForBlock ? 'Đã có dữ liệu chính thức' : 'Dự phòng khi thiếu dữ liệu';
+                status.className = officialReadyForBlock
                     ? 'text-[9px] bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 px-2 py-0.5 rounded-full font-bold'
                     : 'text-[9px] bg-amber-500/10 text-amber-300 border border-amber-500/20 px-2 py-0.5 rounded-full font-bold';
             }
-            summary.innerHTML = '<b class="text-amber-300">Khoảng dự báo ' + selectedBlock + ':</b> ' + low.toFixed(2) + ' – ' + high.toFixed(2) + ' điểm. ' +
+            summary.innerHTML = '<b class="text-amber-300">Khoảng dự phòng ' + selectedBlock + ':</b> ' + low.toFixed(2) + ' – ' + high.toFixed(2) + ' điểm. ' +
                 'Kịch bản cơ sở: <b class="text-emerald-300">' + base.score.toFixed(2) + '</b>, BPV HSA ' + base.pctHsa.toFixed(2) + '%, tốp ' + base.topHsa.toFixed(2) + '%, BPV hiệu chỉnh ' + base.adjustedPct.toFixed(2) + '%. ' +
                 '<span class="text-slate-400">Nguyên tắc: không quy đổi bắc cầu, chỉ đối sánh trực tiếp HSA với tổ hợp ' + selectedBlock + ' đang chọn/gốc.</span>';
         }
@@ -2769,9 +3122,10 @@
                 moet: 'Khung mốc Tốp theo Công văn 2304',
                 percentileNational: 'Bách phân vị THPT 2025 tham chiếu',
                 percentile: 'Chuẩn VNU mô phỏng HSA 2026 → THPT 2025',
+                official2026: 'Công thức VNU – dữ liệu HSA/THPT 2026',
                 ptit: 'PTIT riêng: nội suy HSA → thang 30'
             };
-            return map[activeMethod] || map.percentile;
+            return map[activeMethod] || map.moet;
         }
 
         function getScoreByActiveMethodFromHsa25(hsaVal) {
@@ -2873,6 +3227,25 @@
             const safeExtraDetail = escHtml(extraDetail);
 
             add(`<p class="font-bold text-emerald-400">${safeModeLabel}</p>`);
+
+            if (currentDirection === 'hsa26_to_thpt26' && isOfficialThpt2026Block(selectedBlock)) {
+                const vnu2026 = convertVnuHsa2026ToThpt2026(hsaVal, selectedBlock);
+
+                add(raw`<p>Bước 1. Trên phổ HSA 2026 đang chọn, xác định điểm $x=${vnu2026.x.toFixed(2)}$ thuộc khoảng HSA $[a,b]=[${vnu2026.a.toFixed(2)},${vnu2026.b.toFixed(2)}]$.</p>`);
+                add(raw`<p class="pl-4 font-mono text-emerald-400">$$P_a=${vnu2026.p0.toFixed(2)}\%,\quad P_b=${vnu2026.p1.toFixed(2)}\%$$</p>`);
+                add(`<p>Bước 2. Đối sánh cùng bách phân vị trên bảng THPT 2026 chính thức của Bộ GD&ĐT cho tổ hợp <span class="text-white font-bold">${block}</span>, thu được khoảng điểm <span class="text-emerald-300 font-bold">[c,d] = [${vnu2026.c.toFixed(2)}, ${vnu2026.d.toFixed(2)}]</span>.</p>`);
+                add(raw`<p>Bước 3. Nội suy tuyến tính từng khoảng theo công thức VNU:</p>`);
+                add(raw`<p class="pl-4 font-mono text-white">$$y = c + \frac{x-a}{b-a}\times(d-c)$$</p>`);
+                if (vnu2026.exactAnchor) {
+                    add(raw`<p class="pl-4 font-mono text-emerald-400">$$x=a=b=${vnu2026.x.toFixed(2)} \Rightarrow y=c=d=${vnu2026.score.toFixed(2)}\,\text{điểm}$$</p>`);
+                } else {
+                    add(raw`<p class="pl-4 font-mono text-emerald-400">$$y = ${vnu2026.c.toFixed(2)} + \frac{${vnu2026.x.toFixed(2)}-${vnu2026.a.toFixed(2)}}{${vnu2026.b.toFixed(2)}-${vnu2026.a.toFixed(2)}}\times(${vnu2026.d.toFixed(2)}-${vnu2026.c.toFixed(2)}) = ${vnu2026.score.toFixed(2)}\,\text{điểm}$$</p>`);
+                }
+                add(raw`<p>Bước 4. Tính điểm xét tuyển sau ưu tiên khu vực: $${thptVal.toFixed(2)} + ${priorityInfo.applied.toFixed(2)} = ${priorityInfo.finalScore.toFixed(2)}$ điểm. ${escHtml(priorityInfo.regionLabel)} có mức tối đa $${priorityInfo.maxPriority.toFixed(2)}$ điểm; nếu điểm nền từ $22{,}50$ trở lên thì ưu tiên giảm theo quy định.</p>`);
+                add(`<p class="text-cyan-300">Phương pháp: Percentile Equating và nội suy từng khoảng theo công thức VNU. Dữ liệu đầu vào: phổ HSA 2026 của ĐHQGHN và ${escHtml(thpt2026PercentileMeta.source)}. Hiện có 5 tổ hợp A00, A01, B00, C00, D01.</p>`);
+                add(`<p class="text-slate-400">${safeExtraDetail}</p>`);
+                return parts.join('');
+            }
 
             if ((currentDirection === 'hsa26_to_thpt' || currentDirection === 'hsa25_to_thpt') && activeMethod === 'moet') {
                 const yearLabel = currentDirection === 'hsa25_to_thpt' ? 'HSA25' : 'HSA26';
@@ -2986,6 +3359,8 @@
             let detail = '';
             const labelThptEquivalent = document.getElementById('labelThptEquivalent');
             const labelHsaYear = document.getElementById('labelHsaYear');
+            updateHsaOfficialSourceCard();
+            updateThpt2026OfficialStatsCard();
 
             if (currentDirection === 'hsa26_to_thpt') {
                 hsaVal = currentHsaValue;
@@ -3000,13 +3375,13 @@
                 hsaVal = currentHsaValue;
                 pct = findPercentileFromHSA2026(hsaVal);
                 
-                // Đồng bộ dự báo THPT 2026 qua hàm tính toán hiệu chỉnh bách phân vị bảo toàn
+                // Đồng bộ THPT 2026: ưu tiên bảng bách phân vị chính thức, chỉ dự phòng mô phỏng khi tổ hợp chưa có dữ liệu.
                 const forecast = calculateForecastFromHsa26(hsaVal, pct);
                 thptVal = forecast.score;
-                modeLabel = 'HSA 2026 → THPT 2026 dự báo';
+                modeLabel = forecast.official2026 ? 'HSA 2026 → THPT 2026 theo công thức VNU (dữ liệu 2026)' : 'HSA 2026 → THPT 2026 dự phòng';
                 detail = forecast.detail;
                 labelHsaYear.innerText = 'Điểm HSA 2026';
-                labelThptEquivalent.innerText = 'Dự đoán điểm THPT ' + selectedBlock + ' 2026';
+                labelThptEquivalent.innerText = forecast.official2026 ? 'Điểm THPT ' + selectedBlock + ' 2026 quy đổi theo VNU' : 'Điểm THPT ' + selectedBlock + ' 2026 dự phòng';
             } else if (currentDirection === 'hsa25_to_thpt') {
                 hsaVal = currentHsaValue;
                 const methodScore25 = getScoreByActiveMethodFromHsa25(hsaVal);
@@ -3182,7 +3557,7 @@
 
         function getCurrentConversionStatusText() {
             if (currentDirection === 'hsa26_to_thpt') return 'THPT 2025 tham chiếu, chưa phải quy đổi chính thức 2026.';
-            if (currentDirection === 'hsa26_to_thpt26') return 'Dự báo THPT 2026 theo mô phỏng, cần thay bằng bảng chính thức khi Bộ/đơn vị khảo thí công bố.';
+            if (currentDirection === 'hsa26_to_thpt26') return isOfficialThpt2026Block(selectedBlock) ? 'Quy đổi theo công thức VNU Percentile Equating trên dữ liệu HSA/THPT 2026.' : 'Tổ hợp chưa có cột THPT 2026 chính thức, đang dùng tham chiếu/dự phòng.';
             if (currentDirection === 'hsa25_to_thpt') return 'Đối sánh HSA 2025 → THPT 2025, dùng làm lịch sử tham khảo.';
             return 'Tra ngược THPT 2025 → HSA 2026 theo bách phân vị tham chiếu.';
         }
@@ -3198,7 +3573,7 @@
             const teacherIssues = virtualWishlist.map((code, index) => ({ code, major: universityMajors.find(m => m.code === code), index }))
                 .filter(x => x.major && isTeacherProgram(x.major) && x.index >= admissionRegulationConfig.teacherMaxOrder);
             const wishOk = virtualWishlist.length <= admissionRegulationConfig.maxWishlist && teacherIssues.length === 0;
-            const officialOk = currentDirection !== 'hsa26_to_thpt26' || admissionRegulationConfig.official2026Ready;
+            const officialOk = currentDirection !== 'hsa26_to_thpt26' || isOfficialThpt2026Block(selectedBlock);
 
             if (sourceBox) sourceBox.innerHTML = '<div class="font-bold mb-1 ' + (eligibility.passed ? 'text-emerald-400' : 'text-rose-400') + '">1. Điều kiện nguồn THPT</div><div>Điểm gốc: <b>' + sourceThptScore.toFixed(2) + '/30</b>. Ngưỡng tối thiểu: <b>15,00</b>. ' + eligibility.label + '. Điểm ưu tiên khu vực hiện áp dụng: <b>' + (priorityRegionLevels[currentPriorityRegion]?.label || 'KV3') + ' +' + currentAreaPriorityApplied.toFixed(2) + '</b>.</div>';
             if (wishBox) wishBox.innerHTML = '<div class="font-bold mb-1 ' + (wishOk ? 'text-emerald-400' : 'text-rose-400') + '">2. Giới hạn nguyện vọng</div><div>Đang có <b>' + virtualWishlist.length + '/' + admissionRegulationConfig.maxWishlist + '</b> NV. ' + (teacherIssues.length ? 'Cảnh báo ngành giáo viên sau NV5: ' + teacherIssues.map(x => x.code).join(', ') + '.' : 'Không phát hiện vi phạm NV giáo viên.') + '</div>';
@@ -3552,7 +3927,7 @@
         }
 
         function exportConversionTableExcel() {
-            const headers = ['Điểm HSA', 'BPV HSA 2026', 'BPV HSA 2025', 'Mô phỏng VNU HSA26 → THPT25', 'VNU 2025 chính thức (HSA 25)', 'Dự báo THPT 26', 'Ưu tiên KV', 'Điểm xét tuyển dự đoán', 'Chênh HSA26 mô phỏng - VNU25'];
+            const headers = ['Điểm HSA', 'BPV HSA 2026', 'BPV HSA 2025', 'Mô phỏng VNU HSA26 → THPT25', 'VNU 2025 chính thức (HSA 25)', 'THPT 26 chính thức/dự phòng', 'Ưu tiên KV', 'Điểm xét tuyển', 'Chênh HSA26 mô phỏng - VNU25'];
             const rows = buildExportRowsFromConversionTable();
             exportRowsAsExcel('bang_quy_doi_hsa_thpt_2026.xls', 'Bảng quy đổi HSA – THPT 2026', headers, rows);
             showToast('Đã xuất bảng quy đổi sang Excel.', 'success');
@@ -3622,7 +3997,7 @@
                 <h1>Chiến thuật nguyện vọng HSA 2026</h1>
                 <p>Điểm xét tuyển chính: <b>${currentAdmissionScore.toFixed(2)}</b> · Phương pháp chính: ${escapeHtml(getSelectedMethodName())}</p>
                 <table><thead><tr><th>NV</th><th>Mã</th><th>Ngành</th><th>Trường</th><th>Gốc</th><th>Chuẩn 2025</th><th>Dự báo 2026</th><th>Áp lực</th><th>Điểm XT</th><th>Chênh</th><th>Đánh giá</th></tr></thead><tbody>${rows}</tbody></table>
-                <div class="note">Kết quả là mô phỏng tham khảo, cần cập nhật khi có phổ THPT 2026 và bảng quy đổi chính thức.</div>
+                <div class="note">Kết quả là công cụ tham khảo; với A00, A01, B00, C00, D01, ứng dụng đã nạp bảng bách phân vị THPT 2026 chính thức.</div>
                 <script>window.onload=function(){window.print();};<\/script>
                 </body></html>`);
             win.document.close();
@@ -3630,7 +4005,7 @@
 
         function getBaseHistogramForBlock(blockKey) {
             const block = moetNationalDatabase[blockKey] ? blockKey : 'A00';
-            const targetPool = blockPoolSizes[block] || blockPoolSizes.A00 || 165000;
+            const targetPool = thpt2025BlockPoolSizes[block] || blockPoolSizes[block] || blockPoolSizes.A00 || 165000;
 
             // A00 có phổ cột gốc đã đối soát theo giao diện cũ; quy đổi theo quy mô nếu cần.
             if (block === 'A00' && Array.isArray(thptA00Histogram) && thptA00Histogram.length) {
@@ -3654,6 +4029,27 @@
             for (let i = 0; i < samples; i++) {
                 const pct = (i + 0.5) * 100 / samples;
                 const score = findThptFromNationalPercentile(pct, block);
+                const bucket = clamp(Math.round(score), 1, 30);
+                buckets[bucket - 1].count += weight;
+            }
+            return buckets;
+        }
+
+        function getOfficial2026HistogramForBlock(blockKey) {
+            const block = isOfficialThpt2026Block(blockKey) ? blockKey : 'A00';
+            const targetPool = blockPoolSizes[block] || blockPoolSizes.A00 || 175241;
+            const buckets = Array.from({ length: 30 }, (_, index) => ({
+                score: index + 1,
+                label: String(index + 1),
+                count: 0
+            }));
+            const samples = 2000;
+            const pMin = thpt2026PercentileMeta.percentileMin;
+            const pMax = thpt2026PercentileMeta.percentileMax;
+            const weight = targetPool / samples;
+            for (let i = 0; i < samples; i++) {
+                const pct = pMin + (i + 0.5) * (pMax - pMin) / samples;
+                const score = findThptFromOfficial2026Percentile(pct, block);
                 const bucket = clamp(Math.round(score), 1, 30);
                 buckets[bucket - 1].count += weight;
             }
@@ -3720,7 +4116,9 @@
             setText('chartScore2025', values.scoreHsa26OnThpt25.toFixed(2) + 'đ');
             setText('chartPct2025', 'BPV HSA 2026: ' + values.pct26.toFixed(2) + '%');
             setText('chartScore2026', values.scoreForecast26.toFixed(2) + 'đ');
-            setText('chartDelta2026', 'Δ ' + (simulatedShiftDelta >= 0 ? '+' : '') + simulatedShiftDelta.toFixed(2) + 'đ · quy mô ' + formatNumberVN(values.pool26));
+            setText('chartDelta2026', values.official2026
+                ? 'BPV chính thức · quy mô ' + formatNumberVN(values.pool26)
+                : 'Δ ' + (simulatedShiftDelta >= 0 ? '+' : '') + simulatedShiftDelta.toFixed(2) + 'đ · quy mô ' + formatNumberVN(values.pool26));
             setText('chartHsa2025Score', values.scoreHsa25OnThpt25.toFixed(2) + 'đ');
             setText('chartHsa2025Top', 'Tốp ' + values.top25.toFixed(2) + '% · BPV ' + values.pct25.toFixed(2) + '%');
             setText('chartHsa2026Score', values.scoreHsa26OnThpt25.toFixed(2) + 'đ');
@@ -3747,7 +4145,8 @@
             const scaleMode = document.getElementById('selectChartScaleMode')?.value || 'count';
             const labels = Array.from({ length: 30 }, (_, index) => String(index + 1));
             const baseHistogram = getBaseHistogramForBlock(selectedBlock);
-            const forecastHistogram = buildForecastHistogramFromBase(baseHistogram);
+            const official2026Chart = isOfficialThpt2026Block(selectedBlock);
+            const forecastHistogram = official2026Chart ? getOfficial2026HistogramForBlock(selectedBlock) : buildForecastHistogramFromBase(baseHistogram);
             const baseValues = histogramToDisplayValues(baseHistogram, scaleMode);
             const forecastValues = histogramToDisplayValues(forecastHistogram, scaleMode);
             const maxY = Math.max(...baseValues, ...forecastValues, 1);
@@ -3763,9 +4162,11 @@
             const scoreHsa26OnThpt25 = clamp(Number(methodScore26.score || 0), 0, 30);
             const scoreForecast26 = calculateForecastFromHsa26(h, pct26).score;
             const currentScore = Number(thptVal) || scoreHsa26OnThpt25;
-            const pool26 = parseInt(document.getElementById('inputForecastPool')?.value || '170000', 10) || 170000;
+            const pool26 = official2026Chart
+                ? (blockPoolSizes[selectedBlock] || blockPoolSizes.A00 || 175241)
+                : (parseInt(document.getElementById('inputForecastPool')?.value || '170000', 10) || 170000);
 
-            const values = { pct25, pct26, top25, top26, scoreHsa25OnThpt25, scoreHsa26OnThpt25, scoreForecast26, currentScore, pool26 };
+            const values = { pct25, pct26, top25, top26, scoreHsa25OnThpt25, scoreHsa26OnThpt25, scoreForecast26, currentScore, pool26, official2026: official2026Chart };
             updateChartSummaryCards(values);
 
             const showBase = compareMode === 'overlay' || compareMode === 'all';
@@ -3790,7 +4191,7 @@
             }
             if (showForecast) {
                 datasets.push({
-                    label: 'THPT 2026 giả lập',
+                    label: official2026Chart ? 'THPT 2026 chính thức từ BPV' : 'THPT 2026 dự phòng',
                     data: forecastValues,
                     backgroundColor: forecastColors,
                     borderColor: 'rgba(16, 185, 129, 0.78)',
@@ -3815,7 +4216,7 @@
                     năm 2026 tương đương khoảng <span class="text-amber-300 font-bold">${scoreHsa26OnThpt25.toFixed(2)} điểm ${selectedBlock}</span>
                     theo chuẩn VNU mô phỏng HSA 2026 → THPT 2025. Chênh lệch HSA 2026 so với HSA 2025 là
                     <span class="${diffHsaYear >= 0 ? 'text-emerald-300' : 'text-rose-300'} font-bold">${diffHsaYear >= 0 ? '+' : ''}${diffHsaYear.toFixed(2)} điểm</span>.
-                    Khi áp dụng mô phỏng THPT 2026, điểm dự báo là
+                    Khi áp dụng bảng THPT 2026, điểm quy đổi là
                     <span class="text-emerald-300 font-bold">${scoreForecast26.toFixed(2)}</span>, tức
                     <span class="${diffForecast >= 0 ? 'text-emerald-300' : 'text-rose-300'} font-bold">${diffForecast >= 0 ? '+' : ''}${diffForecast.toFixed(2)} điểm</span>
                     so với quy đổi trên nền THPT 2025. Cột cam/vàng là dải chứa điểm hiện tại của bạn.`;
@@ -3823,7 +4224,7 @@
 
             const titleText = compareMode === 'hsa'
                 ? 'Đối sánh mốc HSA 2025 ↔ HSA 2026 trên thang THPT ' + selectedBlock
-                : 'Phổ điểm ' + selectedBlock + ': THPT 2025 tham chiếu ↔ THPT 2026 giả lập';
+                : 'Phổ điểm ' + selectedBlock + ': THPT 2025 tham chiếu ↔ ' + (official2026Chart ? 'THPT 2026 chính thức từ BPV' : 'THPT 2026 dự phòng');
             const yTitle = scaleMode === 'percent' ? 'Tỷ lệ thí sinh (%)' : 'Số thí sinh ước lượng';
 
             if (window.bellChartInstance) {
